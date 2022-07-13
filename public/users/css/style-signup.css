@@ -1,0 +1,33 @@
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+    font-size: 1rem;
+    line-height: 2.15;
+    padding-left: .75em;
+    padding-right: .75em;
+    }
+    .card-registration .select-arrow {
+    top: 13px;
+    }
+    .centered {
+        /* margin-right: auto; */
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: x-large;
+        color: #eee;
+        font-weight: 600;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+      }
+    
+      @media (max-width: 450px) {
+        .centered {
+            font-size: medium;
+            color: #eee;
+            font-weight: 600;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        }

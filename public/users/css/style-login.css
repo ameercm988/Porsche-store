@@ -1,0 +1,51 @@
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
+}
+
+/* .img {
+    background-image: url(https://i.pinimg.com/564x/85/bd/ed/85bded096453fe4396ccbf968b6ebe3f--urban-photography-couple-photography.jpg); 
+  }
+  @media 
+    (-webkit-min-device-pixel-ratio: 2), 
+    (min-resolution: 192dpi) { 
+    .img {
+      background-image: url(https://i.pinimg.com/564x/85/bd/ed/85bded096453fe4396ccbf968b6ebe3f--urban-photography-couple-photography.jpg);
+    }
+  } */
+
+  /* .centered {
+    margin-right: auto;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: x-large;
+    color: #eee;
+    font-weight: 600;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+  }
+
+  @media (max-width: 450px) {
+    .centered {
+        font-size: medium;
+        color: #eee;
+        font-weight: 600;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    } */
