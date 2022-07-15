@@ -17,17 +17,20 @@
               <div class="card-body p-md-5 text-black">
                 <h3 class="mb-5 text-uppercase">SIGNUP FORM</h3>
                 <form action="/signup" id="form" method="post" class="mx-1 mx-md-4">
+                {{#if emailErrror}}
+                <p class="text-danger">{{emailErrror}}</p>
+                {{/if}}
                   <div class="row">
                     <div class="col-md-6 mb-4">
                       <div class="form-outline">
-                        <input type="text"  class="form-control form-control-lg" name="firstname"/>
-                        <label class="form-label" for="form3Example1m">First name</label>
+                        <input type="text"  class="form-control form-control-lg" name="firstname" placeholder="First name"/>
+                        {{!-- <label class="form-label" for="form3Example1m">First name</label> --}}
                       </div>
                     </div>
                     <div class="col-md-6 mb-4">
                       <div class="form-outline">
-                        <input type="text"  class="form-control form-control-lg" name="lastname"/>
-                        <label class="form-label" for="form3Example1n">Last name</label>
+                        <input type="text"  class="form-control form-control-lg" name="lastname" placeholder="last name"/>
+                        {{!-- <label class="form-label" for="form3Example1n">Last name</label> --}}
                       </div>
                     </div>
                   </div>
@@ -48,8 +51,8 @@
                   </div> --}}
 
                   <div class="form-outline mb-4">
-                    <input type="text"  class="form-control form-control-lg" name="username"/>
-                    <label class="form-label" for="form3Example8">Username</label>
+                    <input type="text"  class="form-control form-control-lg" name="username" placeholder="Username"/>
+                    {{!-- <label class="form-label" for="form3Example8">Username</label> --}}
                   </div>
 
 
@@ -109,18 +112,18 @@
                     </div> --}}
 
                     <div class="form-outline mb-4">
-                      <input type="text"  class="form-control form-control-lg" name="email"/>
-                      <label class="form-label" for="form3Example9">Email ID</label>
+                      <input type="text"  class="form-control form-control-lg" name="email" placeholder="Email ID"/>
+                      {{!-- <label class="form-label" for="form3Example9">Email ID</label> --}}
                     </div>
 
                     <div class="form-outline mb-4">
-                      <input type="password" class="form-control form-control-lg" name="password"/>
-                      <label class="form-label" for="form3Example90">Password</label>
+                      <input type="password" class="form-control form-control-lg" name="password" placeholder="Password"/>
+                      {{!-- <label class="form-label" for="form3Example90">Password</label> --}}
                     </div>
 
                     <div class="form-outline mb-4">
-                      <input type="number"  class="form-control form-control-lg" name="mobilenumber"/>
-                      <label class="form-label" for="form3Example99">Mobile number</label>
+                      <input type="number"  class="form-control form-control-lg" name="mobilenumber" placeholder="Mobile Number"/>
+                      {{!-- <label class="form-label" for="form3Example99">Mobile number</label> --}}
                     </div>
 
                     {{!-- <div class="form-outline mb-4">

@@ -1,11 +1,12 @@
 // $(document).ready(function () {
 
-    // $('#table_id').DataTable();   //jquery data table
+    $('#table_id').DataTable();   //jquery data table
   
   
   
     $("#form").validate({
       errorClass: "validerrors",
+      
   
       rules: {
         firstname: {
@@ -15,7 +16,7 @@
 
         lastname: {
            required: true,
-           minlength: 3
+           minlength: 1
         },
 
         username: {
@@ -40,5 +41,5 @@
   
       }
     })
-//   })
+  // })
   

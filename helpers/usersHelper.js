@@ -4,35 +4,44 @@ const collection = require('../config/collections')
 
 module.exports = {
     doSignup: (userData) => {
-        return new Promise(async(resolve,reject) => {
+        return new Promise(async (resolve, reject) => {
+            const userSignInfo = {}
             userData.password = await bcrypt.hash(userData.password, 10);
             db.get().collection(collection.usersCollections).insertOne(userData).then((data) => {
-                resolve(data)
+                // console.log(data);
+                if (data) {
+                    userSignInfo.isUserValid = true;
+                    userSignInfo.user = userData;
+                    resolve(userSignInfo)
+                } else {
+                    userSignInfo.isUserValid = false;
+                    resolve(userSignInfo)
+                }
             }).catch((err) => {
                 reject(err)
             })
-
         })
     },
-    doLogin : (userData) => {
+
+    doLogin: (userData) => {
         console.log(userData);
-        return new Promise(async(resolve,reject) => {
+        return new Promise(async (resolve, reject) => {
             const userInfo = {}
-            const user = await db.get().collection(collection.usersCollections).findOne({email: userData.email})
+            const user = await db.get().collection(collection.usersCollections).findOne({ email: userData.email })
             console.log(user);
             if (user) {
                 bcrypt.compare(userData.password, user.password).then((data) => {
                     console.log(data);
-                    if(data){
+                    if (data) {
                         userInfo.isUserValid = true;
                         userInfo.user = user;
                         resolve(userInfo)
-                    }else{
+                    } else {
                         userInfo.isUserValid = false;
                         resolve(userInfo)
-                    }   
+                    }
                 })
-            }else{
+            } else {
                 userInfo.isUserValid = false;
                 resolve(userInfo)
             }

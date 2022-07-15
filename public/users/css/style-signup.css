@@ -31,3 +31,7 @@
             transform: translate(-50%, -50%);
         }
         }
+        .validerrors {
+          color: red;
+          background-color: rgb(255, 255, 255);
+       }

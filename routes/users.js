@@ -46,6 +46,10 @@ router.get('/signup', usersController.getSignup)
 router.post('/signup', usersController.postSignup)
 
 
+router.get('/otp', usersController.getOtp)
+
+router.post('/otp', usersController.postOtp)
+
 // router.get('/logout',(req,res,next) => {
 //   res.redirect('/login')
 // })

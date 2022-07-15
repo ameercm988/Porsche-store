@@ -13,6 +13,10 @@ height: calc(100% - 73px);
 height: 100%;
 }
 }
+.validerrors {
+  color: red;
+  background-color: rgb(255, 255, 255);
+}
 
 /* .img {
     background-image: url(https://i.pinimg.com/564x/85/bd/ed/85bded096453fe4396ccbf968b6ebe3f--urban-photography-couple-photography.jpg); 

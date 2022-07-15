@@ -77,9 +77,23 @@
 							My Account
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+							
+
+							{{#if user}}
+							<li><a class="dropdown-item text-dark" href="/login">{{user.username}}</a></li>
+							{{!-- <li><a class="dropdown-item text-dark" href="/signup">Sign Up</a></li> --}}
+							<li><a class="dropdown-item text-dark" href="/logout">Log Out</a></li>
+							{{else home}}
 							<li><a class="dropdown-item text-dark" href="/login">Login</a></li>
 							<li><a class="dropdown-item text-dark" href="/signup">Sign Up</a></li>
-							<li><a class="dropdown-item text-dark" href="/logout">Log Out</a></li>
+							{{!-- <li><a class="dropdown-item text-dark" href="/logout">Log Out</a></li> --}}
+							{{/if}}							
+							{{#if signup}}
+							<li><a class="dropdown-item text-dark" href="/login">Login</a></li>
+							{{/if}}
+							{{#if login}}
+							<li><a class="dropdown-item text-dark" href="/signup">Sign Up</a></li>
+							{{/if}}
 						</ul>
 					</div>
 				</div>
