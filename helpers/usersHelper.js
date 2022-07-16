@@ -24,14 +24,14 @@ module.exports = {
     },
 
     doLogin: (userData) => {
-        console.log(userData);
+        // console.log(userData);
         return new Promise(async (resolve, reject) => {
             const userInfo = {}
             const user = await db.get().collection(collection.usersCollections).findOne({ email: userData.email })
-            console.log(user);
+            // console.log(user);
             if (user) {
                 bcrypt.compare(userData.password, user.password).then((data) => {
-                    console.log(data);
+                    // console.log(data);
                     if (data) {
                         userInfo.isUserValid = true;
                         userInfo.user = user;

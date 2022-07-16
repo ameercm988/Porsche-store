@@ -16,6 +16,7 @@ module.exports = {
             // console.log('no user');
         }
     },
+
     getLogin: (req, res) => {
         if (req.session.isLoggedIn) {
             res.redirect('/')
@@ -23,6 +24,7 @@ module.exports = {
             res.render('users/users-login', { login: true })
         }
     },
+
     postLogin: (req, res, next) => {
         usersHelper.doLogin(req.body).then((data) => {
             if (data.isUserValid) {
@@ -39,35 +41,43 @@ module.exports = {
             res.redirect('/login')
         })
     },
-   
-
 
     getSignup: (req, res, next) => {
-        res.render('users/users-signup', { signup: true })
+        if (req.session.isLoggedIn) {
+            res.redirect('/')
+        } else {
+            res.render('users/users-signup', { signup: true })
+        }       
     },
+
     postSignup: (req, res, next) => {
-        console.log('postsignup');
+        // console.log('postsignup');
         req.session.body = req.body
         twilioHelpers.dosms(req.session.body).then((data) => {
             if (data) {
-                console.log('redirect otp');
+                // console.log('redirect otp');
                 res.redirect('/otp')
             } else {
-                console.log('redirect signup');
+                // console.log('redirect signup');
                 res.redirect('/signup');
             }
-        })
-       
+        })      
     },
+
     getOtp : (req,res,next) => {
-        res.render('users/otp')
-        console.log('getotp');
+        if (req.session.isLoggedIn) {
+            res.redirect('/')
+        } else {
+            res.render('users/otp')
+        // console.log('getotp');
+        }       
     },
+
     postOtp : (req,res,next) => {
-        console.log('postotp');
-        console.log(req.body);
-        console.log("req.session.body");
-        console.log(req.session.body);
+        // console.log('postotp');
+        // console.log(req.body);
+        // console.log("req.session.body");
+        // console.log(req.session.body);
             twilioHelpers.otpVerify(req.body, req.session.body).then((response) => {
                 if (response.valid) {
                     usersHelper.doSignup(req.session.body).then((data) => {
@@ -81,25 +91,19 @@ module.exports = {
                             // console.log('not signed in');
                             // console.log(userInfo);
                         }
-
                     }).catch((err) => {
                         req.session.err = err
                         // console.log('not in and catch err'+err);
                         res.redirect('/signup')
                     })
                 }
-            })
-        
+            })        
     },
-
-   
-
-
-
 
     getLogout: (req, res) => {
         req.session.isLoggedIn = null
         req.session.user = false
-        res.redirect('/login')
+        // req.session.destroy()
+        res.redirect('/')
     }
 }
