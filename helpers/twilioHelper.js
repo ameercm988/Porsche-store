@@ -20,11 +20,11 @@ const serviceSid='VAd9f13e296499e2af397cb2d8587e9bfe'
                         client.verify.services(serviceSid).verifications.create({
                             to :`+91${noData.mobilenumber}`,
                             channel:"sms"
-                        }).then((res)=>{
-                            console.log('clientresponse');
-                            res.valid=true;
-                            resolve(res)
-                            console.log(res);
+                        }).then(()=>{
+                            console.log('twiliopundeyy');
+                            // res.valid=true;
+                            resolve()
+                            // console.log(res);
                         })
                     })
                 },
@@ -32,15 +32,27 @@ const serviceSid='VAd9f13e296499e2af397cb2d8587e9bfe'
                     console.log("otpverify");
                     console.log(otpData);
                     console.log(nuData);
-                    let resp={}
+                    // let res={}
                     return new Promise(async(resolve,reject)=>{
+                        let err = 'Enter a valid OTP'
                         client.verify.services(serviceSid).verificationChecks.create({
                             to:   `+91${nuData.mobilenumber}`,
                             code:otpData.otp
-                        }).then((resp)=>{
-                            console.log("verification success");
-                            console.log(resp);
-                            resolve(resp)
+                        }).then((res)=>{
+                            // console.log("verification success");
+                            // console.log(resp);
+                            if (res.valid) {
+                                console.log('valid otp');
+                                console.log(res.valid);
+                                resolve()
+                            }else{
+                                console.log('Non-valid otp');
+                                console.log(err);
+                                reject(err)
+                            }
+                            
+                        }).catch(() => {
+                            reject()
                         })
                     })
                 }

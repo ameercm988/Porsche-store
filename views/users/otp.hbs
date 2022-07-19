@@ -5,7 +5,11 @@
                 <form action="/otp" method="post">
                 <h6>Please enter the one time password <br> to verify your account</h6>
                 <div> <span>A code has been sent to</span> <small>*******9897</small> </div>
+                {{#if otpError}}
+                    <p class="text-danger">{{otpError}}</p>
+                    {{/if}}
                 <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+                    
                      <input class="m-2 text-center form-control rounded" type="text" name="otp" id="first" maxlength="6" /> 
                         {{!-- <input
                         class="m-2 text-center form-control rounded" type="text" id="second" maxlength="1" /> <input

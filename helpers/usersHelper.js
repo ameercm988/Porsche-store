@@ -23,28 +23,38 @@ module.exports = {
         })
     },
 
-    doLogin: (userData) => {
+        doLogin: (userData) => {
         // console.log(userData);
-        return new Promise(async (resolve, reject) => {
+        return new Promise( (resolve, reject) => {
+           
             const userInfo = {}
-            const user = await db.get().collection(collection.usersCollections).findOne({ email: userData.email })
-            // console.log(user);
-            if (user) {
-                bcrypt.compare(userData.password, user.password).then((data) => {
-                    // console.log(data);
-                    if (data) {
-                        userInfo.isUserValid = true;
-                        userInfo.user = user;
-                        resolve(userInfo)
-                    } else {
-                        userInfo.isUserValid = false;
-                        resolve(userInfo)
-                    }
-                })
-            } else {
-                userInfo.isUserValid = false;
-                resolve(userInfo)
-            }
+            db.get().collection(collection.usersCollections).findOne({ email: userData.email }).then((user) => {
+                // console.log(user);
+                if (user) {
+                    console.log(user);
+                    bcrypt.compare(userData.password, user.password).then((data) => {
+                        // console.log("hiii",data);
+                        if (data) {
+                            // userInfo.user = true
+                            userInfo.isUserValid = true;
+                            userInfo.user = user;
+                            resolve(userInfo)
+                        } else {
+                            
+                            userInfo.isUserValid = false;
+                            userInfo.err = "Email & password doesn't match"
+                            console.log('user w/o password');
+                            resolve(userInfo)
+                        }
+                    })
+                } else {
+                    userInfo.isUserValid = false;
+                    userInfo.err = "NO USER EXISTS"
+                    reject(userInfo)
+                }
+            }).catch((dataBaseError) => {
+                reject(dataBaseError)
+            })
         })
     }
 }

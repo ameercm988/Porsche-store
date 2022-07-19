@@ -30,6 +30,19 @@
           </div>
 
           <!-- Email input -->
+          
+          <div>
+            {{#if userError}}
+            <p class="text-danger">{{userError}}</p>
+            {{/if}}
+            {{#if loginError}}
+            <p class="text-danger">{{loginError}}</p>
+            {{/if}}
+            {{#if dataBaseError}}
+            <p class="text-danger">{{dataBaseError}}</p>
+            {{/if}}
+          </div>
+          
           <div class="form-outline mb-4">
             <input type="email" id="form3Example3" class="form-control form-control-lg"
               placeholder="Email ID" name="email"/>
