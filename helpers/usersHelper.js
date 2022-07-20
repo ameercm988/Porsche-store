@@ -7,7 +7,7 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             const userSignInfo = {}
             userData.password = await bcrypt.hash(userData.password, 10);
-            db.get().collection(collection.usersCollections).insertOne(userData).then((data) => {
+            db.get().collection(collection.USER_COLLECTIONS).insertOne(userData).then((data) => {
                 // console.log(data);
                 if (data) {
                     userSignInfo.isUserValid = true;
@@ -28,7 +28,7 @@ module.exports = {
         return new Promise( (resolve, reject) => {
            
             const userInfo = {}
-            db.get().collection(collection.usersCollections).findOne({ email: userData.email }).then((user) => {
+            db.get().collection(collection.USER_COLLECTIONS).findOne({ email: userData.email }).then((user) => {
                 // console.log(user);
                 if (user) {
                     console.log(user);

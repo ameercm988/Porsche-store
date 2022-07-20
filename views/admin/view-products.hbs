@@ -1,0 +1,28 @@
+<section>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">NO:</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Description</th>
+                <th scope="col">category</th>
+                <th scope="col">Images</th>
+            </tr>
+        </thead>
+        {{#each products}}
+        <tbody>
+            
+            <tr>                            
+                <th scope="row">{{@index}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.price}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.category}}</td>
+                {{!-- <td><img src="/productImages/{{this._id.}}.jpg" alt="" style="height: 50px; width: 50px;"></td> --}}
+            </tr>
+            
+        </tbody>
+        {{/each}}
+    </table>
+</section>

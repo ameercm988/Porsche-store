@@ -7,6 +7,7 @@ const hbs = require('express-handlebars')
 const db = require('./config/connections')
 const session = require('express-session')
 const nocache =require('nocache')
+const fileUpload = require('express-fileupload')
 
 const usersRouter = require('./routes/users');
 const adminRouter = require('./routes/admin');
@@ -25,8 +26,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload())
 
-app.use(session({secret:"xoxo", resave:false, saveUninitialized:true, cookie:{ maxAge:6000000}}))
+app.use(session({secret:"xoxo", resave:false, saveUninitialized:true, cookie:{ maxAge:60000000}}))
 app.use(nocache())
 db.connect((err)=>{
   if(err)

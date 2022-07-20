@@ -8,7 +8,7 @@ module.exports = {
         // console.log(adminData);
         return new Promise(async(resolve,reject) => {
             const adminInfo = {}
-          const admin = await db.get().collection(collection.adminCollections).findOne({email : adminData.email})
+          const admin = await db.get().collection(collection.ADMIN_COLLECTIONS).findOne({email : adminData.email})
             if (admin) {
                 bcrypt.compare(adminData.password,admin.password).then((data) =>{
                      // console.log(admin);
@@ -19,6 +19,7 @@ module.exports = {
                     // console.log(adminInfo);
                 }else{
                     adminInfo.isAdminValid = false
+                    adminInfo.err = "Email & password doesn't match"
                     resolve(adminInfo)
                     // console.log(adminInfo);
                 }
@@ -29,6 +30,20 @@ module.exports = {
                     resolve(adminInfo)
             }
         })
-    }
+    },
+
+    // addProduct : (newProduct) => {
+    //     console.log(newProduct);
+    //     newProduct.price = parseInt(newProduct.price)
+    //     return new Promise(async(resolve, reject) => {
+    //        await db.get().collection(collection.PRODUCT_COLLECTIONS).insertOne(newProduct).then((data) => {
+    //             resolve(data.insertedId)
+    //             console.log(data+"database"+data.insertedId);
+
+    //         }).catch((err) => {
+    //             reject(err)
+    //         })
+    //     })
+    // }
 }
 

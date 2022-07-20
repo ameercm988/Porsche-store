@@ -81,12 +81,13 @@ module.exports = {
             if (data.isUserValid = false) {
                 // console.log('no user');
                 // console.log(data);
-                req.session.userError = data.err
+                req.session.dataBaseError = "Error with database"
                 res.redirect('/login')
                 // console.log('not logged in');
                 // console.log(userInfo);
             } else {
-                req.session.dataBaseError = "Error with database"
+
+                req.session.userError = data.err
                 res.redirect('/login')
             }
 

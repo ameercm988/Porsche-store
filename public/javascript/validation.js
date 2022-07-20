@@ -40,7 +40,7 @@
         confirmpassword : {
            required : true,
            minlength : 5,
-           equalTo: "#mainpassword"
+           equalTo: password
         },
 
         mobilenumber: {

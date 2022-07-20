@@ -53,6 +53,9 @@
                             </a>
                             <h3>LOGIN</h3>
                         </div>
+                        {{#if adminError}}
+                        <P class="text-danger">{{adminError}}</P>
+                        {{/if}}
                         <form action="/admin/login" method="post" id="form">
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control" id="floatingInput" placeholder="Email ID" name="email">
