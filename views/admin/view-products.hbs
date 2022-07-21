@@ -1,28 +1,49 @@
 <section>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">NO:</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">Description</th>
-                <th scope="col">category</th>
-                <th scope="col">Images</th>
-            </tr>
-        </thead>
-        {{#each products}}
-        <tbody>
-            
-            <tr>                            
-                <th scope="row">{{@index}}</th>
-                <td>{{this.name}}</td>
-                <td>{{this.price}}</td>
-                <td>{{this.description}}</td>
-                <td>{{this.category}}</td>
-                {{!-- <td><img src="/productImages/{{this._id.}}.jpg" alt="" style="height: 50px; width: 50px;"></td> --}}
-            </tr>
-            
-        </tbody>
-        {{/each}}
-    </table>
+    <div class="container">
+        <div class="container d-flex">
+            <a style="margin-left: auto;" href="/admin/add-products"><button class="btn btn-success ">ADD
+                    PRODUCTS</button></a>
+        </div>
+        <table class="table">
+
+            <thead>
+                <tr>
+                    <th scope="col">NO:</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">category</th>
+                    <th scope="col">Images</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            {{#each products}}
+            <tbody>
+
+                <tr>
+                    <th scope="row">{{@index}}</th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.price}}</td>
+                    <td>{{this.description}}</td>
+                    <td>{{this.category}}</td>
+                    <td><img src="/productImages/{{this._id}}_1.jpeg" alt="" style="height: 30px; width: 50px;"></td>
+                    {{!-- <td><img src="/productImages/{{this._id}}_2.jpg" alt="" style="height: 30px; width: 40px;">
+                    </td>
+                    <td><img src="/productImages/{{this._id}}_3.jpg" alt="" style="height: 30px; width: 40px;"></td>
+                    <td><img src="/productImages/{{this._id}}_4.jpg" alt="" style="height: 30px; width: 40px;"></td>
+                    --}}
+                    <td><a href="/admin/edit-products/{{this._id}}"><button class="text-white"
+                                style="background-color: rgb(42, 42, 246);border-color: aliceblue; border-radius:5px;">EDIT</button></a>
+                    </td>
+                    <td><a href="/admin/delete-products/?id={{this._id}}"><button class="text-white"
+                                style="background-color: rgb(223, 18, 18);border-color: aliceblue;border-radius:5px;"
+                                onclick="return confirm('Do you want to delete {{this.name}} item?')">DELETE</button></a>
+                    </td>
+                </tr>
+
+            </tbody>
+            {{/each}}
+        </table>
+    </div>
 </section>

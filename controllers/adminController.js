@@ -52,29 +52,59 @@ module.exports = {
     },
 
     postAddProducts : (req, res, next) => {
-        console.log(req.body);
+
         productHelper.addProduct(req.body).then((id) => {
-            console.log(id+'data returned');
-            console.log(req.files);
             
+
+            // let file = req.files
+
+            // for(i=1;i<=file;i++){
+
+            // }
+
+
             let img1 = req.files.image1
             let img2 = req.files.image2
             let img3 = req.files.image3
             let img4 = req.files.image4
 
-            img1.mv('./public/productimages/' +id+ '_1.jpg')
-            img2.mv('./public/productimages/' +id+ '_2.jpg')
-            img3.mv('./public/productimages/' +id+ '_3.jpg')
-            img4.mv('./public/productimages/' +id+ '_4.jpg')
+            img1.mv('./public/productImages/' +id+ '_1.jpg')
+            img2.mv('./public/productImages/' +id+ '_2.jpg')
+            img3.mv('./public/productImages/' +id+ '_3.jpg')
+            img4.mv('./public/productImages/' +id+ '_4.jpg')
 
-            res.redirect('/admin/add-products')
+            res.redirect('/admin/view-products')
 
         }).catch((err) => {
             console.log(err+"file not recieved");
          })
     },
 
+    getEditProducts : (req, res, next) => {
+        let proId = req.params.id
+        productHelper.editProducts(proId).then((products) => {
+            res.render('admin/edit-products', {layout : 'admin-layout', products})
+        })
+        
+    },
 
+    postEditProducts : (req, res, next) => {
+       let proId = req.params.id
+       productHelper.updateProducts(proId, req.body).then((products) => {
+        res.redirect('/admin/view-products')
+        if(req.files.image1){
+            let img1 = req.files.image1
+            img1.mv('./public/productImages/' +id+ '_1.jpg')
+        }
+       })
+    },
+
+    getDeleteProducts : (req, res, next) => {
+        proId = req.query.id
+        productHelper.deleteProduct(proId).then((response) => {
+            res.redirect('/admin/view-products')
+        })
+    },
 
     getLogout: (req, res) => {
         req.session.isAdminLoggedIn = null

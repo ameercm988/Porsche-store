@@ -26,6 +26,12 @@ router.get('/add-products', verifyLogin, adminController.getAddProducts)
 
 router.post('/add-products', adminController.postAddProducts)
 
+router.get('/edit-products/:id', verifyLogin, adminController.getEditProducts)
+
+router.post('/edit-products/:id', adminController.postEditProducts)
+
+router.get('/delete-products', adminController.getDeleteProducts)
+
 router.get('/logout', adminController.getLogout)
 
 

@@ -17,7 +17,7 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'users-layout',layoutDir:__dirname+'/views/layouts/',partialsDir:__dirname+'/views/partials/'}))
+app.engine('hbs',hbs.engine({extname:'hbs',layoutsDir:__dirname+'/views/layouts',usersDir:__dirname+'/views/users',adminDir:__dirname+'/views/admin',partialsDir:__dirname+'/views/partials/'}))
 
 
 
@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(fileUpload())
+app.use(fileUpload());
 
 app.use(session({secret:"xoxo", resave:false, saveUninitialized:true, cookie:{ maxAge:60000000}}))
 app.use(nocache())

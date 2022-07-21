@@ -18,7 +18,7 @@
             <div class="col-xl-6">
               <div class="card-body p-md-5 text-black">
                 <h3 class="mb-5 text-uppercase">SIGNUP FORM</h3>
-                <form action="/signup" id="form" method="post" class="mx-1 mx-md-4">
+                <form action="/signup" id="signup" method="post" class="mx-1 mx-md-4">
                 {{#if emailError}}
                 <p class="text-danger">{{emailError}}</p>
                 {{/if}}
@@ -28,7 +28,7 @@
                   <div class="row">
                     <div class="col-md-6 mb-4">
                       <div class="form-outline">
-                        <input type="text"  class="form-control form-control-lg" name="firstname" id="firstname" placeholder="First name" required = ""/>
+                        <input type="text"  class="form-control form-control-lg" name="firstname" id="firstname" placeholder="First name"/>
                         {{!-- <label class="form-label" for="form3Example1m">First name</label> --}}
                       </div>
                     </div>
