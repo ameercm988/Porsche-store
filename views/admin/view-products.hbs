@@ -1,12 +1,17 @@
-<section>
-    <div class="container">
-        <div class="container d-flex">
-            <a style="margin-left: auto;" href="/admin/add-products"><button class="btn btn-success ">ADD
-                    PRODUCTS</button></a>
-        </div>
-        <table class="table">
 
-            <thead>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="container d-flex">
+                <a style="margin-left: auto;" href="/admin/add-products"><button class="btn btn-success">ADD
+                        PRODUCTS</button></a>
+            </div>
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Products List</h6>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
                 <tr>
                     <th scope="col">NO:</th>
                     <th scope="col">Product Name</th>
@@ -27,12 +32,8 @@
                     <td>{{this.price}}</td>
                     <td>{{this.description}}</td>
                     <td>{{this.category}}</td>
-                    <td><img src="/productImages/{{this._id}}_1.jpeg" alt="" style="height: 30px; width: 50px;"></td>
-                    {{!-- <td><img src="/productImages/{{this._id}}_2.jpg" alt="" style="height: 30px; width: 40px;">
-                    </td>
-                    <td><img src="/productImages/{{this._id}}_3.jpg" alt="" style="height: 30px; width: 40px;"></td>
-                    <td><img src="/productImages/{{this._id}}_4.jpg" alt="" style="height: 30px; width: 40px;"></td>
-                    --}}
+                    <td><img src="/productImages/{{this._id}}0.jpg" alt="" style="height: 30px; width: 50px;"></td>
+                   
                     <td><a href="/admin/edit-products/{{this._id}}"><button class="text-white"
                                 style="background-color: rgb(42, 42, 246);border-color: aliceblue; border-radius:5px;">EDIT</button></a>
                     </td>
@@ -44,6 +45,9 @@
 
             </tbody>
             {{/each}}
-        </table>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-</section>
+</div>

@@ -1,7 +1,7 @@
 <body>
     <div class="content">
 
-        <div class="row" style="background-color: #191C24; padding-right: 30%;">
+        <div class="row" style="background-color: #191C24; padding-right: 20%;">
             <div>
                 <h3 class="text-primary" style="background-color: #191C24; margin: 0; padding-left: 2%;">Edit Products
                 </h3>
@@ -14,8 +14,6 @@
                     <label for="name" class="form-label">Name</label>
                     <input name="name" type="text" class="form-control" id="" aria-describedby="" value="{{products.name}}"
                         placeholder="Enter product name" style="background-color: aliceblue;">
-                    {{!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                    --}}
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Price</label>
@@ -28,37 +26,27 @@
                         placeholder="About the product" style="background-color: aliceblue; height: 100px;">
                 </div>
                 <div class="mb-3">
-                    {{!-- <select name="category" class="form-control" >
-                        <option selected>select</option>
-                        <option value="{{products.category}}"> Men </option>
-                        <option value="{{products.category}}"> Women </option>
-                    </select> --}}
-
-                    <input name="category" type="text" class="form-control" id="exampleInputPassword1" value="{{products.category}}"
-
-
+                    <select name="category" class="form-control" >
+                        <option selected>{{products.category}}</option>
+                        <option value="Men"> Men </option>
+                        <option value="Women"> Women </option>
+                    </select>
 
                 </div>
                 <div class="mb-3">
-                    <label>Add image1</label>
-                    <img src="/productImages/{{products._id}}_1.jpg" alt="" style="width: 100px;height: auto;" id="image1">
-                    <input name="image1" type="file" class="form-control" multiple style="background-color: aliceblue;" >
-                </div>
-                <div class="mb-3">
-                    <label>Add image2</label>
-                    <input name="image2" type="file" class="form-control" multiple style="background-color: aliceblue;">
-                </div>
-                <div class="mb-3">
-                    <label>Add image3</label>
-                    <input name="image3" type="file" class="form-control" multiple style="background-color: aliceblue;">
-                </div>
-                <div class="mb-3">
-                    <label>Add image4</label>
-                    
-                    <input name="image4" type="file" class="form-control" multiple style="background-color: aliceblue;">
+                    <label>Add images</label>
+                    <img src="/productImages/{{products._id}}0.jpg" alt="" style="width: 100px;height: auto;" id="images">
+                    <input name="image1" type="file" class="form-control" multiple style="background-color: aliceblue;" onchange="viewImage(event)" >
                 </div>
                 <button type="submit" class="btn btn-primary" value="uploadImages">Submit</button>
             </form>
         </div>
     </div>
 </body>
+
+
+<script>
+    function viewImage(event){
+        document.getElementById('images').src = URL.createObjectURL(event.target.files[0])
+    }
+</script>

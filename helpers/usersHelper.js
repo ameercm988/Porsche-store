@@ -31,14 +31,24 @@ module.exports = {
             db.get().collection(collection.USER_COLLECTIONS).findOne({ email: userData.email }).then((user) => {
                 // console.log(user);
                 if (user) {
-                    console.log(user);
+                    // console.log(user);
+                    let blockStatus = user.block
                     bcrypt.compare(userData.password, user.password).then((data) => {
                         // console.log("hiii",data);
                         if (data) {
-                            // userInfo.user = true
+                            if(blockStatus){
+                                // console.log('blockedUser');
+                                userInfo.blockStatus = true
+                                userInfo.isUserValid = false
+                                userInfo.err = "You're blocked from this website"
+                                resolve(userInfo)
+                            }else{
+                                 // userInfo.user = true
                             userInfo.isUserValid = true;
                             userInfo.user = user;
                             resolve(userInfo)
+                            }
+
                         } else {
                             
                             userInfo.isUserValid = false;
@@ -56,5 +66,7 @@ module.exports = {
                 reject(dataBaseError)
             })
         })
-    }
+    },
+
+   
 }

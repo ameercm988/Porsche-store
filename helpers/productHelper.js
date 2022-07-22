@@ -41,6 +41,7 @@ module.exports = {
     },
 
     updateProducts : (proId, proInfo) => {
+        
         return new Promise(async (resolve, reject) => {
             await db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({ _id: objectId(proId)}, {$set : {
                 name : proInfo.name,

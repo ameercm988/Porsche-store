@@ -32,6 +32,12 @@ router.post('/edit-products/:id', adminController.postEditProducts)
 
 router.get('/delete-products', adminController.getDeleteProducts)
 
+router.get('/view-users', verifyLogin, adminController.getViewUsers)
+
+router.get('/block-user/:id', verifyLogin, adminController.getBlockUser)
+
+router.get('/unblock-user/:id', verifyLogin, adminController.getUnBlockUser)
+
 router.get('/logout', adminController.getLogout)
 
 

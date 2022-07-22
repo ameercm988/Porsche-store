@@ -10,10 +10,10 @@ module.exports = {
         if (req.session.isLoggedIn) {
             let user = req.session.user
             // console.log(user);
-            res.render('users/users-index', { user, layout : 'users-layout' })
+            res.render('users/users-index', { user, layout: 'users-layout' })
             // console.log('user is there');
         } else {
-            res.render('users/users-index', { home: true, layout : 'users-layout'  })
+            res.render('users/users-index', { home: true, layout: 'users-layout' })
             // console.log('no user');
         }
     },
@@ -22,7 +22,7 @@ module.exports = {
         if (req.session.isLoggedIn) {
             res.redirect('/')
         } else {
-            res.render('users/users-login', { login: true, layout : 'users-layout' , userError: req.session.userError, loginError: req.session.loginError, dataBaseError: req.session.dataBaseError })
+            res.render('users/users-login', { login: true, layout: 'users-layout', userError: req.session.userError, loginError: req.session.loginError, dataBaseError: req.session.dataBaseError, blockError : req.session.blockError })
             req.session.userError = false
             req.session.loginError = false
             req.session.dataBaseError = false
@@ -65,11 +65,19 @@ module.exports = {
             // console.log('simple data');
             // console.log(data);
             if (data.isUserValid) {
+                if (data.blockStatus) {
+                    req.session.isLoggedIn = false
+                    req.session.blockError = data.err
+                    res.redirect('/login')
 
-                req.session.isLoggedIn = true
-                req.session.user = data.user
-                res.redirect('/')
-                // console.log('logged in');
+                } else {
+                    req.session.isLoggedIn = true
+                    req.session.user = data.user
+                    res.redirect('/')
+                    // console.log('logged in');
+                }
+
+
 
             } else {
                 req.session.isLoggedIn = false
@@ -98,7 +106,7 @@ module.exports = {
         if (req.session.isLoggedIn) {
             res.redirect('/')
         } else {
-            res.render('users/users-signup', {layout : 'users-layout' , emailError: req.session.emailError, signup: true, twillioError: req.session.twilioError })
+            res.render('users/users-signup', { layout: 'users-layout', emailError: req.session.emailError, signup: true, twillioError: req.session.twilioError })
             req.session.emailError = false
             req.session.twilioError = false
         }
@@ -143,7 +151,7 @@ module.exports = {
         if (req.session.isLoggedIn) {
             res.redirect('/')
         } else {
-            res.render('users/otp', {layout : 'users-layout' , otpError: req.session.otpError })
+            res.render('users/otp', { layout: 'users-layout', otpError: req.session.otpError })
             req.session.otpError = false
             // console.log('getotp');
         }
