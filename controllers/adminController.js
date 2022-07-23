@@ -1,10 +1,12 @@
 // const express = require('express')
 const adminHelper = require('../helpers/adminHelper')
 const productHelper = require('../helpers/productHelper')
-const usersHelper = require('../helpers/usersHelper')
+const categoryHelper = require('../helpers/categoryHelper')
 
 
 module.exports = {
+
+    // admin section
 
     getLogin: (req, res) => {
         if (req.session.isAdminLoggedIn) {
@@ -39,7 +41,7 @@ module.exports = {
         res.render('admin/admin-index', { layout: 'admin-layout' })
     },
 
-
+    // product section
 
     getViewProducts: (req, res, next) => {
         productHelper.getAllProducts().then((products) => {
@@ -49,7 +51,10 @@ module.exports = {
     },
 
     getAddProducts: (req, res, next) => {
-        res.render('admin/add-products', { layout: 'admin-layout' })
+        categoryHelper.getAllCategory().then((category) => {
+            res.render('admin/add-products', { layout: 'admin-layout', category })
+        })
+        
     },
 
     postAddProducts: (req, res, next) => {
@@ -85,23 +90,29 @@ module.exports = {
     getEditProducts: (req, res, next) => {
         let proId = req.params.id
         productHelper.editProducts(proId).then((products) => {
-            res.render('admin/edit-products', { layout: 'admin-layout', products })
+            categoryHelper.getAllCategory().then((category) => {
+                // res.render('admin/add-products', { layout: 'admin-layout', category })
+                res.render('admin/edit-products', { layout: 'admin-layout', products, category })
+            })
+            
         })
 
     },
 
 
     postEditProducts: (req, res, next) => {
-        console.log(req.body + "  reqbody");
+        // console.log(req.body + "  reqbody");
 
         let proId = req.params.id
-        console.log(proId + "  proId");
-        productHelper.updateProducts(proId, req.body).then((products) => {
-            
-            if (req.files.images) {
+        // console.log(proId + "  proId");
+        productHelper.updateProducts(proId, req.body).then((id) => {
+            // console.log(id);
+            // console.log(proId + "  proId inside block");
+            if (req.files) {
+                console.log(req.files.images+ "  req files");
                 const file = req.files.images;
                 for (let i = 0; i < file.length; i++) {
-                    file[i].mv('./public/productImages/' + id + i + ".jpg",)
+                    file[i].mv('./public/productImages/' + proId + i + ".jpg",)
                 }
             }
             res.redirect('/admin/view-products')
@@ -114,6 +125,51 @@ module.exports = {
             res.redirect('/admin/view-products')
         })
     },
+
+    // category section 
+
+    getViewCategory : (req, res, next) => {
+        categoryHelper.getAllCategory().then((category) => {
+            res.render('admin/view-category', {layout : 'admin-layout', category})
+        })
+    },
+
+    getAddCategory : (req, res,next) => {
+        res.render('admin/add-category', {layout : 'admin-layout'})
+    },
+
+    postAddCategory :  (req, res, next) => {
+        categoryHelper.addCategory(req.body).then(() => {
+            res.redirect('/admin/view-category')
+        })
+    },
+
+    getEditCategory : (req, res, next) => {
+        catId = req.params.id
+        categoryHelper. editCategory(catId).then((category) => {
+            res.render('admin/edit-category', {layout : 'admin-layout', category})
+        })
+        
+    },
+
+    postEditCategory : (req, res, next) => {
+        catId = req.params.id
+        categoryHelper.updateCategory(catId,req.body).then(() => {
+            res.redirect('/admin/view-category')
+
+        })
+    },
+
+    getDeleteCategory : (req, res, next) => {
+        let catId = req.query.id
+        categoryHelper.deleteCategory(catId).then((response) => {
+            res.redirect('/admin/view-category')
+            
+        })
+    },
+   
+
+    // user section
 
     getViewUsers: (req, res, next) => {
         adminHelper.viewUsers().then((users) => {
@@ -134,7 +190,7 @@ module.exports = {
     getUnBlockUser: (req, res, next) => {
         let userId = req.params.id
         adminHelper.unBlockUser(userId).then((response) => {
-            console.log(response + "  user unblocked");
+            // console.log(response + "  user unblocked");
             res.redirect('/admin/view-users')
         })
     },

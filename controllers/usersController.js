@@ -1,21 +1,29 @@
 const usersHelper = require('../helpers/usersHelper');
 const twilio = require('twilio')
 const twilioHelpers = require('../helpers/twilioHelper')
-const middleWare = require('../helpers/middleware/verifySignup')
+const middleWare = require('../helpers/middleware/verifySignup');
+const productHelper = require('../helpers/productHelper');
+const categoryHelper = require('../helpers/categoryHelper');
 // const adminHelper = require('../helpers/adminHelper');
 
 
 module.exports = {
     getHome: (req, res, next) => {
-        if (req.session.isLoggedIn) {
-            let user = req.session.user
-            // console.log(user);
-            res.render('users/users-index', { user, layout: 'users-layout' })
-            // console.log('user is there');
-        } else {
-            res.render('users/users-index', { home: true, layout: 'users-layout' })
-            // console.log('no user');
-        }
+        productHelper.getAllProducts().then((products) => {
+            categoryHelper.getAllCategory().then((category) => {
+                if (req.session.isLoggedIn) {
+                    let user = req.session.user
+                    // console.log(user);
+                    res.render('users/users-index', { user, layout: 'users-layout', products, category, Home : true })
+                    // console.log('user is there');
+                } else {
+                    res.render('users/users-index', { home: true, layout: 'users-layout', products, category, Home : true  })
+                    // console.log('no user');
+                }
+            })
+            
+        })
+        
     },
 
     getLogin: (req, res) => {

@@ -68,7 +68,9 @@
 <body>
 	{{>users-header}}
 	{{{body}}}
-	{{!-- {{>users-footer}} --}}
+	{{#if Home}}
+	{{>users-footer}}
+	{{/if}}
 
 	{{!-- user validation --}}
 

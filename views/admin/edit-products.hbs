@@ -28,15 +28,16 @@
                 <div class="mb-3">
                     <select name="category" class="form-control" >
                         <option selected>{{products.category}}</option>
-                        <option value="Men"> Men </option>
-                        <option value="Women"> Women </option>
+                        {{#each category}}
+                        <option value="{{this.category}}"> {{this.category}} </option>
+                        {{/each}}
                     </select>
 
                 </div>
                 <div class="mb-3">
                     <label>Add images</label>
                     <img src="/productImages/{{products._id}}0.jpg" alt="" style="width: 100px;height: auto;" id="images">
-                    <input name="image1" type="file" class="form-control" multiple style="background-color: aliceblue;" onchange="viewImage(event)" >
+                    <input name="images" type="file" class="form-control" multiple style="background-color: aliceblue;" onchange="viewImage(event)" >
                 </div>
                 <button type="submit" class="btn btn-primary" value="uploadImages">Submit</button>
             </form>

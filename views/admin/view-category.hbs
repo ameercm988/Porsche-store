@@ -2,7 +2,7 @@
     <div class="row g-4">
         <div class="col-12">
             <div class="container d-flex">
-                <a style="margin-left: auto;" href="/admin/add-products"><button class="btn btn-success">ADD
+                <a style="margin-left: auto;" href="/admin/add-category"><button class="btn btn-success">ADD
                         CATEGORY</button></a>
             </div>
             <div class="bg-secondary rounded h-100 p-4">
@@ -13,6 +13,8 @@
                             <tr>
                                 <th scope="col">NO:</th>
                                 <th scope="col">Category</th>
+                                <th scope="col">Action</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         {{#each category}}
@@ -29,10 +31,10 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="/admin/delete-category/{{this._id}}">
+                                    <a href="/admin/delete-category/?id={{this._id}}">
                                         <button class="text-white"
                                             style="background-color: rgb(223, 18, 18);border-color: aliceblue;border-radius:5px;"
-                                            onclick="return confirm('Do you want to delete {{this.name}} item?')">DELETE
+                                            onclick="return confirm('Do you want to delete {{this.category}}?')">DELETE
                                         </button>
                                     </a>
                                 </td>

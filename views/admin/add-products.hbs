@@ -29,13 +29,14 @@
                 <div class="mb-3">
                     <select name="category" class="form-control">
                         <option selected>Category</option>
-                        <option value="Men"> Men </option>
-                        <option value="Women"> Women </option>
+                        {{#each category}}
+                        <option value="{{this.category}}"> {{this.category}} </option>
+                        {{/each}}
                     </select>
 
                 </div>
                 <div class="mb-3">
-                    <label>Add image1</label>
+                    <label>Add images</label>
                     <input name="images" type="file" class="form-control" multiple style="background-color: aliceblue;">
                 </div>
                 

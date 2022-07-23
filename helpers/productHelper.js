@@ -7,8 +7,8 @@ module.exports = {
     addProduct: (newProduct) => {
         // console.log(newProduct);
         newProduct.price = parseInt(newProduct.price)
-        return new Promise(async (resolve, reject) => {
-            await db.get().collection(collection.PRODUCT_COLLECTIONS).insertOne({ 
+        return new Promise( (resolve, reject) => {
+             db.get().collection(collection.PRODUCT_COLLECTIONS).insertOne({ 
                 name: newProduct.name,
                 price: newProduct.price,
                 description: newProduct.description,
@@ -33,8 +33,8 @@ module.exports = {
     },
 
     editProducts : (proId) => {
-        return new Promise(async (resolve, reject) => {
-            await db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({ _id: objectId(proId) }).then((res) => {
+        return new Promise( (resolve, reject) => {
+             db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({ _id: objectId(proId) }).then((res) => {
                 resolve(res)
             })
         })
@@ -42,21 +42,22 @@ module.exports = {
 
     updateProducts : (proId, proInfo) => {
         
-        return new Promise(async (resolve, reject) => {
-            await db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({ _id: objectId(proId)}, {$set : {
+        return new Promise( (resolve, reject) => {
+             db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({ _id: objectId(proId)}, {$set : {
                 name : proInfo.name,
                 price : proInfo.price,
                 description : proInfo.description,
                 category : proInfo.category
-            }}).then((res) => {
-                resolve(res)
+            }}).then((data) => {
+                console.log(data);
+                resolve(data.insertedId)
             })
         })
     },
 
     deleteProduct: (proId) => {
-        return new Promise(async (resolve, reject) => {
-            await db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({ _id: objectId(proId) }, { $set: { deletedItem: true } }).then((res) => {
+        return new Promise( (resolve, reject) => {
+             db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({ _id: objectId(proId) }, { $set: { deletedItem: true } }).then((res) => {
                 resolve(res)
                 // console.log(res+"  deleting page");
             })
