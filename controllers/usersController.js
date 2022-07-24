@@ -199,7 +199,7 @@ module.exports = {
             })
             .catch((err) => {
                 if (err) {
-                    console.log(err);
+                    // console.log(err);
                     req.session.otpError = err
                     // req.session.err = err
                     // console.log('not in and catch err'+err);

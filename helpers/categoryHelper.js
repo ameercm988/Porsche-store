@@ -15,8 +15,8 @@ module.exports = {
 
     addCategory : (data) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.CATEGORY_COLLECTION).insertOne(data).then(() => {
-                resolve()
+            db.get().collection(collection.CATEGORY_COLLECTION).insertOne(data).then((response) => {
+                resolve(response.insertedId)
             })
         })
     },

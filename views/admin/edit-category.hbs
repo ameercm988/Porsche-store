@@ -3,7 +3,7 @@
     <div class="row g-4">
         <div class="col-12">
            <h2 class="text mb-2">Edit Category</h2>
-           <form action="/admin/edit-category/{{category._id}}" method="post">
+           <form action="/admin/edit-category/{{category._id}}" method="post" id="form">
             {{!-- <label for="">Category</label> --}}
             <input type="text" name="category" class="form-control w-50" value="{{category.category}}">
             <button type="submit" class="btn btn-success mt-3">Submit</button>

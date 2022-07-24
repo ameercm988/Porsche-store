@@ -18,7 +18,7 @@
             <div class="col-xl-6">
               <div class="card-body p-md-5 text-black">
                 <h3 class="mb-5 text-uppercase">SIGNUP FORM</h3>
-                <form action="/signup" id="signup" method="post" class="mx-1 mx-md-4">
+                <form action="/signup" id="form" method="post" class="mx-1 mx-md-4">
                 {{#if emailError}}
                 <p class="text-danger">{{emailError}}</p>
                 {{/if}}
@@ -34,34 +34,34 @@
                     </div>
                     <div class="col-md-6 mb-4">
                       <div class="form-outline">
-                        <input type="text"  class="form-control form-control-lg" name="lastname" placeholder="last name"/>
+                        <input type="text"  class="form-control form-control-lg" name="lastname" id="lastname" placeholder="last name"/>
                         {{!-- <label class="form-label" for="form3Example1n">Last name</label> --}}
                       </div>
                     </div>
                   </div>
 
                   <div class="form-outline mb-4">
-                    <input type="text"  class="form-control form-control-lg" name="username" placeholder="Username"/>
+                    <input type="text"  class="form-control form-control-lg" name="username" id="username" placeholder="Username"/>
                     {{!-- <label class="form-label" for="form3Example8">Username</label> --}}
                   </div>
 
                     <div class="form-outline mb-4">
-                      <input type="text"  class="form-control form-control-lg" name="email" placeholder="Email ID"/>
+                      <input type="text"  class="form-control form-control-lg" name="email" id="email" placeholder="Email ID"/>
                       {{!-- <label class="form-label" for="form3Example9">Email ID</label> --}}
                     </div>
 
                     <div class="form-outline mb-4">
-                      <input type="password" class="form-control form-control-lg" name="password" placeholder="Password"/>
+                      <input type="password" class="form-control form-control-lg" name="password" id="password" placeholder="Password"/>
                       {{!-- <label class="form-label" for="form3Example90">Password</label> --}}
                     </div>
 
                     <div class="form-outline mb-4">
-                      <input type="password" class="form-control form-control-lg" name="confirmpassword" placeholder="Confirm Password"/>
+                      <input type="password" class="form-control form-control-lg" name="confirmpassword" id="confirmpassword" placeholder="Confirm Password"/>
                       {{!-- <label class="form-label" for="form3Example90">Password</label> --}}
                     </div>
 
                     <div class="form-outline mb-4">
-                      <input type="number"  class="form-control form-control-lg" name="mobilenumber" placeholder="Mobile Number"/>
+                      <input type="number"  class="form-control form-control-lg" name="mobilenumber" id="mobilenumber" placeholder="Mobile Number"/>
                       {{!-- <label class="form-label" for="form3Example99">Mobile number</label> --}}
                     </div>
 

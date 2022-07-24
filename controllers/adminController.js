@@ -139,7 +139,9 @@ module.exports = {
     },
 
     postAddCategory :  (req, res, next) => {
-        categoryHelper.addCategory(req.body).then(() => {
+        categoryHelper.addCategory(req.body).then((id) => {
+            let catImg = req.files.categoryimage
+            catImg.mv('./public/productImages/' + id + 'CI.jpg')
             res.redirect('/admin/view-category')
         })
     },

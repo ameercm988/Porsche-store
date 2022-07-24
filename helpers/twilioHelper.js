@@ -21,7 +21,7 @@ const serviceSid='VAd9f13e296499e2af397cb2d8587e9bfe'
                             to :`+91${noData.mobilenumber}`,
                             channel:"sms"
                         }).then(()=>{
-                            console.log('twiliopundeyy');
+                            // console.log('twiliooooooo');
                             // res.valid=true;
                             resolve()
                             // console.log(res);
@@ -29,9 +29,9 @@ const serviceSid='VAd9f13e296499e2af397cb2d8587e9bfe'
                     })
                 },
                 otpVerify:(otpData,nuData)=>{
-                    console.log("otpverify");
-                    console.log(otpData);
-                    console.log(nuData);
+                    // console.log("otpverify");
+                    // console.log(otpData);
+                    // console.log(nuData);
                     // let res={}
                     return new Promise(async(resolve,reject)=>{
                         let err = 'Enter a valid OTP'
@@ -42,12 +42,12 @@ const serviceSid='VAd9f13e296499e2af397cb2d8587e9bfe'
                             // console.log("verification success");
                             // console.log(resp);
                             if (res.valid) {
-                                console.log('valid otp');
-                                console.log(res.valid);
+                                // console.log('valid otp');
+                                // console.log(res.valid);
                                 resolve()
                             }else{
-                                console.log('Non-valid otp');
-                                console.log(err);
+                                // console.log('Non-valid otp');
+                                // console.log(err);
                                 reject(err)
                             }
                             
