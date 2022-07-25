@@ -15,7 +15,6 @@ module.exports = {
             res.render('admin/admin-login', { layout: 'admin-layout', adminError: req.session.adminError, login: true })
             req.session.adminError = false
         }
-
     },
 
     postLogin: (req, res, next) => {
@@ -24,16 +23,12 @@ module.exports = {
                 req.session.isAdminLoggedIn = true
                 req.session.admin = data.admin
                 res.redirect('/admin/')
-
             } else {
                 req.session.adminError = data.err
                 res.redirect('/admin/login')
-
             }
         }).catch((err) => {
             res.redirect('/admin/login')
-
-            console.log(err);
         })
     },
 
@@ -47,21 +42,16 @@ module.exports = {
         productHelper.getAllProducts().then((products) => {
             res.render('admin/view-products', { layout: 'admin-layout', products })
         })
-
     },
 
     getAddProducts: (req, res, next) => {
         categoryHelper.getAllCategory().then((category) => {
             res.render('admin/add-products', { layout: 'admin-layout', category })
         })
-        
     },
 
     postAddProducts: (req, res, next) => {
-
         productHelper.addProduct(req.body).then((id) => {
-
-
             if (req.files) {
                 const file = req.files.images;
                 for (let i = 0; i < file.length; i++) {
@@ -69,6 +59,7 @@ module.exports = {
                 }
             }
 
+            //without loop
 
             // let img1 = req.files.image1
             // let img2 = req.files.image2
@@ -91,25 +82,16 @@ module.exports = {
         let proId = req.params.id
         productHelper.editProducts(proId).then((products) => {
             categoryHelper.getAllCategory().then((category) => {
-                // res.render('admin/add-products', { layout: 'admin-layout', category })
                 res.render('admin/edit-products', { layout: 'admin-layout', products, category })
             })
-            
         })
-
     },
 
-
     postEditProducts: (req, res, next) => {
-        // console.log(req.body + "  reqbody");
-
         let proId = req.params.id
-        // console.log(proId + "  proId");
         productHelper.updateProducts(proId, req.body).then((id) => {
-            // console.log(id);
-            // console.log(proId + "  proId inside block");
             if (req.files) {
-                console.log(req.files.images+ "  req files");
+                console.log(req.files.images + "  req files");
                 const file = req.files.images;
                 for (let i = 0; i < file.length; i++) {
                     file[i].mv('./public/productImages/' + proId + i + ".jpg",)
@@ -128,17 +110,17 @@ module.exports = {
 
     // category section 
 
-    getViewCategory : (req, res, next) => {
+    getViewCategory: (req, res, next) => {
         categoryHelper.getAllCategory().then((category) => {
-            res.render('admin/view-category', {layout : 'admin-layout', category})
+            res.render('admin/view-category', { layout: 'admin-layout', category })
         })
     },
 
-    getAddCategory : (req, res,next) => {
-        res.render('admin/add-category', {layout : 'admin-layout'})
+    getAddCategory: (req, res, next) => {
+        res.render('admin/add-category', { layout: 'admin-layout' })
     },
 
-    postAddCategory :  (req, res, next) => {
+    postAddCategory: (req, res, next) => {
         categoryHelper.addCategory(req.body).then((id) => {
             let catImg = req.files.categoryimage
             catImg.mv('./public/productImages/' + id + 'CI.jpg')
@@ -146,30 +128,26 @@ module.exports = {
         })
     },
 
-    getEditCategory : (req, res, next) => {
+    getEditCategory: (req, res, next) => {
         catId = req.params.id
-        categoryHelper. editCategory(catId).then((category) => {
-            res.render('admin/edit-category', {layout : 'admin-layout', category})
+        categoryHelper.editCategory(catId).then((category) => {
+            res.render('admin/edit-category', { layout: 'admin-layout', category })
         })
-        
     },
 
-    postEditCategory : (req, res, next) => {
+    postEditCategory: (req, res, next) => {
         catId = req.params.id
-        categoryHelper.updateCategory(catId,req.body).then(() => {
+        categoryHelper.updateCategory(catId, req.body).then(() => {
             res.redirect('/admin/view-category')
-
         })
     },
 
-    getDeleteCategory : (req, res, next) => {
+    getDeleteCategory: (req, res, next) => {
         let catId = req.query.id
         categoryHelper.deleteCategory(catId).then((response) => {
             res.redirect('/admin/view-category')
-            
         })
     },
-   
 
     // user section
 
@@ -177,14 +155,11 @@ module.exports = {
         adminHelper.viewUsers().then((users) => {
             res.render('admin/view-users', { layout: 'admin-layout', users })
         })
-
     },
 
     getBlockUser: (req, res, next) => {
-        // console.log(req.params,"  params");
         let userId = req.params.id
-        adminHelper.blockUser(userId).then((response) => {
-            // console.log(response+"  user blocked");
+        adminHelper.blockUser(userId).then(() => {
             res.redirect('/admin/view-users')
         })
     },
@@ -192,7 +167,6 @@ module.exports = {
     getUnBlockUser: (req, res, next) => {
         let userId = req.params.id
         adminHelper.unBlockUser(userId).then((response) => {
-            // console.log(response + "  user unblocked");
             res.redirect('/admin/view-users')
         })
     },

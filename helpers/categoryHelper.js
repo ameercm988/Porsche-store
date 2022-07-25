@@ -25,8 +25,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
               db.get().collection(collection.CATEGORY_COLLECTION).findOne({_id : objectId(catId)}).then((res) => {
                 resolve(res)
-             })
-            
+             })       
         })
     },
 
@@ -45,5 +44,4 @@ module.exports = {
             })
         })
     }
-
 }

@@ -8,7 +8,6 @@ module.exports = {
             const userSignInfo = {}
             userData.password = await bcrypt.hash(userData.password, 10);
             db.get().collection(collection.USER_COLLECTIONS).insertOne(userData).then((data) => {
-                // console.log(data);
                 if (data) {
                     userSignInfo.isUserValid = true;
                     userSignInfo.user = userData;
@@ -24,33 +23,24 @@ module.exports = {
     },
 
         doLogin: (userData) => {
-        // console.log(userData);
-        return new Promise( (resolve, reject) => {
-           
+        return new Promise( (resolve, reject) => { 
             const userInfo = {}
             db.get().collection(collection.USER_COLLECTIONS).findOne({ email: userData.email }).then((user) => {
-                // console.log(user);
                 if (user) {
-                    // console.log(user);
                     let blockStatus = user.block
                     bcrypt.compare(userData.password, user.password).then((data) => {
-                        // console.log("hiii",data);
                         if (data) {
                             if(blockStatus){
-                                // console.log('blockedUser');
                                 userInfo.blockStatus = true
                                 userInfo.isUserValid = false
                                 userInfo.err = "You're blocked from this website"
                                 resolve(userInfo)
                             }else{
-                                 // userInfo.user = true
                             userInfo.isUserValid = true;
                             userInfo.user = user;
                             resolve(userInfo)
                             }
-
-                        } else {
-                            
+                        } else {          
                             userInfo.isUserValid = false;
                             userInfo.err = "Email & password doesn't match"
                             console.log('user w/o password');
@@ -66,7 +56,5 @@ module.exports = {
                 reject(dataBaseError)
             })
         })
-    },
-
-   
+    },  
 }

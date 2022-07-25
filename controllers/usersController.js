@@ -4,7 +4,6 @@ const twilioHelpers = require('../helpers/twilioHelper')
 const middleWare = require('../helpers/middleware/verifySignup');
 const productHelper = require('../helpers/productHelper');
 const categoryHelper = require('../helpers/categoryHelper');
-// const adminHelper = require('../helpers/adminHelper');
 
 
 module.exports = {
@@ -13,100 +12,50 @@ module.exports = {
             categoryHelper.getAllCategory().then((category) => {
                 if (req.session.isLoggedIn) {
                     let user = req.session.user
-                    // console.log(user);
-                    res.render('users/users-index', { user, layout: 'users-layout', products, category, Home : true })
-                    // console.log('user is there');
+                    res.render('users/users-index', { user, layout: 'users-layout', products, category, Home: true })
                 } else {
-                    res.render('users/users-index', { home: true, layout: 'users-layout', products, category, Home : true  })
-                    // console.log('no user');
+                    res.render('users/users-index', { home: true, layout: 'users-layout', products, category, Home: true })
                 }
             })
-            
         })
-        
     },
 
     getLogin: (req, res) => {
         if (req.session.isLoggedIn) {
             res.redirect('/')
         } else {
-            res.render('users/users-login', { login: true, layout: 'users-layout', userError: req.session.userError, loginError: req.session.loginError, dataBaseError: req.session.dataBaseError, blockError : req.session.blockError })
+            res.render('users/users-login', { login: true, layout: 'users-layout', userError: req.session.userError, loginError: req.session.loginError, dataBaseError: req.session.dataBaseError, blockError: req.session.blockError })
             req.session.userError = false
             req.session.loginError = false
             req.session.dataBaseError = false
-
         }
     },
 
-    // postLogin: (req, res, next) => {
-    //     usersHelper.doLogin(req.body).then((data) => {
-    //         console.log('verum data');
-    //         console.log(data);
-    //         if (data.isUserValid) {
-    //             if(data.user){
-    //                 req.session.isLoggedIn = true
-    //                 req.session.user = data.user
-    //                 res.redirect('/')
-    //                 // console.log('logged in');
-    //             }else{
-    //                 req.session.isLoggedIn = false
-    //                 req.session.loginError = data.err
-    //                 res.redirect('/login')
-    //             }
-    //         } else {
-
-    //             console.log('no user');
-    //             console.log(data.err);
-    //             req.session.userError = data.err
-    //             res.redirect('/login')
-    //             // console.log('not logged in');
-    //             // console.log(userInfo);
-    //         }
-    //     }).catch((err) => {
-    //         req.session.dataBaseError = err
-    //         res.redirect('/login')
-    //     })
-    // },
-
     postLogin: (req, res, next) => {
         usersHelper.doLogin(req.body).then((data) => {
-            // console.log('simple data');
-            // console.log(data);
             if (data.isUserValid) {
                 if (data.blockStatus) {
                     req.session.isLoggedIn = false
                     req.session.blockError = data.err
                     res.redirect('/login')
-
                 } else {
                     req.session.isLoggedIn = true
                     req.session.user = data.user
                     res.redirect('/')
-                    // console.log('logged in');
                 }
-
-
-
             } else {
                 req.session.isLoggedIn = false
                 req.session.loginError = data.err
                 res.redirect('/login')
-
             }
         }).catch((data) => {
             if (data.isUserValid = false) {
-                // console.log('no user');
-                // console.log(data);
                 req.session.dataBaseError = "Error with database"
                 res.redirect('/login')
-                // console.log('not logged in');
-                // console.log(userInfo);
             } else {
-
                 req.session.userError = data.err
                 res.redirect('/login')
             }
-
         })
     },
 
@@ -121,38 +70,20 @@ module.exports = {
     },
 
     postSignup: (req, res, next) => {
-        // console.log('postsignup');
         req.session.body = req.body
-
         middleWare.verifySignup(req.body).then((err) => {
             if (err) {
                 req.session.emailError = err
-                // console.log('sessionerr');
-                // console.log(req.session.emailError);
                 res.redirect('/signup');
-
             } else {
                 twilioHelpers.dosms(req.session.body).then(() => {
-
                     res.redirect('/otp')
-                    // console.log('otp cool');
-                    // if (data) {
-                    //     // console.log('redirect otp');
-                    //     res.redirect('/otp')
-                    // } else {
-                    //     // console.log('redirect signup');
-                    //     res.redirect('/signup');
-                    // }
+                }).catch(() => {
+                    req.session.twilioError = "twilio server id down"
+                    res.redirect('/signup')
                 })
-                    .catch(() => {
-                        // console.log('otp moonji');
-                        req.session.twilioError = "twilio server id down"
-                        res.redirect('/signup')
-                    })
             }
         })
-
-
     },
 
     getOtp: (req, res, next) => {
@@ -161,7 +92,6 @@ module.exports = {
         } else {
             res.render('users/otp', { layout: 'users-layout', otpError: req.session.otpError })
             req.session.otpError = false
-            // console.log('getotp');
         }
     },
 
@@ -173,36 +103,25 @@ module.exports = {
         //     let data = usersHelper.doSignup(req.session.body)
         //     }
         // } catch (error) {
-
         // }
 
         twilioHelpers.
             otpVerify(req.body, req.session.body).then((response) => {
-
                 usersHelper.doSignup(req.session.body).then((data) => {
                     if (data.isUserValid) {
                         req.session.isLoggedIn = true
                         req.session.user = data.user
                         res.redirect('/')
-                        // console.log('signed in');
                     } else {
                         res.redirect('/signup')
-                        // console.log('not signed in');
-                        // console.log(userInfo);
                     }
                 }).catch((err) => {
                     req.session.err = err
-                    // console.log('not in and catch err'+err);
                     res.redirect('/signup')
                 })
-
-            })
-            .catch((err) => {
+            }).catch((err) => {
                 if (err) {
-                    // console.log(err);
                     req.session.otpError = err
-                    // req.session.err = err
-                    // console.log('not in and catch err'+err);
                     res.redirect('/otp')
                 }
             })
@@ -211,7 +130,6 @@ module.exports = {
     getLogout: (req, res) => {
         req.session.isLoggedIn = null
         req.session.user = false
-        // req.session.destroy()
         res.redirect('/')
     }
 }

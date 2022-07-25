@@ -60,8 +60,7 @@ router.get('/block-user/:id', verifyLogin, adminController.getBlockUser)
 
 router.get('/unblock-user/:id', verifyLogin, adminController.getUnBlockUser)
 
-
-
+// admin logout
 
 router.get('/logout', adminController.getLogout)
 
