@@ -44,7 +44,6 @@ $("#form").validate({
     name: {
       required: true,
       minlength: 3,
-      lettersonly: true
     },
     price: {
       required: true,
@@ -56,6 +55,10 @@ $("#form").validate({
       required: true,
       lettersonly: true
     },
+    // images: {
+    //   required : true,
+    //   minlength : 2
+    // }
   }, messages: {
 
     firstname: {
@@ -73,6 +76,9 @@ $("#form").validate({
     confirmpassword: {
       equalTo: "Passwords doesn't match"
     },
+    // images: {
+    //   minlength : "Minimum two images required"
+    // }
   }
 })
 // })

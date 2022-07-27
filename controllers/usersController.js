@@ -4,17 +4,19 @@ const twilioHelpers = require('../helpers/twilioHelper')
 const middleWare = require('../helpers/middleware/verifySignup');
 const productHelper = require('../helpers/productHelper');
 const categoryHelper = require('../helpers/categoryHelper');
+const { use } = require('../routes/users');
 
 
 module.exports = {
     getHome: (req, res, next) => {
+
         productHelper.getAllProducts().then((products) => {
             categoryHelper.getAllCategory().then((category) => {
                 if (req.session.isLoggedIn) {
                     let user = req.session.user
                     res.render('users/users-index', { user, layout: 'users-layout', products, category, Home: true })
                 } else {
-                    res.render('users/users-index', { home: true, layout: 'users-layout', products, category, Home: true })
+                    res.render('users/users-index', { guest: true, layout: 'users-layout', products, category, Home: true })
                 }
             })
         })
@@ -77,9 +79,10 @@ module.exports = {
                 res.redirect('/signup');
             } else {
                 twilioHelpers.dosms(req.session.body).then(() => {
+
                     res.redirect('/otp')
-                }).catch(() => {
-                    req.session.twilioError = "twilio server id down"
+                }).catch((err) => {
+                    req.session.twilioError = "twilio server is down"
                     res.redirect('/signup')
                 })
             }
@@ -105,26 +108,60 @@ module.exports = {
         // } catch (error) {
         // }
 
-        twilioHelpers.
-            otpVerify(req.body, req.session.body).then((response) => {
-                usersHelper.doSignup(req.session.body).then((data) => {
-                    if (data.isUserValid) {
-                        req.session.isLoggedIn = true
-                        req.session.user = data.user
-                        res.redirect('/')
-                    } else {
-                        res.redirect('/signup')
-                    }
-                }).catch((err) => {
-                    req.session.err = err
+        twilioHelpers.otpVerify(req.body, req.session.body).then((response) => {
+            usersHelper.doSignup(req.session.body).then((data) => {
+                if (data.isUserValid) {
+                    req.session.isLoggedIn = true
+                    req.session.user = data.user
+                    res.redirect('/')
+                } else {
                     res.redirect('/signup')
-                })
+                }
             }).catch((err) => {
-                if (err) {
-                    req.session.otpError = err
-                    res.redirect('/otp')
+                req.session.err = err
+                res.redirect('/signup')
+            })
+        }).catch((err) => {
+            if (err) {
+                req.session.otpError = err
+                res.redirect('/otp')
+            }
+        })
+    },
+
+    getCart: (req, res, next) => {
+        res.render('users/shopping-cart', { layout: 'users-layout' })
+    },
+
+    getProductDetail: (req, res, next) => {
+        proId = req.params.id
+        productHelper.getViewProduct(proId).then((product) => {
+            productHelper.getAllProducts().then((allProducts) => {
+                if (req.session.isLoggedIn) {
+                    let user = req.session.user
+                    res.render('users/product-detail', { user, layout: 'users-layout', product, allProducts })
+                } else {
+                    res.render('users/product-detail', { guest: true, layout: 'users-layout', product, allProducts })
                 }
             })
+        })
+
+    },
+
+    // getModalDetail: (req, res, next) => {
+    //     console.log(req.params.id + "            paramsId");
+
+    //     productHelper.getModalProduct(req.params.id).then((modalProduct) => {
+    //         console.log(modalProduct + "      modalprodct");
+    //         res.redirect('users/users-index')
+    //     })
+
+    // },
+
+    getAddCart : (req, res, next) => {
+        let proId = req.params.id
+        let userId = req.session.user._id
+        usersHelper.addToCart(proId, userId)
     },
 
     getLogout: (req, res) => {

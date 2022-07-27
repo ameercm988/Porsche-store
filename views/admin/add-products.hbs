@@ -33,11 +33,13 @@
                         <option value="{{this.category}}"> {{this.category}} </option>
                         {{/each}}
                     </select>
-
                 </div>
                 <div class="mb-3">
                     <label>Add images</label>
-                    <input name="images" type="file" class="form-control" multiple style="background-color: aliceblue;" required="">
+                    {{#if imageError}}
+                     <p class="text-danger">{{imageError}}</p>
+                     {{/if}}
+                    <input name="images" type="file" value="images" class="form-control" id="images" multiple style="background-color: aliceblue;" required="">
                 </div>
                 
                 <button type="submit" class="btn btn-primary" value="uploadImages">Submit</button>

@@ -30,26 +30,34 @@ module.exports = {
     },
 
     viewUsers : () => {
-        return new Promise(async(resolve, reject) => {
-            let users = await db.get().collection(collection.USER_COLLECTIONS).find().toArray()
+        return new Promise((resolve, reject) => {
+            let users =  db.get().collection(collection.USER_COLLECTIONS).find().toArray()
             resolve(users)
         })
     },
 
     blockUser : (userId) => {
-        return new Promise(async(resolve, reject) => {
-            await db.get().collection(collection.USER_COLLECTIONS).updateOne({_id : objectId(userId)}, {$set : {block : true}}).then((res) => {
-                resolve(res)
-            })
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.USER_COLLECTIONS).findOne({_id : objectId(userId)}).then((res) => {
+                if (res.block) {
+                    db.get().collection(collection.USER_COLLECTIONS).updateOne({_id : objectId(userId)}, {$set : {block : false}}).then((res) => {
+                        resolve(res)
+                    })
+                } else {
+                    db.get().collection(collection.USER_COLLECTIONS).updateOne({_id : objectId(userId)}, {$set : {block : true}}).then((res) => {
+                        resolve(res)
+                    })
+                }
         })
-    },
-
-    unBlockUser : (userId) => {
-        return new Promise(async(resolve, reject) => {
-            await db.get().collection(collection.USER_COLLECTIONS).updateOne({_id : objectId(userId)}, {$set : {block : false}}).then((res) => {
-                resolve(res)
-            })
         })
     }
+
+    // unBlockUser : (userId) => {
+    //     return new Promise(async(resolve, reject) => {
+    //         await db.get().collection(collection.USER_COLLECTIONS).updateOne({_id : objectId(userId)}, {$set : {block : false}}).then((res) => {
+    //             resolve(res)
+    //         })
+    //     })
+    // }
 }
 

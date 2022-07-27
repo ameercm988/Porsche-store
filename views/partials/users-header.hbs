@@ -12,9 +12,7 @@
 					<a href="#" class="flex-c-m trans-04 p-lr-25 text-muted">
 						Help & FAQs
 					</a>
-					{{!-- <a href="#" class="flex-c-m trans-04 p-lr-25">
-						My Account
-					</a> --}}
+					
 					<a href="#" class="flex-c-m trans-04 p-lr-25 text-muted">
 						EN
 					</a>
@@ -33,19 +31,11 @@
 				<a href="#" class="logo">
 
 					<h3 class="emblom" style="color: #222; text-decoration: slategray;">PORSCHE STORE</h3>
-					{{!-- <img src="users/images/icons/logo-01.png" alt="IMG-LOGO"> --}}
 				</a>
 				<!-- Menu desktop -->
 				<div class="menu-desktop">
 					<ul class="main-menu">
-						{{!-- <li class="active-menu">
-							<a href="index.html">Home</a>
-							<ul class="sub-menu">
-								<li><a href="index.html">Homepage 1</a></li>
-								<li><a href="home-02.html">Homepage 2</a></li>
-								<li><a href="home-03.html">Homepage 3</a></li>
-							</ul>
-						</li> --}}
+					
 						<li>
 							<a href="/">Home</a>
 						</li>
@@ -81,12 +71,12 @@
 
 							{{#if user}}
 							<li><a class="dropdown-item text-dark" href="/login">{{user.username}}</a></li>
-							{{!-- <li><a class="dropdown-item text-dark" href="/signup">Sign Up</a></li> --}}
+							
 							<li><a class="dropdown-item text-dark" href="/logout">Log Out</a></li>
-							{{else home}}
+							{{else guest}}
 							<li><a class="dropdown-item text-dark" href="/login">Login</a></li>
 							<li><a class="dropdown-item text-dark" href="/signup">Sign Up</a></li>
-							{{!-- <li><a class="dropdown-item text-dark" href="/logout">Log Out</a></li> --}}
+							
 							{{/if}}							
 							{{#if signup}}
 							<li><a class="dropdown-item text-dark" href="/login">Login</a></li>
@@ -156,9 +146,7 @@
 					<a href="#" class="flex-c-m p-lr-10 trans-04">
 						Help & FAQs
 					</a>
-					{{!-- <a href="#" class="flex-c-m p-lr-10 trans-04">
-						My Account
-					</a> --}}
+				
 					<a href="#" class="flex-c-m p-lr-10 trans-04">
 						EN
 					</a>
@@ -169,17 +157,7 @@
 			</li>
 		</ul>
 		<ul class="main-menu-m">
-			{{!-- <li>
-				<a href="index.html">Home</a>
-				<ul class="sub-menu-m">
-					<li><a href="index.html">Homepage 1</a></li>
-					<li><a href="home-02.html">Homepage 2</a></li>
-					<li><a href="home-03.html">Homepage 3</a></li>
-				</ul>
-				<span class="arrow-main-menu-m">
-					<i class="fa fa-angle-right" aria-hidden="true"></i>
-				</span>
-			</li> --}}
+	
 			<li>
 				<a href="index.html">Home</a>
 			</li>

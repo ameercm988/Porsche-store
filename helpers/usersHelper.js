@@ -1,13 +1,24 @@
 const bcrypt = require('bcrypt')
 const db = require('../config/connections')
 const collection = require('../config/collections')
+const objectId = require('mongodb').ObjectId
 
 module.exports = {
     doSignup: (userData) => {
         return new Promise(async (resolve, reject) => {
             const userSignInfo = {}
             userData.password = await bcrypt.hash(userData.password, 10);
-            db.get().collection(collection.USER_COLLECTIONS).insertOne(userData).then((data) => {
+            db.get().collection(collection.USER_COLLECTIONS).insertOne({
+                firstname : userData.firstname,
+                lastname : userData.lastname,
+                username : userData.username,
+                email : userData.email,
+                password : userData.password,
+                confirmpassword : userData.confirmpassword,
+                mobilenumber : userData.mobilenumber,
+                block : false
+            }).then((data) => {
+            // db.get().collection(collection.USER_COLLECTIONS).insertOne(userData).then((data) => {
                 if (data) {
                     userSignInfo.isUserValid = true;
                     userSignInfo.user = userData;
@@ -57,4 +68,20 @@ module.exports = {
             })
         })
     },  
+
+    addToCart : (proId, userId) => {
+        return new Promise(async(resolve, reject) => {
+            let userCart = await db.get().collection(collection.CART_COLLECTION).findOne({user : objectId(userId)})
+            if (userCart) {
+                
+            } else {
+                let cartObj = {
+                    user : objectId(user),
+                    products : [objectId(proId)]
+                    //<<<<<<<<<<>>>>>>>>>>>
+                }
+                db.get().collection(collection.CART_COLLECTION).insertOne()
+            }
+        })
+    }
 }

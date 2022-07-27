@@ -58,7 +58,7 @@ router.get('/view-users', verifyLogin, adminController.getViewUsers)
 
 router.get('/block-user/:id', verifyLogin, adminController.getBlockUser)
 
-router.get('/unblock-user/:id', verifyLogin, adminController.getUnBlockUser)
+// router.get('/unblock-user/:id', verifyLogin, adminController.getUnBlockUser)
 
 // admin logout
 

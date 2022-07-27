@@ -4,20 +4,27 @@ const collection = require('../config/collections');
 const objectId = require('mongodb').ObjectId
 
 module.exports = {
-    addProduct: (newProduct) => {
+    addProduct: (newProduct, productImages) => {
+        // console.log(productImages + "        images");
         newProduct.price = parseInt(newProduct.price)
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTIONS).insertOne({
-                name: newProduct.name,
-                price: newProduct.price,
-                description: newProduct.description,
-                category: newProduct.category,
-                deletedItem: false
-            }).then((data) => {
-                resolve(data.insertedId)
-            }).catch((err) => {
-                reject(err)
-            })
+            // if (productImages.length >= 2) {
+                db.get().collection(collection.PRODUCT_COLLECTIONS).insertOne({
+                    name: newProduct.name,
+                    price: newProduct.price,
+                    description: newProduct.description,
+                    category: newProduct.category,
+                    productImages,
+                    deletedItem: false
+                }).then((data) => {
+                    resolve(data.insertedId)
+                }).catch((err) => {
+                    reject(err)
+                })
+            // }else{
+            //     resolve(err)
+            // }
+
         })
     },
 
@@ -36,18 +43,21 @@ module.exports = {
         })
     },
 
-    updateProducts: (proId, proInfo) => {
+    updateProducts: (proId, proInfo, newImages) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({ _id: objectId(proId) }, {
                 $set: {
                     name: proInfo.name,
                     price: proInfo.price,
                     description: proInfo.description,
-                    category: proInfo.category
+                    category: proInfo.category,
+                    productImages : newImages
                 }
             }).then((data) => {
                 console.log(data);
                 resolve(data.insertedId)
+            }).catch((err) => {
+                reject(err)
             })
         })
     },
@@ -58,5 +68,25 @@ module.exports = {
                 resolve(res)
             })
         })
-    }
+    },
+
+    getViewProduct : (proId) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({_id: objectId(proId)}).then((res) => {
+                resolve(res)
+            }).catch((err) => {
+                reject(err)
+            })
+        })
+    },
+
+    // getModalProduct : (proId) => {
+    //     return new Promise((resolve, reject) => {
+    //         db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({_id: objectId(proId)}).then((res) => {
+    //             resolve(res)
+    //         }).catch((err) => {
+    //             reject(err)
+    //         })
+    //     })
+    // }
 }

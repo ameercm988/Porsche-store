@@ -46,36 +46,28 @@ module.exports = {
 
     getAddProducts: (req, res, next) => {
         categoryHelper.getAllCategory().then((category) => {
-            res.render('admin/add-products', { layout: 'admin-layout', category })
+            res.render('admin/add-products', { layout: 'admin-layout', category, imageError: req.session.imageError })
+            req.session.imageError = false
         })
     },
 
     postAddProducts: (req, res, next) => {
-        productHelper.addProduct(req.body).then((id) => {
-            if (req.files) {
-                const file = req.files.images;
+        const file = req.files.images
+        if (file.length >= 3) {
+            //If image didn't display while hosting remove map function
+            let productImages = file.map(images => { return [images.name] });
+            productHelper.addProduct(req.body, productImages).then((id) => {
                 for (let i = 0; i < file.length; i++) {
                     file[i].mv('./public/productImages/' + id + i + ".jpg",)
                 }
-            }
-
-            //without loop
-
-            // let img1 = req.files.image1
-            // let img2 = req.files.image2
-            // let img3 = req.files.image3
-            // let img4 = req.files.image4
-
-            // img1.mv('./public/productImages/' +id+ '_1.jpg')
-            // img2.mv('./public/productImages/' +id+ '_2.jpg')
-            // img3.mv('./public/productImages/' +id+ '_3.jpg')
-            // img4.mv('./public/productImages/' +id+ '_4.jpg')
-
-            res.redirect('/admin/view-products')
-
-        }).catch((err) => {
-            console.log(err + "file not recieved");
-        })
+                res.redirect('/admin/view-products')
+            }).catch((err) => {
+                console.log(err + "file not recieved");
+            })
+        } else {
+            req.session.imageError = 'Upload atleast three images'
+            res.redirect('/admin/add-products')
+        }
     },
 
     getEditProducts: (req, res, next) => {
@@ -88,17 +80,23 @@ module.exports = {
     },
 
     postEditProducts: (req, res, next) => {
-        let proId = req.params.id
-        productHelper.updateProducts(proId, req.body).then((id) => {
-            if (req.files) {
-                console.log(req.files.images + "  req files");
-                const file = req.files.images;
+        const file = req.files.images
+        if (file.length >= 3) {
+            //  If image didn't display while hosting remove map function
+            let newImages = file.map(images => { return [images.name] });
+            let proId = req.params.id
+            productHelper.updateProducts(proId, req.body, newImages).then((id) => {
                 for (let i = 0; i < file.length; i++) {
                     file[i].mv('./public/productImages/' + proId + i + ".jpg",)
                 }
-            }
-            res.redirect('/admin/view-products')
-        })
+                res.redirect('/admin/view-products')
+            }).catch((err) => {
+                console.log(err + "   file not recieved");
+            })
+        } else {
+            req.session.imageError = 'Upload atleast three images'
+            res.redirect('/admin/add-products')
+        }
     },
 
     getDeleteProducts: (req, res, next) => {
@@ -123,7 +121,7 @@ module.exports = {
     postAddCategory: (req, res, next) => {
         categoryHelper.addCategory(req.body).then((id) => {
             let catImg = req.files.categoryimage
-            catImg.mv('./public/productImages/' + id + 'CI.jpg')
+            catImg.mv('./public/categoryImages/' + id + "CI.jpg")
             res.redirect('/admin/view-category')
         })
     },
@@ -164,12 +162,12 @@ module.exports = {
         })
     },
 
-    getUnBlockUser: (req, res, next) => {
-        let userId = req.params.id
-        adminHelper.unBlockUser(userId).then((response) => {
-            res.redirect('/admin/view-users')
-        })
-    },
+    // getUnBlockUser: (req, res, next) => {
+    //     let userId = req.params.id
+    //     adminHelper.unBlockUser(userId).then((response) => {
+    //         res.redirect('/admin/view-users')
+    //     })
+    // },
 
     getLogout: (req, res) => {
         req.session.isAdminLoggedIn = null

@@ -1,10 +1,12 @@
+require('dotenv').config()
+// console.log(process.env);
 
-
-const client = require('twilio')('ACa71340ad17b29c5e1607cd23b7d1f613', 'a8c5a5bc838058b3f05a2da28c5355f8');
-const serviceSid = 'VAd9f13e296499e2af397cb2d8587e9bfe'
+const client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN);
+const serviceSid = process.env.SERVICE_SID
 
 module.exports = {
     dosms: (noData) => {
+        // console.log("@@@@@@@@@@@@@@@@dosms");
         let res = {}
         return new Promise(async (resolve, reject) => {
             client.verify.services(serviceSid).verifications.create({
@@ -12,6 +14,10 @@ module.exports = {
                 channel: "sms"
             }).then(() => {
                 resolve()
+                // console.log("@@@@@@@@@@@@@@@@dosms resolve");
+            }).catch((err) => {
+                reject(err)
+                // console.log("@@@@@@@@@@@@@@@@dosms reject   "+err);
             })
         })
     },
