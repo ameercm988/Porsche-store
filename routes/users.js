@@ -32,6 +32,8 @@ router.get('/otp', usersController.getOtp)
 
 router.post('/otp', usersController.postOtp)
 
+router.get('/shop', usersController.getShop)
+
 
 router.get('/cart', verifyLogin, usersController.getCart)
 
@@ -41,7 +43,9 @@ router.get('/product-detail/:id', usersController.getProductDetail)
 
 // router.get('/modal-detail/:id', usersController.getModalDetail)
 
-router.get('/addto-cart/:id', verifyLogin, usersController.getAddCart)
+router.get('/addto-cart/:id', usersController.getAddCart)
+
+router.post('/change-product-quantity',usersController.postChangeQuantity)
 
 
 router.get('/logout', usersController.getLogout)

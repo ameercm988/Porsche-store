@@ -55,10 +55,10 @@ $("#form").validate({
       required: true,
       lettersonly: true
     },
-    // images: {
-    //   required : true,
-    //   minlength : 2
-    // }
+    images: {
+      required : true,
+      minlength : 2
+    }
   }, messages: {
 
     firstname: {

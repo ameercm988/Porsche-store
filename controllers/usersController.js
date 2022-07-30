@@ -11,10 +11,17 @@ module.exports = {
     getHome: (req, res, next) => {
 
         productHelper.getAllProducts().then((products) => {
-            categoryHelper.getAllCategory().then((category) => {
+            categoryHelper.getAllCategory().then(async (category) => {
+
                 if (req.session.isLoggedIn) {
                     let user = req.session.user
-                    res.render('users/users-index', { user, layout: 'users-layout', products, category, Home: true })
+                    let userId = user._id
+                    // console.log(user + "??????????????????user@Home");
+                    // console.log(userId + "??????????????????userId@Home");
+                    let cartCount = await usersHelper.getCartCount(userId)
+                    usersHelper.getCartDetails(userId).then((cartItems) => {
+                        res.render('users/users-index', { user, layout: 'users-layout', products, category, cartItems, cartCount, Home: true })
+                    })
                 } else {
                     res.render('users/users-index', { guest: true, layout: 'users-layout', products, category, Home: true })
                 }
@@ -111,9 +118,11 @@ module.exports = {
         twilioHelpers.otpVerify(req.body, req.session.body).then((response) => {
             usersHelper.doSignup(req.session.body).then((data) => {
                 if (data.isUserValid) {
-                    req.session.isLoggedIn = true
+                    req.session.isLoggedIn = false
                     req.session.user = data.user
-                    res.redirect('/')
+                    req.session.userId = data.user._id
+                    // console.log(req.session.userId + ">>>>>>>>>>>userId after signup");
+                    res.redirect('/login')
                 } else {
                     res.redirect('/signup')
                 }
@@ -129,17 +138,38 @@ module.exports = {
         })
     },
 
-    getCart: (req, res, next) => {
-        res.render('users/shopping-cart', { layout: 'users-layout' })
+    // product section 
+
+    getShop: (req, res, next) => {
+
+        productHelper.getAllProducts().then((products) => {
+            categoryHelper.getAllCategory().then(async (category) => {
+                if (req.session.isLoggedIn) {
+                    let user = req.session.user
+                    let userId = user._id
+                    let cartCount = await usersHelper.getCartCount(userId)
+                    usersHelper.getCartDetails(userId).then((cartItems) => {
+                        res.render('users/shop', { user, layout: 'users-layout', products, category, cartCount, cartItems, Home: true })
+                    })
+
+                } else {
+                    res.render('users/shop', { guest: true, layout: 'users-layout', products, category, Home: true })
+                }
+            })
+        })
     },
 
     getProductDetail: (req, res, next) => {
         proId = req.params.id
         productHelper.getViewProduct(proId).then((product) => {
-            productHelper.getAllProducts().then((allProducts) => {
+            productHelper.getAllProducts().then(async (allProducts) => {
                 if (req.session.isLoggedIn) {
                     let user = req.session.user
-                    res.render('users/product-detail', { user, layout: 'users-layout', product, allProducts })
+                    let userId = user._id
+                    let cartCount = await usersHelper.getCartCount(userId)
+                    usersHelper.getCartDetails(userId).then((cartItems) => {
+                        res.render('users/product-detail', { user, layout: 'users-layout', product, cartCount, allProducts, cartItems })
+                    })
                 } else {
                     res.render('users/product-detail', { guest: true, layout: 'users-layout', product, allProducts })
                 }
@@ -158,10 +188,43 @@ module.exports = {
 
     // },
 
-    getAddCart : (req, res, next) => {
+    //cart section
+
+    getCart: async (req, res, next) => {
+
+        // Trying out trycatch
+
+        try {
+            let user = req.session.user
+
+            let userId = user._id
+            // console.log(userId + ">>>>>>>>>>>>>>>>when getting cart");
+            let cartItems = await usersHelper.getCartDetails(userId)
+            let cartCount = await usersHelper.getCartCount(userId)
+            // console.log(cartItems);
+            res.render('users/shopping-cart', { layout: 'users-layout', user, cartCount, cartItems })
+
+        } catch (error) {
+
+        }
+    },
+
+    getAddCart: (req, res, next) => {
         let proId = req.params.id
         let userId = req.session.user._id
-        usersHelper.addToCart(proId, userId)
+        // console.log(userId + "////////////////////////when adding to cart");
+
+        usersHelper.addToCart(proId, userId).then((response) => {
+            // console.log("apicall");
+            res.json({ status: true })
+            // res.redirect('/cart')
+        })
+    },
+
+    postChangeQuantity: (req, res, next) => {
+        usersHelper.changeQuantity(req.body).then(() => {
+            
+        })
     },
 
     getLogout: (req, res) => {

@@ -54,7 +54,7 @@ module.exports = {
                     productImages : newImages
                 }
             }).then((data) => {
-                console.log(data);
+                // console.log(data);
                 resolve(data.insertedId)
             }).catch((err) => {
                 reject(err)
@@ -70,6 +70,7 @@ module.exports = {
         })
     },
 
+    
     getViewProduct : (proId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({_id: objectId(proId)}).then((res) => {
@@ -89,4 +90,7 @@ module.exports = {
     //         })
     //     })
     // }
+
+   
+
 }
