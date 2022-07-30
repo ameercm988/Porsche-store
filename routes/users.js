@@ -43,9 +43,14 @@ router.get('/product-detail/:id', usersController.getProductDetail)
 
 // router.get('/modal-detail/:id', usersController.getModalDetail)
 
+
 router.get('/addto-cart/:id', usersController.getAddCart)
 
+
 router.post('/change-product-quantity',usersController.postChangeQuantity)
+
+
+router.post('/remove-cart-item', usersController.postRemoveItem)
 
 
 router.get('/logout', usersController.getLogout)

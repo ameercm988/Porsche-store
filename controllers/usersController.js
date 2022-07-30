@@ -222,8 +222,19 @@ module.exports = {
     },
 
     postChangeQuantity: (req, res, next) => {
-        usersHelper.changeQuantity(req.body).then(() => {
-            
+        console.log("api call");
+        console.log(req.body);
+        usersHelper.changeQuantity(req.body).then((response) => {
+            console.log(response);
+            res.json(response)
+        })
+    },
+
+    postRemoveItem : (req, res, next) => {
+        // console.log(req.body+"    reqbody");
+        usersHelper.removeCartItem(req.body).then((response) => {
+            // console.log(response+"  rsspp");
+            res.json(response)
         })
     },
 

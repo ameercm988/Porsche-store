@@ -20,7 +20,7 @@
 	</header> --}}
 
 	 <!-- Cart -->
-   <div class="wrap-header-cart js-panel-cart">
+  <div class="wrap-header-cart js-panel-cart">
         <div class="s-full js-hide-cart"></div>
 
 
@@ -35,6 +35,7 @@
                 </div>
             </div>
             {{#if user}}
+			{{#if cartItems}}
             <div class="header-cart-content flex-w js-pscroll">
                 {{#each cartItems}}
                 <ul class="header-cart-wrapitem w-full">
@@ -76,6 +77,13 @@
                     </div>
                 </div>
             </div>
+			{{else}}
+        <center>
+            <h3 style="color: red;">Sorry your cart is empty</h3>
+            <img src="https://alphapharmaexhibitions.com/images/cartempty1.png" alt="" style="width:250px"><br>
+            <a class="btn btn-succes" href="/shop" style="margin-top: 17px; color: green; border: solid green;">SHOP NOW</a>
+        </center>
+        {{/if}}
             {{else}}
             <div class="container align-items-center">
             <div>

@@ -16,6 +16,7 @@
                 </div>
             </div>
             {{#if user}}
+			{{#if cartItems}}
             <div class="header-cart-content flex-w js-pscroll">
                 {{#each cartItems}}
                 <ul class="header-cart-wrapitem w-full">
@@ -57,6 +58,13 @@
                     </div>
                 </div>
             </div>
+			{{else}}
+        <center>
+            <h3 style="color: red;">Sorry your cart is empty</h3>
+            <img src="https://alphapharmaexhibitions.com/images/cartempty1.png" alt="" style="width:250px"><br>
+            <a class="btn btn-succes" href="/shop" style="margin-top: 17px; color: green; border: solid green;">SHOP NOW</a>
+        </center>
+        {{/if}}
             {{else}}
             <div class="container align-items-center">
             <div>
@@ -72,6 +80,7 @@
             {{/if}}
         </div>
     </div>
+
 
 
 
@@ -150,7 +159,7 @@
                         </h4>
 
                         <span class="mtext-106 cl2">
-                            {{product.price}}
+                            ${{product.price}}
                         </span>
 
                         <p class="stext-102 cl3 p-t-23">
@@ -211,11 +220,19 @@
                                             <i class="fs-16 zmdi zmdi-plus"></i>
                                         </div>
                                     </div>
-                                    
+                                        {{#if user}}
                                         <button
                                             onclick="addToCart('{{product._id}}')" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
                                             Add to cart
                                         </button>
+                                        {{else}}
+                                        <a href="/login">
+                                        <button
+                                            onclick="/login" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                                            Add to cart
+                                        </button>
+                                        </a>
+                                        {{/if}}
                                    
 
                                 </div>
