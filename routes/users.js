@@ -53,6 +53,18 @@ router.post('/change-product-quantity',usersController.postChangeQuantity)
 router.post('/remove-cart-item', usersController.postRemoveItem)
 
 
+router.get('/checkout', verifyLogin, usersController.getCheckout)
+
+
+router.post('/checkout', usersController.postCheckout)
+
+
+router.get('/order-success', verifyLogin, usersController.getOrderSucces)
+
+
+router.get('/oders', verifyLogin, usersController.getOrders)
+
+
 router.get('/logout', usersController.getLogout)
 
 

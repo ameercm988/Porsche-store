@@ -5,6 +5,7 @@ const middleWare = require('../helpers/middleware/verifySignup');
 const productHelper = require('../helpers/productHelper');
 const categoryHelper = require('../helpers/categoryHelper');
 const { use } = require('../routes/users');
+const { response } = require('../app');
 
 
 module.exports = {
@@ -198,14 +199,15 @@ module.exports = {
             let user = req.session.user
 
             let userId = user._id
-            // console.log(userId + ">>>>>>>>>>>>>>>>when getting cart");
+            
             let cartItems = await usersHelper.getCartDetails(userId)
             let cartCount = await usersHelper.getCartCount(userId)
-            // console.log(cartItems);
-            res.render('users/shopping-cart', { layout: 'users-layout', user, cartCount, cartItems })
+            let totalAmount = await usersHelper.getTotalAmount(userId)
+            
+            res.render('users/shopping-cart', { layout: 'users-layout', user, cartCount, cartItems, totalAmount })
 
         } catch (error) {
-
+            
         }
     },
 
@@ -222,19 +224,52 @@ module.exports = {
     },
 
     postChangeQuantity: (req, res, next) => {
-        console.log("api call");
-        console.log(req.body);
-        usersHelper.changeQuantity(req.body).then((response) => {
-            console.log(response);
+        // console.log("api call");
+        // console.log(req.body);
+        usersHelper.changeQuantity(req.body).then(async(response) => {
+            response.totalAmount = await usersHelper.getTotalAmount(req.body.user)
+            
             res.json(response)
         })
     },
 
     postRemoveItem : (req, res, next) => {
         // console.log(req.body+"    reqbody");
-        usersHelper.removeCartItem(req.body).then((response) => {
+        usersHelper. removeCartItem(req.body).then((response) => {
             // console.log(response+"  rsspp");
             res.json(response)
+        })
+    },
+
+    getCheckout : async(req, res, next) => {
+        let user = req.session.user
+        let userId = user._id
+        let totalAmount = await usersHelper.getTotalAmount(userId)
+        let cartCount = await usersHelper.getCartCount(userId)               
+        res.render('users/checkout', {layout : 'users-layout', user, cartCount, totalAmount})
+    },
+
+    postCheckout : async(req, res, next) => {
+        let products = await usersHelper.gerCartProList(req.body.userId)
+        let totalAmount = await usersHelper.getTotalAmount(req.body.userId)
+        usersHelper.placeOrder(req.body, products, totalAmount).then((response) => {
+            res.json({status : true})
+        })
+        console.log(req.body);
+        // console.log('hiiiiiiiiiiiijjjj');
+    },
+
+    getOrderSucces : (req, res, next) => {
+        let user = req.session.user
+        res.render('users/order-success', {layout : 'users-layout', user})
+    },
+
+    getOrders : (req, res, next) => {
+        let user = req.session.user
+        let userId = user._id
+        usersHelper.getViewOrders(userId).then((orders) => {
+            res.render('users/view-orders', {layout : 'users-layout', user, orders})
+
         })
     },
 

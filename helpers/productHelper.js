@@ -5,7 +5,6 @@ const objectId = require('mongodb').ObjectId
 
 module.exports = {
     addProduct: (newProduct, productImages) => {
-        // console.log(productImages + "        images");
         newProduct.price = parseInt(newProduct.price)
         return new Promise((resolve, reject) => {
             // if (productImages.length >= 2) {
