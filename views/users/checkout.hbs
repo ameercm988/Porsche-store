@@ -28,7 +28,7 @@
 
 
 
-                            
+
                             <div class="col-md-3">
                                 <dl class='text-left'>
                                     <dt style="margin-bottom:10px;color:black">
@@ -46,7 +46,7 @@
 
                                 </dl>
                             </div>
-                          
+
 
 
 
@@ -124,7 +124,8 @@
                                 <input type="text" name="Phone" id="Phone">
                             </div>
                             <div class="cbab-create-account">
-                                {{!-- <input onchange="useRegPnum1('{{ user.Pnum }}')" id="useRegPnum" type="checkbox"> --}}
+                                {{!-- <input onchange="useRegPnum1('{{ user.Pnum }}')" id="useRegPnum" type="checkbox">
+                                --}}
                                 <label>Use registered phone number</label>
                             </div>
                             <div class="billing-address-input clearfix">
@@ -169,9 +170,9 @@
                             </ul> --}}
 
                             <ul>
-                                <li class="clearfix">Cart Subtotal <span style="font-weight: bolder;font-size: 20px;">₹
+                                <li class="clearfix">Cart Subtotal <span style="font-weight: bolder;font-size: 20px;">$
                                         {{totalAmount}}</span></li>
-                                        {{!-- <input name="totalfinalPrice" value="{{totalAmount}}" hidden> --}}
+                                {{!-- <input name="totalfinalPrice" value="{{totalAmount}}" hidden> --}}
                                 <li class="clearfix">Discount<span>- $<span id="totaldiscount">0</span></span></li>
                                 <li class="clearfix">Shipping and Handling <span>Free Shipping</span></li>
                                 <li class="order-total clearfix">Order Total <span>$ <span
@@ -187,34 +188,31 @@
                         <h5 class="checkout-box-title">PAYMENT METHOD</h5>
                         <div class="pcb-content">
                             <p>Select your payment method</p>
-                            
+
                             <div class="pcb-cuppon-input clearfix">
 
                                 <label
                                     style="margin-left: 10px;color: #000000;font-size: 14px;font-weight: 400;">COD</label>
-                                <input type="radio" value="COD" name="Pay_Method" id="PaymethodCod"
-                                >
+                                <input type="radio" value="COD" name="Pay_Method" id="PaymethodCod" required>
                             </div>
                             <div class="pcb-cuppon-input clearfix">
 
                                 <label
                                     style="margin-left: 10px;color: #000000;font-size: 14px;font-weight: 400;">Razorpay</label>
-                                <input type="radio" value="Razorpay" name="Pay_Method" id="PaymethodRazpay"
-                                    >
+                                <input type="radio" value="Razorpay" name="Pay_Method" id="PaymethodRazpay" required>
 
                             </div>
-                            <div class="pcb-cuppon-input clearfix">
+                            {{!-- <div class="pcb-cuppon-input clearfix">
 
                                 <label
                                     style="margin-left: 10px;color: #000000;font-size: 14px;font-weight: 400;">PayPal</label>
-                                <input type="radio" value="PayPal" name="Pay_Method" id="PaymethodPayPal"
-                                    >
+                                <input type="radio" value="PayPal" name="Pay_Method" id="PaymethodPayPal">
 
-                            </div>
+                            </div> --}}
 
-                            <div class="pcb-cuppon-input clearfix" id="paypal-button">
+                            {{!-- <div class="pcb-cuppon-input clearfix" id="paypal-button">
 
-                            </div>
+                            </div> --}}
 
                             <div class="create-account-checkout-method">
                                 <div class="place-order" style="text-align: left;">
@@ -238,104 +236,104 @@
 
     //$(document).ready(function () {
 
-        $.validator.addMethod("alpha", function (value, element) {
-            return this.optional(element) || value == value.match(/^[a-zA-Z\s]+$/);
-        });
+    $.validator.addMethod("alpha", function (value, element) {
+        return this.optional(element) || value == value.match(/^[a-zA-Z\s]+$/);
+    });
 
 
-        $('#checkout-form').validate({
+    $('#checkout-form').validate({
 
-            rules: {
+        rules: {
 
-                First_Name: {
-                    required: true,
-                    alpha: true,
-                    minlength: 3
-                },
-
-                Last_Name: {
-                    required: true,
-                    alpha: true
-                },
-
-                Company_Name: {
-                    required: true,
-                    minlength: 3
-                },
-
-                Street_Address: {
-                    required: true,
-                    minlength: 3
-                },
-
-                Extra_Details: {
-                    required: true,
-                    minlength: 3
-                },
-
-                Town_City: {
-                    required: true,
-                    alpha: true,
-                    minlength: 3
-                },
-
-                Country_State: {
-                    required: true,
-                    alpha: true,
-                    minlength: 3
-                },
-
-                Post_Code: {
-                    required: true,
-                    digits: true,
-                    minlength: 6,
-                    maxlength: 6
-                },
-
-                Phone: {
-                    required: true,
-                    digits: true,
-                    minlength: 10,
-                    maxlength: 10
-                },
-
-                Alt_Phone: {
-                    required: true,
-                    digits: true,
-                    minlength: 10,
-                    maxlength: 10
-                },
-                Pay_Method: {
-                    required: true
-                }
-
-
+            First_Name: {
+                required: true,
+                alpha: true,
+                minlength: 3
             },
 
-            messages: {
-
-                First_Name: {
-                    alpha: "Name should be in alphabets"
-                },
-
-                Last_Name: {
-                    alpha: "Name should be in alphabets"
-                },
-                Town_City: {
-                    alpha: "This field should be in alphabets"
-                },
-
-                Country_State: {
-                    alpha: "This field should be in alphabets"
-                },
-                Pay_Method: {
-                    required: "Choose a payment method"
-                }
-
+            Last_Name: {
+                required: true,
+                alpha: true
             },
 
-            
-        })
+            Company_Name: {
+                required: true,
+                minlength: 3
+            },
+
+            Street_Address: {
+                required: true,
+                minlength: 3
+            },
+
+            Extra_Details: {
+                required: true,
+                minlength: 3
+            },
+
+            Town_City: {
+                required: true,
+                alpha: true,
+                minlength: 3
+            },
+
+            Country_State: {
+                required: true,
+                alpha: true,
+                minlength: 3
+            },
+
+            Post_Code: {
+                required: true,
+                digits: true,
+                minlength: 6,
+                maxlength: 6
+            },
+
+            Phone: {
+                required: true,
+                digits: true,
+                minlength: 10,
+                maxlength: 10
+            },
+
+            Alt_Phone: {
+                required: true,
+                digits: true,
+                minlength: 10,
+                maxlength: 10
+            },
+            Pay_Method: {
+                required: true
+            }
+
+
+        },
+
+        messages: {
+
+            First_Name: {
+                alpha: "Name should be in alphabets"
+            },
+
+            Last_Name: {
+                alpha: "Name should be in alphabets"
+            },
+            Town_City: {
+                alpha: "This field should be in alphabets"
+            },
+
+            Country_State: {
+                alpha: "This field should be in alphabets"
+            },
+            Pay_Method: {
+                required: "Choose a payment method"
+            }
+
+        },
+
+
+    })
     //})
 
 </script>
@@ -626,21 +624,76 @@
     .place-order button {}
 </style>
 
-<script>
-	$("#checkout-form").submit((e) => {
-        
-		e.preventDefault()
-		$.ajax({
-			url: '/checkout',
-			method: 'post',
-			data: $('#checkout-form').serialize(),
+{{!-- razorpay link --}}
+	
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-			success: (response) => {
-				alert(response)
+
+<script>
+    $("#checkout-form").submit((e) => {
+
+        e.preventDefault()
+        $.ajax({
+            url: '/checkout',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: (response) => {
+                alert(response)
+                if (response.codSuccess) {
+                    location.href = '/order-success'
+                } else {
+                    razorpayPayment(response)
+                }
+            }
+        })
+    })
+
+    function razorpayPayment(order) {
+
+        var options = {
+            "key": "rzp_test_HFuZml3EB4GknT", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Porsche store",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                verifyPayment(response, order)
+            },
+            "prefill": {
+                "name": "Ameer",
+                "email": "Ameer@example.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+
+    function verifyPayment(payment, order) {
+        $.ajax({
+            url: '/verify-payment',
+            data: {
+                payment,
+                order
+            },
+            method: 'post',
+            success : (response) => {
                 if(response.status){
                     location.href = '/order-success'
+                }else{
+                    alert("payment failed")
                 }
-			}
-		})
-	})
+            }
+        })
+    }
+
 </script>

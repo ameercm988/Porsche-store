@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const usersController = require('../controllers/usersController')
+const usersController = require('../controllers/usersController');
+const { route } = require('./admin');
 
 
 const verifyLogin = ((req,res,next) => {
@@ -32,7 +33,14 @@ router.get('/otp', usersController.getOtp)
 
 router.post('/otp', usersController.postOtp)
 
+
 router.get('/shop', usersController.getShop)
+
+
+router.get('/shop-men', usersController.getShopMen)
+
+
+router.get('/shop-women', usersController.getShopWomen)
 
 
 router.get('/cart', verifyLogin, usersController.getCart)
@@ -62,7 +70,13 @@ router.post('/checkout', usersController.postCheckout)
 router.get('/order-success', verifyLogin, usersController.getOrderSucces)
 
 
-router.get('/oders', verifyLogin, usersController.getOrders)
+router.get('/orders', verifyLogin, usersController.getOrders)
+
+
+router.get('/order-products/', verifyLogin, usersController.getOrderProducts)
+
+
+router.post('/verify-payment', usersController.postVerifyPayment)
 
 
 router.get('/logout', usersController.getLogout)

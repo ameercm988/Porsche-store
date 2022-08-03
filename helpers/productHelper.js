@@ -34,6 +34,22 @@ module.exports = {
         })
     },
 
+    getAllMenProducts : () => {
+        return new Promise(async (resolve, reject) => {
+            let menProducts = await db.get().collection(collection.PRODUCT_COLLECTIONS).find({ category: "Men" }).toArray()
+            // console.log(menProducts+">>>>>>>>>>>>>>products");
+            resolve(menProducts)
+        })
+    },
+
+    getAllWomenProducts : () => {
+        return new Promise(async (resolve, reject) => {
+            let womenProducts = await db.get().collection(collection.PRODUCT_COLLECTIONS).find({ category: "Women" }).toArray()
+            // console.log(womenProducts+">>>>>>>>>>>>>>products");
+            resolve(womenProducts)
+        })
+    },
+
     editProducts: (proId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({ _id: objectId(proId) }).then((res) => {

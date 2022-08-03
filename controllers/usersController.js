@@ -160,6 +160,47 @@ module.exports = {
         })
     },
 
+    getShopMen: async(req, res,next) => {
+        try {
+            let menProducts = await productHelper.getAllMenProducts()
+            // console.log(menProducts+">>>>>>>>>>>>>>products");
+            if(req.session.isLoggedIn){
+                let user = req.session.user
+                let userId = user._id
+                let cartCount = await usersHelper.getCartCount(userId)
+                let cartItems = await usersHelper.getCartDetails(userId)
+                res.render('users/shop-men', {layout : 'users-layout', user, menProducts, cartCount, cartItems})
+            }else{
+                res.render('users/shop-men', {layout : 'users-layout', menProducts}) 
+            }
+            
+        } catch (error) {
+            
+        }
+        
+    },
+
+    getShopWomen: async(req, res,next) => {
+        try {
+            let womenProducts = await productHelper.getAllWomenProducts()
+            console.log(womenProducts+">>>>>>>>>>>>>>products");
+            if(req.session.isLoggedIn){
+                let user = req.session.user
+                let userId = user._id
+                let cartCount = await usersHelper.getCartCount(userId)
+                let cartItems = await usersHelper.getCartDetails(userId)
+                res.render('users/shop-women', {layout : 'users-layout', user, womenProducts, cartCount, cartItems})
+            }else{
+                res.render('users/shop-women', {layout : 'users-layout', womenProducts}) 
+            }
+            
+        } catch (error) {
+            
+        }
+        
+    },
+
+
     getProductDetail: (req, res, next) => {
         proId = req.params.id
         productHelper.getViewProduct(proId).then((product) => {
@@ -252,10 +293,18 @@ module.exports = {
     postCheckout : async(req, res, next) => {
         let products = await usersHelper.gerCartProList(req.body.userId)
         let totalAmount = await usersHelper.getTotalAmount(req.body.userId)
-        usersHelper.placeOrder(req.body, products, totalAmount).then((response) => {
-            res.json({status : true})
+        usersHelper.placeOrder(req.body, products, totalAmount).then((orderId) => {
+            console.log(orderId);
+            if (req.body.Pay_Method === 'COD') {
+                res.json({codSuccess : true})
+            } else {
+                usersHelper.generateRazorpay(orderId, totalAmount).then((response) => {
+                    res.json(response)
+                })
+            }
+            
         })
-        console.log(req.body);
+        // console.log(req.body);
         // console.log('hiiiiiiiiiiiijjjj');
     },
 
@@ -264,12 +313,39 @@ module.exports = {
         res.render('users/order-success', {layout : 'users-layout', user})
     },
 
-    getOrders : (req, res, next) => {
+    getOrders : async (req, res, next) => {
         let user = req.session.user
         let userId = user._id
-        usersHelper.getViewOrders(userId).then((orders) => {
+        // console.log(userId);
+        let orders = await usersHelper.getViewOrders(userId)
+        // console.log(orders);
+        // console.log(">>>>>>>>>>orders");
             res.render('users/view-orders', {layout : 'users-layout', user, orders})
 
+    },
+
+    
+    getOrderProducts : async (req, res, next) => {
+        let user = req.session.user
+        let products = await usersHelper.orderProducts(req.query.id)
+        console.log(req.query.id);
+        console.log(products);
+        console.log("products from orders");
+
+        res.render('users/order-products', {layout : 'users-layout', user, products})
+    },
+
+    postVerifyPayment : (req, res, next) => {
+        console.log(req.body);
+        console.log("postverify")
+        usersHelper.verifyPayment(req.body).then(() => {
+            usersHelper.changePaymentStatus(req.body['order[receipt]']).then(() => {
+                console.log('Payment success');
+                res.json({status : true})
+            })
+        }).catch((err) => {
+            console.log(err);
+            res.json({status : false, errMsg : "Payment failed"})
         })
     },
 

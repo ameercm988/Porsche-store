@@ -1,0 +1,48 @@
+<div class="container col-xl-12" style="margin-top: 110px;">
+    <table class="table table-bordered" style="background-color: white;">
+        <h3>Your Orders</h3>
+        <thead>
+            <tr class="tr">
+                <th scope="col">NO:</th>
+                <th scope="col">Date</th>
+                <th scope="col">Address</th>
+                <th scope="col">Pincode</th>
+                 <th scope="col">Mobile</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Payment</th>
+                 <th scope="col">status</th>
+                 <th scope="col"></th>
+                 
+            </tr>
+        </thead>
+        <tbody>
+            {{#each orders}}
+            <tr class="tr">
+                <th scope="row">{{@index}}</th>
+                <td>{{this.date}}</td>
+                <td>{{this.deliveryDetails.Street_Address}}</td>
+                <td>{{this.deliveryDetails.Post_Code}}</td>
+                <td>{{this.Phone.Phone}}</td>
+                <td>$ {{this.Total_Amount}}</td>
+                <td>{{this.Pay_Method}}</td>
+                <td>{{this.status}}</td>
+               
+                <td><a
+              class="btn btn-success"
+              href="/order-products/?id={{this._id}}"
+            >Product Details</a></td>
+             
+                
+            </tr>
+            {{/each}}
+           
+            
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .tr{
+        height: 50px;
+    }
+</style>
