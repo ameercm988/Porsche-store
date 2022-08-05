@@ -14,10 +14,19 @@ module.exports = {
     },
 
     addCategory : (data) => {
+        console.log(data);
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.CATEGORY_COLLECTION).insertOne(data).then((response) => {
-                resolve(response.insertedId)
-            })
+
+            db.get().collection(collection.CATEGORY_COLLECTION).findOne({category : data.category}).then((res) => {
+                if (res == null) {
+                    db.get().collection(collection.CATEGORY_COLLECTION).insertOne(data).then((response) => {
+                        resolve(response.insertedId)
+                    })    
+                } else {
+                    err = 'Category already exists'
+                    reject(err) 
+                }
+            })     
         })
     },
 

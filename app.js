@@ -30,7 +30,7 @@ handlebars.registerHelper("when", function (operand_1, operator, operand_2, opti
     'gt': function (l, r) { return Number(l) > Number(r); },
     'or': function (l, r) { return l || r; },
     'and': function (l, r) { return l && r; },
-    '%': function (l, r) { return (l % r) === 0; }
+    '%': function (l, r) { return (l % r) === 0; },
   }
     , result = operators[operator](operand_1, operand_2);
 

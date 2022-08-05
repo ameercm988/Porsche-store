@@ -5,7 +5,10 @@
            <h3 class="text mt-3">Add Category</h3>
            <form action="/admin/add-category" method="post" id="form" enctype="multipart/form-data">
             <label for="">Category</label>
-            <input type="text" name="category" id="category" class="form-control w-50">
+            {{#if categoryError}}
+            <p class="text-danger">{{categoryError}}</p>
+            {{/if}}
+            <input type="text" name="category" id="category" class="form-control w-50" oninput="this.value=this.value.toUpperCase()">
              <label for="">Category Image</label>
             <input type="file" name="categoryimage" id="categoryimage" class="form-control w-50"  style="background-color: aliceblue;" required="">
 

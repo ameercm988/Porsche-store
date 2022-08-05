@@ -26,54 +26,28 @@
 
                         <div class="row checkout-billing-adress-box">
 
-
-
-
-                            <div class="col-md-3">
-                                <dl class='text-left'>
-                                    <dt style="margin-bottom:10px;color:black">
-                                    </dt>
-                                    <dd></dd>
-                                    <dd></dd>
-                                    <dd></dd>
-                                    <dd></dd>
-                                    <dd></dd>
-                                    <dd></dd>
-                                    {{!-- <dt><input name="choice"
-                                            onclick="addressSelect('{{this.First_Name}}','{{this.Last_Name}}','{{this.Company_Name}}','{{this.Street_Address}}','{{this.Extra_Details}}','{{this.Town_City}}','{{this.Country_State}}','{{this.Post_Code}}','{{this.Phone}}','{{this.Alt_Phone}}')"
-                                            type="radio" id="useaddress"><span style="color: #007eff;">
-                                            Use Address</span></dt><br> --}}
-
-                                </dl>
-                            </div>
-
-
-
-
-
-
-                            {{!-- {{#each address.Address}}
-                            <div class="col-md-3">
-                                <dl class='text-left'>
-                                    <dt style="margin-bottom:10px;color:black">{{this.First_Name}} {{this.Last_Name}}
-                                    </dt>
+                            {{#each savedAddress.address}}
+                            <div class="col-md-3" style="border:solid #847f7f;">
+                                <dl class="text-left">
+                                    <dt>{{this.First_Name}} {{this.Last_Name}}</dt>
                                     <dd>"{{this.Company_Name}}"</dd>
-                                    <dd>{{this.Street_Address}}, {{this.Extra_Details}},</dd>
-                                    <dd>{{this.Town_City}}, {{this.Country_State}},</dd>
-                                    <dd>PIN: {{this.Post_Code}},</dd>
-                                    <dd>Ph: {{this.Phone}},</dd>
-                                    <dd>Alt-Ph: {{this.Alt_Phone}}</dd>
-                                    <dt><input name="choice"
-                                            onclick="addressSelect('{{this.First_Name}}','{{this.Last_Name}}','{{this.Company_Name}}','{{this.Street_Address}}','{{this.Extra_Details}}','{{this.Town_City}}','{{this.Country_State}}','{{this.Post_Code}}','{{this.Phone}}','{{this.Alt_Phone}}')"
-                                            type="radio" id="useaddress"><span style="color: #007eff;">
-                                            Use Address</span></dt><br>
+                                    <dd>{{this.Street_Address}},{{this.Extra_Details}}</dd>
+                                    <dd>{{this.Town_City}}, {{this.Country_State}}</dd>
+                                    <dd>PIN:{{this.Post_Code}}</dd>
+                                    <dd>Ph:{{this.Phone}}</dd>
+                                    <dd>Alt-Ph:{{this.Alt_Phone}}</dd>
+                                    <dt class="mt-1 mb-1 d-flex">
+                                        <input type="radio" name="choice"
+                                            onclick="savedAddressSelect('{{this.First_Name}}','{{this.Last_Name}}','{{this.Company_Name}}','{{this.Street_Address}}','{{this.Extra_Details}}','{{this.Town_City}}','{{this.Country_State}}','{{this.Post_Code}}','{{this.Phone}}','{{this.Alt_Phone}}')"
+                                            id="useAddress"><span style="color: #007eff; margin-left: 3px;">Use
+                                            Address</span>
+                                    </dt><br>
 
                                 </dl>
                             </div>
-                            {{/each}} --}}
+                            {{/each}}
 
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -177,7 +151,7 @@
                                 <li class="clearfix">Shipping and Handling <span>Free Shipping</span></li>
                                 <li class="order-total clearfix">Order Total <span>$ <span
                                             id="totalPrice">{{totalAmount}}</span></span></li>
-                                <input type="hidden" name="totalfinalPrice" id="totalfinalPrice" value="{{ctotal}}">
+                                <input type="hidden" name="totalfinalPrice" id="totalfinalPrice" value="{{totalAmount}}">
                                 {{!-- <input type="hidden" name="usdToInr" id="usdToInr"> --}}
                             </ul>
 
@@ -229,6 +203,20 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 
+<script>
+    function savedAddressSelect(First_Name, Last_Name, Company_Name, Street_Address, Extra_Details, Town_City, Country_State, Post_Code, Phone, Alt_Phone){
+        document.getElementById('First_Name').value = First_Name
+        document.getElementById('Last_Name').value = Last_Name
+        document.getElementById('Company_Name').value = Company_Name
+        document.getElementById('Street_Address').value = Street_Address
+        document.getElementById('Extra_Details').value = Extra_Details
+        document.getElementById('Town_City').value = Town_City
+        document.getElementById('Country_State').value = Country_State
+        document.getElementById('Post_Code').value = Post_Code
+        document.getElementById('Phone').value = Phone
+        document.getElementById('Alt_Phone').value = Alt_Phone
+   }
+</script>
 
 <script>
 
@@ -625,7 +613,7 @@
 </style>
 
 {{!-- razorpay link --}}
-	
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 
@@ -686,10 +674,10 @@
                 order
             },
             method: 'post',
-            success : (response) => {
-                if(response.status){
+            success: (response) => {
+                if (response.status) {
                     location.href = '/order-success'
-                }else{
+                } else {
                     alert("payment failed")
                 }
             }

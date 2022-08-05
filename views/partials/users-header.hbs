@@ -56,9 +56,9 @@
 							<a href="#">About</a>
 						</li>
 
-						<li>
+						{{!-- <li>
 							<a href="/orders">Orders</a>
-						</li>
+						</li> --}}
 
 						<li>
 							<a href="#">Contact</a>
@@ -75,7 +75,7 @@
 
 							{{#if user}}
 							<li><a class="dropdown-item text-dark" href="/login">{{user.username}}</a></li>
-							
+							<li><a class="dropdown-item text-dark" href="/profile">My Profile</a></li>
 							<li><a class="dropdown-item text-dark" href="/logout">Log Out</a></li>
 							{{else guest}}
 							<li><a class="dropdown-item text-dark" href="/login">Login</a></li>

@@ -73,10 +73,19 @@ router.get('/order-success', verifyLogin, usersController.getOrderSucces)
 router.get('/orders', verifyLogin, usersController.getOrders)
 
 
-router.get('/order-products/', verifyLogin, usersController.getOrderProducts)
+router.get('/order-products', verifyLogin, usersController.getOrderProducts)
+
+
+router.get('/cancel-order', verifyLogin, usersController.getCancelOrder)
 
 
 router.post('/verify-payment', usersController.postVerifyPayment)
+
+
+router.get('/profile', verifyLogin, usersController.getProfile)
+
+
+// router.get('/user-address', verifyLogin, usersController.getUserAddress)
 
 
 router.get('/logout', usersController.getLogout)

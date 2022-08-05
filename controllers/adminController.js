@@ -110,19 +110,24 @@ module.exports = {
 
     getViewCategory: (req, res, next) => {
         categoryHelper.getAllCategory().then((category) => {
-            res.render('admin/view-category', { layout: 'admin-layout', category })
+            res.render('admin/view-category', { layout: 'admin-layout', category})
+            req.session.catError = false
         })
     },
 
     getAddCategory: (req, res, next) => {
-        res.render('admin/add-category', { layout: 'admin-layout' })
+        res.render('admin/add-category', { layout: 'admin-layout',  categoryError: req.session.catError  })
     },
 
     postAddCategory: (req, res, next) => {
+        // category = req.body.category.toUpperCase()
         categoryHelper.addCategory(req.body).then((id) => {
-            let catImg = req.files.categoryimage
-            catImg.mv('./public/categoryImages/' + id + "CI.jpg")
-            res.redirect('/admin/view-category')
+                let catImg = req.files.categoryimage
+                catImg.mv('./public/categoryImages/' + id + "CI.jpg")
+                res.redirect('/admin/view-category')
+        }).catch((err) => {
+            req.session.catError = err
+            res.redirect('/admin/add-category')
         })
     },
 

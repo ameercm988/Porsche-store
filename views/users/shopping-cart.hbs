@@ -43,7 +43,7 @@
 									</td>
 									<td class="column-2">{{this.product.name}}</td>
 
-									<td class="column-3">${{this.product.price}}</td>
+									<td class="column-3">$ {{this.product.price}}</td>
 									{{!-- {{/each}} --}}
 									<td class="column-4">
 										{{!--
@@ -71,7 +71,7 @@
 									</div>
 									</td>
 
-									<td class="column-5">$ 36.00</td>
+									<td class="column-5">$ {{this.productPrice}} </td>
 									<td>
 										<a href="" class="btn btn-danger mr-3"
 											onclick="removeItem('{{this._id}}','{{this.product._id}}')">REMOVE
@@ -122,7 +122,7 @@
 
 							<div class="size-209">
 								<span class="mtext-110 cl2" id="total">
-									${{totalAmount}}
+									$ {{totalAmount}}
 								</span>
 							</div>
 						</div>
@@ -186,7 +186,7 @@
 
 							<div class="size-209 p-t-1">
 								<span id="total" class="mtext-110 cl2">
-									${{totalAmount}}
+									$ {{totalAmount}}
 								</span>
 							</div>
 						</div>
