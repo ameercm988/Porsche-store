@@ -20,8 +20,9 @@ module.exports = {
                     let userId = user._id
                     let cartCount = await usersHelper.getCartCount(userId)
                     let totalAmount = await usersHelper.getTotalAmount(userId)
+                    let wishlistCount = await usersHelper.getWishlistCount(userId)
                     usersHelper.getCartDetails(userId).then((cartItems) => {
-                        res.render('users/users-index', { user, layout: 'users-layout', products, category, cartItems, cartCount, totalAmount, Home: true })
+                        res.render('users/users-index', { user, layout: 'users-layout', products, category, cartItems, cartCount, totalAmount, wishlistCount, Home: true })
                     })
                 } else {
                     res.render('users/users-index', { guest: true, layout: 'users-layout', products, category, Home: true })
@@ -150,8 +151,9 @@ module.exports = {
                     let user = req.session.user
                     let userId = user._id
                     let cartCount = await usersHelper.getCartCount(userId)
+                    let wishlistCount = await usersHelper.getWishlistCount(userId)
                     usersHelper.getCartDetails(userId).then((cartItems) => {
-                        res.render('users/shop', { user, layout: 'users-layout', products, category, cartCount, cartItems, Home: true })
+                        res.render('users/shop', { user, layout: 'users-layout', products, category, cartCount, cartItems, wishlistCount, Home: true })
                     })
 
                 } else {
@@ -169,8 +171,9 @@ module.exports = {
                 let user = req.session.user
                 let userId = user._id
                 let cartCount = await usersHelper.getCartCount(userId)
+                let wishlistCount = await usersHelper.getWishlistCount(userId)
                 let cartItems = await usersHelper.getCartDetails(userId)
-                res.render('users/shop-men', { layout: 'users-layout', user, menProducts, cartCount, cartItems })
+                res.render('users/shop-men', { layout: 'users-layout', user, menProducts, cartCount, cartItems, wishlistCount })
             } else {
                 res.render('users/shop-men', { layout: 'users-layout', menProducts })
             }
@@ -189,8 +192,9 @@ module.exports = {
                 let user = req.session.user
                 let userId = user._id
                 let cartCount = await usersHelper.getCartCount(userId)
+                let wishlistCount = await usersHelper.getWishlistCount(userId)
                 let cartItems = await usersHelper.getCartDetails(userId)
-                res.render('users/shop-women', { layout: 'users-layout', user, womenProducts, cartCount, cartItems })
+                res.render('users/shop-women', { layout: 'users-layout', user, womenProducts, cartCount, cartItems, wishlistCount })
             } else {
                 res.render('users/shop-women', { layout: 'users-layout', womenProducts })
             }
@@ -210,8 +214,9 @@ module.exports = {
                     let user = req.session.user
                     let userId = user._id
                     let cartCount = await usersHelper.getCartCount(userId)
+                    let wishlistCount = await usersHelper.getWishlistCount(userId)
                     usersHelper.getCartDetails(userId).then((cartItems) => {
-                        res.render('users/product-detail', { user, layout: 'users-layout', product, cartCount, allProducts, cartItems })
+                        res.render('users/product-detail', { user, layout: 'users-layout', product, cartCount, allProducts, wishlistCount, cartItems })
                     })
                 } else {
                     res.render('users/product-detail', { guest: true, layout: 'users-layout', product, allProducts })
@@ -246,9 +251,10 @@ module.exports = {
             // console.log("cartItemm");
             // console.log(cartItems);
             let cartCount = await usersHelper.getCartCount(userId)
+            let wishlistCount = await usersHelper.getWishlistCount(userId)
             let totalAmount = await usersHelper.getTotalAmount(userId)
 
-            res.render('users/shopping-cart', { layout: 'users-layout', user, cartCount, cartItems, totalAmount })
+            res.render('users/shopping-cart', { layout: 'users-layout', user, cartCount, cartItems, totalAmount, wishlistCount })
 
         } catch (error) {
 
@@ -290,10 +296,11 @@ module.exports = {
         let userId = user._id
         let totalAmount = await usersHelper.getTotalAmount(userId)
         let cartCount = await usersHelper.getCartCount(userId)
+        let wishlistCount = await usersHelper.getWishlistCount(userId)
         let savedAddress = await usersHelper.getSavedAddress(userId)
         console.log(savedAddress);
         // let address = await usersHelper.getAddress(userId)          
-        res.render('users/checkout', { layout: 'users-layout', user, cartCount, totalAmount, savedAddress })
+        res.render('users/checkout', { layout: 'users-layout', user, cartCount, totalAmount, savedAddress, wishlistCount })
     },
 
     postCheckout: async (req, res, next) => {
@@ -329,10 +336,11 @@ module.exports = {
         // console.log(userId);
         let orders = await usersHelper.getViewOrders(userId)
         let cartCount = await usersHelper.getCartCount(userId)
+        let wishlistCount = await usersHelper.getWishlistCount(userId)
         let cartDetails = await usersHelper.getCartDetails(userId)
         // console.log(orders);
         // console.log(">>>>>>>>>>orders");
-        res.render('users/view-orders', { layout: 'users-layout', user, orders, cartCount, cartDetails })
+        res.render('users/view-orders', { layout: 'users-layout', user, orders, cartCount, cartDetails, wishlistCount })
 
     },
 
@@ -378,13 +386,36 @@ module.exports = {
         try {
             let cartCount = await usersHelper.getCartCount(userId)
             let cartDetails = await usersHelper.getCartDetails(userId)
+            let wishlistCount = await usersHelper.getWishlistCount(userId)
             let orders = await usersHelper.getViewOrders(userId)
             let orderCount = await usersHelper.getOrderCount(userId)
 
-            res.render('users/profile', { layout: 'users-layout', user, cartCount, cartDetails, orders, orderCount })
+            res.render('users/profile', { layout: 'users-layout', user, cartCount, cartDetails, orders, orderCount, wishlistCount })
         } catch (error) {
 
         }
+    },
+
+    getWishlist : async (req, res, next) => {
+
+        let user = req.session.user
+        let userId = user._id
+
+        let wishlistItems = await usersHelper.getwishlistItems(userId)
+        let wishlistCount = await usersHelper.getWishlistCount(userId)
+        let cartCount = await usersHelper.getCartCount(userId)
+        console.log(wishlistItems, wishlistCount);console.log('wishlist');
+        res.render('users/wishlist', { layout : 'users-layout', user, wishlistItems, wishlistCount, cartCount})
+    },
+
+    getAddToWishlist : (req, res, next) => {
+        let userId = req.session.user._id
+        let proId = req.params.id
+        // console.log(userId, proId);console.log('userId,proId');
+        usersHelper.addToWishlist(userId, proId).then((response) => {
+            res.json({status : true})
+            // res.redirect('/wishlist')
+        })
     },
 
     // getUserAddress: (req, res, next) => {
@@ -392,7 +423,7 @@ module.exports = {
     // },
 
     getLogout: (req, res) => {
-        req.session.isLoggedIn = destroy
+        req.session.isLoggedIn = null
         req.session.user = false
         res.redirect('/')
     }

@@ -265,6 +265,7 @@ module.exports = {
 
             ]).toArray()
 
+
             if (totalAmount.length == 0) {
                 resolve(totalAmount)
 
@@ -359,12 +360,12 @@ module.exports = {
                     $match: { _id: objectId(orderId) }
                 },
                 {
-                    $unwind: '$products'
+                    $unwind: '$Products'
                 },
                 {
                     $project: {
-                        item: '$products.item',
-                        quantity: '$products.quantity'
+                        item: '$Products.item',
+                        quantity: '$Products.quantity'
                     }
 
                 },
@@ -386,10 +387,9 @@ module.exports = {
                 }
 
             ]).toArray()
-
-            resolve(orderItems)
             console.log(orderItems);
-            console.log(">>>>>>>itemsfromfetch");
+            resolve(orderItems)
+            
 
         })
     },
@@ -523,6 +523,99 @@ module.exports = {
                     console.log('no address at all');
                 }
             })
+        })
+    },
+
+    addToWishlist : (userId, proId) => {
+       let proObj = {
+        item : objectId(proId)
+       }
+        return new Promise( async (resolve, reject) => {
+            let wishlist = await db.get().collection(collection.WISHLIST_COLLECTION).findOne({user : objectId(userId)})
+            if(wishlist){
+                let proExist = wishlist.products.findIndex(check => check.item == proId)
+                // console.log(proExist);console.log('proExist');
+                if (proExist != -1) {
+                    db.get().collection(collection.WISHLIST_COLLECTION).updateOne({user : objectId(userId)}, {
+                        $pull : { 
+                            products : proObj
+                        }
+                    }).then((res) => {
+                        resolve(res)
+                    })
+                } else {
+                    db.get().collection(collection.WISHLIST_COLLECTION).updateOne({user : objectId(userId)}, {
+                        $push : { 
+                            products : proObj
+                        }
+                    }).then((res) => {
+                        resolve(res)
+                    })
+                }
+                
+            }else{
+                let wishlistObj = {
+                    user : objectId(userId),
+                    products : [proObj]
+                }
+                db.get().collection(collection.WISHLIST_COLLECTION).insertOne(wishlistObj).then((res) => {
+                    resolve(res)
+                })
+            }
+            
+        })
+    },
+
+    getwishlistItems : (userId) => {
+        // console.log(userId);
+        return new Promise(async(resolve, reject) => {
+            wishlistItems = await db.get().collection(collection.WISHLIST_COLLECTION).aggregate([
+                {
+                    $match : {user : objectId(userId)}
+                },
+                {
+                    $unwind : '$products'
+                },
+                {
+                    $project : {
+                        item : '$products.item'
+                    }
+                },
+                {
+                    $lookup : {
+                        from : collection.PRODUCT_COLLECTIONS,
+                        localField : 'item',
+                        foreignField : '_id',
+                        as : 'product'
+                    }
+                },
+                {
+                    $project : {
+                        item : 1,
+                        product : { $arrayElemAt : [ '$product' , 0]}
+                    }
+                }
+            ]).toArray()
+
+            resolve(wishlistItems)
+            // console.log(wishlistItems);
+
+        })
+    }, 
+
+    
+    getWishlistCount : (userId) => {
+        // console.log(userId);
+        return new Promise( async (resolve, reject) => {
+            let count = 0
+           let wishlist = await db.get().collection(collection.WISHLIST_COLLECTION).findOne({user : objectId(userId)})
+            
+           if (wishlist) {
+                count = wishlist.products.length
+           } else {
+                count = 0
+           }
+           resolve(count)
         })
     }
 

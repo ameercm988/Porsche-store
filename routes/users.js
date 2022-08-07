@@ -43,13 +43,13 @@ router.get('/shop-men', usersController.getShopMen)
 router.get('/shop-women', usersController.getShopWomen)
 
 
-router.get('/cart', verifyLogin, usersController.getCart)
+// router.get('/modal-detail/:id', usersController.getModalDetail)
 
 
 router.get('/product-detail/:id', usersController.getProductDetail)
 
 
-// router.get('/modal-detail/:id', usersController.getModalDetail)
+router.get('/cart', verifyLogin, usersController.getCart)
 
 
 router.get('/addto-cart/:id', usersController.getAddCart)
@@ -83,6 +83,12 @@ router.post('/verify-payment', usersController.postVerifyPayment)
 
 
 router.get('/profile', verifyLogin, usersController.getProfile)
+
+
+router.get('/wishlist', verifyLogin, usersController.getWishlist)
+
+
+router.get('/addto-wishlist/:id', usersController.getAddToWishlist)
 
 
 // router.get('/user-address', verifyLogin, usersController.getUserAddress)

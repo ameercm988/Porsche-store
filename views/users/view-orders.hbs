@@ -2,7 +2,7 @@
 
 <div class="container mt-5 pt-5">
     <div class="row">
-        <div class="col-lg-3 my-lg-0 my-md-1">
+        <div class="col-lg-3  my-lg-0 my-md-1">
             <div id="sidebar" class="bg-purple">
                 <div class="h4 text-dark">Account</div>
                 <ul>
@@ -55,8 +55,8 @@
             </div>
         </div>
 
-        <div class="col-xl-6 d-flex" style="margin-top: 0px; justify-items: center; align-items: center;">
-            <table class="table table-bordered " style="background-color: rgb(232, 225, 225); border-radius: 3%;" id="orderTable">
+        <div class="col-xl-9 col-md-12 d-flex" style="margin-top: 0px; justify-items: center; align-items: center;">
+            <table class="table-responsive table-bordered " style="background-color: rgb(232, 225, 225); border-radius: 3%;" id="orderTable">
                 {{!-- <h3>My Orders</h3> --}}
                 <thead>
                     <tr class="tr align-items-center">
@@ -88,7 +88,7 @@
                             {{this.status}}
                         </td>
 
-                        <td><a class="btn btn-success" href="/order-products/?id={{this._id}}">Product Details</a></td>
+                        <td><a href="/order-products?id={{this._id}}"><button class="btn btn-success"> Product Details</button></a></td>
                         {{#when this.status 'noteq' 'cancelled'}}
                         <td><a class="btn btn-danger" href="/cancel-order/?id={{this._id}}">Cancel</a></td>
                         {{/when}}

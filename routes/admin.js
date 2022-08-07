@@ -60,6 +60,16 @@ router.get('/block-user/:id', verifyLogin, adminController.getBlockUser)
 
 // router.get('/unblock-user/:id', verifyLogin, adminController.getUnBlockUser)
 
+router.get('/view-orders/:id', verifyLogin, adminController.getViewOrders)
+
+router.get('/view-order-products', verifyLogin, adminController.getOrderProducts)
+
+router.get('/status-shipped', verifyLogin, adminController.getChangeStatusShipped)
+
+router.get('/status-cancelled', verifyLogin, adminController.getChangeStatusCancelled)
+
+router.get('/status-delivered', verifyLogin, adminController.getChangeStatusDelivered)
+
 // admin logout
 
 router.get('/logout', adminController.getLogout)

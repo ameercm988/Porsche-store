@@ -61,7 +61,7 @@
             <div class="bg-secondary rounded h-100 p-4">
                 <h6 class="mb-4">Users List</h6>
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table" id="userTable">
                         <thead>
                             <tr>
                                 <th scope="col">NO:</th>
@@ -71,6 +71,7 @@
                                 <th scope="col">Email</th>
                                 <th scope="col">Mobile Number</th>
                                 <th scope="col">Action</th>
+                                <th scope="col">ORDERS</th>
                             </tr>
                         </thead>
                         {{#each users}}
@@ -88,7 +89,7 @@
                                 <td>
                                     <a href="/admin/block-user/{{this._id}}">
                                         <button class="text-white"
-                                            style="background-color: rgb(42, 42, 246);border-color: aliceblue; border-radius:5px;"
+                                            style="background-color: rgb(22, 17, 17);border-color: rgb(53, 174, 239); border-radius:5px;border-width: 4px"
                                             onclick="return confirm('Do you want to unblock {{this.username}}?')">UNBLOCK
                                         </button>
                                     </a>
@@ -97,12 +98,21 @@
                                 <td>
                                     <a href="/admin/block-user/{{this._id}}">
                                         <button class="text-white"
-                                            style="background-color: rgb(223, 18, 18);border-color: aliceblue;border-radius:5px; width: 90px;"
+                                            style="background-color: rgb(22, 17, 17);border-color: rgb(196, 24, 24);border-radius:5px; width: 90px;border-width: 4px"
                                             onclick="return confirm('Do you want to block {{this.username}}?')">BLOCK
                                         </button>
                                     </a>
                                 </td>
                                 {{/if}}
+
+                                 <td>
+                                    <a href="/admin/view-orders/{{this._id}}">
+                                        <button class="text-white"
+                                            style="background-color: rgb(22, 17, 17);border-color: rgb(12, 217, 59);border-radius:5px; width: 90px; border-width: 4px;">ORDERS</button>
+                                    </a>
+                                </td>
+
+
 
                             </tr>
 
@@ -114,3 +124,16 @@
         </div>
     </div>
 </div>
+
+{{!-- <script>
+    $(document).ready(function () {
+
+
+        $('#userTable').wrap('<div id="hide" style="display:none"/>');
+
+        $('#hide').css('display', 'block');
+    });
+
+
+    var table = $('#userTable').DataTable();
+</script> --}}

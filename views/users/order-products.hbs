@@ -3,10 +3,10 @@
 		<div class="container">
 			<div class="flex-w flex-sb-m p-b-52">
 				<div class="flex-w flex-l-m filter-tope-group m-tb-10">
-					
+					<h3 style="text-decoration: underline; text-decoration-color: rgb(71, 71, 229);">Ordered Items</h3>
 				</div>
 			</div>
-
+			
 			<div class="row isotope-grid">
 				{{#each products}}
 
@@ -15,8 +15,10 @@
 					<!-- Block2 -->
 					<div class="block2" >
 						<div class="block2-pic hov-img0">
-							<img src="/productImages/{{this.product._id}}0" alt="IMG-PRODUCT" style="height:20rem ;">
+							{{!-- <img src="/productImages/{{this.product._id}}0" alt="IMG-PRODUCT" style="height:20rem ;"> --}}
+							<img src="/productImages/{{this.product._id}}0.jpg" alt="IMG-PRODUCT" >
 						</div>
+						
 
 						<div class="block2-txt flex-w flex-t p-t-14">
 							<div class="block2-txt-child1 flex-col-l ">
@@ -34,14 +36,15 @@
 
 							<div class="block2-txt-child2 flex-r p-t-3">
 								<a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-									<img class="icon-heart1 dis-block trans-04" src="/images/icons/icon-heart-01.png" alt="ICON">
-									<img class="icon-heart2 dis-block trans-04 ab-t-l" src="/images/icons/icon-heart-02.png" alt="ICON">
+									<img class="icon-heart1 dis-block trans-04" src="users/images/icons/icon-heart-01.png" alt="ICON">
+									<img class="icon-heart2 dis-block trans-04 ab-t-l" src="users/images/icons/icon-heart-02.png" alt="ICON">
 								</a>
 							</div>
 						</div>
 					</div>
 				</div>	
 				{{/each}}
+				
 			</div>
 
 			<!-- Load more -->

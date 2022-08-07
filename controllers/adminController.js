@@ -2,6 +2,7 @@
 const adminHelper = require('../helpers/adminHelper')
 const productHelper = require('../helpers/productHelper')
 const categoryHelper = require('../helpers/categoryHelper')
+const { response } = require('../app')
 
 
 module.exports = {
@@ -173,6 +174,51 @@ module.exports = {
     //         res.redirect('/admin/view-users')
     //     })
     // },
+
+    getViewOrders: async (req, res, next) => {
+        // console.log('params from adminside');
+        // console.log(req.params.id);
+        let orders = await adminHelper.getUserOrders(req.params.id)
+        // console.log(orders);
+        // console.log(">>>>>>>>>>orders");
+        res.render('admin/view-user-orders', { layout: 'admin-layout', orders})
+
+    },
+
+    getOrderProducts : async(req, res, next) => {
+        let orderProducts = await adminHelper.getOrderProducts(req.query.id)
+
+        res.render('admin/view-order-products', {layout : 'admin-layout', orderProducts})
+
+    },
+
+    getChangeStatusShipped : (req, res, next) => {
+        let orderId = req.query.id
+        let userId = req.query.userId
+        let status = 'shipped'
+        adminHelper.changeStatus(orderId, status).then((response) => {
+            res.redirect('/admin/view-orders/' + userId)
+        })
+    },
+
+    getChangeStatusCancelled : (req, res, next) => {
+        let orderId = req.query.id
+        let userId = req.query.userId
+        let status = 'Cancelled'
+        adminHelper.changeStatus(orderId, status).then((response) => {
+            res.redirect('/admin/view-orders/' + userId)
+        })
+    },
+
+    getChangeStatusDelivered : (req, res, next) => {
+        
+        let orderId = req.query.id
+        let userId = req.query.userId
+        let status = 'Delivered'
+        adminHelper.changeStatus(orderId, status).then((response) => {
+            res.redirect('/admin/view-orders/' + userId)
+        })
+    },
 
     getLogout: (req, res) => {
         req.session.isAdminLoggedIn = null

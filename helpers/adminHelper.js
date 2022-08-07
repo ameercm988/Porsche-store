@@ -1,6 +1,7 @@
 const db = require('../config/connections')
 const bcrypt = require('bcrypt')
 const collection = require('../config/collections');
+const { response } = require('../app');
 // const { BulkCountryUpdatePage } = require('twilio/lib/rest/voice/v1/dialingPermissions/bulkCountryUpdate');
 // const { ObjectID } = require('bson');
 const objectId = require('mongodb').ObjectId
@@ -50,7 +51,7 @@ module.exports = {
                 }
         })
         })
-    }
+    },
 
     // unBlockUser : (userId) => {
     //     return new Promise(async(resolve, reject) => {
@@ -59,5 +60,71 @@ module.exports = {
     //         })
     //     })
     // }
+
+    
+    getUserOrders: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            let orders = await db.get().collection(collection.ORDER_COLLECTION).find({ UserId: objectId(userId) }).toArray()
+            console.log(orders);
+            resolve(orders)
+            // console.log(orders);
+            // console.log('orders from fetch');
+        })
+    },
+
+    getOrderProducts : async (orderId) => {
+        console.log(orderId);
+            return new Promise(async (resolve, reject) => {
+                let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                    {
+                        $match: { _id: objectId(orderId) }
+                    },
+                    {
+                        $unwind: '$Products'
+                    },
+                    {
+                        $project: {
+                            item: '$Products.item',
+                            quantity: '$Products.quantity'
+                        }
+    
+                    },
+                    {
+                        $lookup: {
+                            from: collection.PRODUCT_COLLECTIONS,
+                            localField: 'item',
+                            foreignField: '_id',
+                            as: 'product'
+                        }
+    
+                    },
+                    {
+                        $project: {
+                            item: 1,
+                            quantity: 1,
+                            product: { $arrayElemAt: ['$product', 0] }
+                        }
+                    }
+    
+                ]).toArray()
+                console.log(orderItems);
+                resolve(orderItems)
+                
+    
+            })
+    },
+
+    changeStatus : (orderId, statuS) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.ORDER_COLLECTION).updateOne({_id : objectId(orderId)},
+            {
+                $set : {
+                    status : statuS
+                }
+            }).then((response) => {
+                resolve(response)
+            })
+        })
+    } 
 }
 

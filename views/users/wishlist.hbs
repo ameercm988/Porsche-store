@@ -1,0 +1,206 @@
+
+
+<section class="mt-5 pt-5" style="margin-top:18px">
+
+    <!-- wishlist-table-area-start -->
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="wishlist-table-head">
+                    <h4>Your wishlist</h4>
+                </div>
+            </div>
+        </div>
+
+
+        <center>
+            {{#if wishlistItems}}
+            {{#each wishlistItems}}
+            <div class="col-md-6 card mb-3 wishCard">
+                <div class="row no-gutters">
+                    <div class="col-xs-12 col-md-4">
+                        <img src="/productImages/{{this.product._id}}0.jpg"
+                             class="card-img" alt="...">
+                    </div>
+                    <div class="col-xs-12 col-md-4 ml-5">
+
+                        <div class="card-body">
+                            <h5 class="card-title mt-3">{{this.product.name}}</h5>
+                            <p class="">{{this.product.category}}</p><br>
+                            <p class="card-text" style="color: rgb(97, 90, 90);"><strong>Price : $ {{this.product.price}}</strong>
+                            </p>
+
+                            {{!-- <p class="card-text" style="font-size: 15px;">Stock : Available</p> --}}
+
+                            <div class="d-flex">
+                                {{!-- <button class="btn btn-success text-light" style="margin-top:8px; margin-right: 10px;" onclick="addToCart('{{product._id}}')">Add to cart</button> --}}
+                                 <a onclick="addToCart('{{this.product._id}}')" style="margin-top:8px; margin-right: 10px;"
+                                class="btn btn-success text-light" >Add to cart</a>
+
+                                {{!-- <i class="fa-solid fa-rectangle-xmark" style="color: red; height: 100px;"></i> --}}
+
+                            <a style="margin-top:8px"
+                                class="btn btn-danger text-light">Remove</a>
+                            </div>
+
+
+                           
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+            {{else}}
+                <center>
+				{{!-- <h1 style="color: red;">Save your favourites here</h1> --}}
+				<img src="https://2.bp.blogspot.com/-QfSOClZc8r0/XNr6srFlzjI/AAAAAAAAGlA/lzs505eFFiEdyAytzKkMabdUTihKywcqwCLcBGAs/s1600/EXAM360%2B-%2BNo%2BWishlist.png" alt="" style="width:300px"><br>
+				<a class="btn btn-succes" href="/shop" style="margin-top: 17px; color: green; border: solid green;">SHOP
+					NOW</a>
+			</center>
+            {{/if}}
+
+
+
+        </center>
+
+    </div>
+    <!-- wishlist-table-area-end -->
+</section>
+
+
+
+
+
+
+<style>
+    .wishCard {
+        width: 49%;
+        border: 1px solid #00000012;
+        margin-top: 15px;
+        padding-right: 1px;
+        margin-left: 10px;
+        padding: 35px;
+        border-radius: 10px;
+        box-shadow: 10px 10px 183px -58px rgba(0, 0, 0, 0.25);
+        -webkit-box-shadow: 10px 10px 183px -58px rgba(0, 0, 0, 0.25);
+        -moz-box-shadow: 10px 10px 183px -58px rgba(0, 0, 0, 0.25);
+    }
+
+    .page-title {
+        background-color: white;
+    }
+
+    .wishlist-table-area {
+        padding: 60px 0;
+    }
+
+    .wishlist-table-head {
+        margin-bottom: 22px;
+    }
+
+    .wishlist-table-head h4 {
+        color: #555555;
+        font-size: 18px;
+        letter-spacing: 0;
+        position: relative;
+        text-transform: uppercase;
+    }
+
+    .wishlist-table-head h4::after {
+        background: #ed1d7f none repeat scroll 0 0;
+        bottom: -22px;
+        content: "";
+        height: 3px;
+        left: 0;
+        position: absolute;
+        width: 30px;
+        z-index: 2;
+    }
+
+    .wishlist-table.shopping-cart-table {
+        border: 0 none;
+    }
+
+    .wishlist-table.shopping-cart-table thead tr {
+        color: #555555;
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 0;
+    }
+
+    .wishlist-table.shopping-cart-table thead tr th {
+        border-bottom: 1px solid #ebebeb;
+        width: 15%;
+    }
+
+    .wishlist-table.shopping-cart-table thead tr th,
+    .wishlist-table.shopping-cart-table table td {
+        font-weight: 300;
+        padding: 15px 10px;
+        text-align: left;
+    }
+
+    .wishlist_product_name>a {
+        color: #555555;
+    }
+
+    .wishlist-desc {
+        color: #5d5d5d;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: 20px;
+    }
+
+    .wishlist_price .product_price {
+        color: #555555;
+        font-size: 18px;
+        letter-spacing: 0;
+    }
+
+    .wishlist_availability>span {
+        color: #555555;
+        font-size: 14px;
+        letter-spacing: 0;
+        text-transform: uppercase;
+    }
+
+    .wishlist_add_cart>button {
+        background: #f2f2f2 none repeat scroll 0 0;
+        border: 0 none;
+    }
+
+    .wishlist_add_cart>button:hover {
+        background: #ed1d7f none repeat scroll 0 0;
+        color: #fff;
+    }
+
+    .wishlist-table tbody tr {
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .wishlist-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-img-title {}
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-pro-name {}
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-pro-desc {
+        width: 32%;
+    }
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-pro-price {
+        width: 10%;
+    }
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-pro-availabillity {}
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-pro-add-to {}
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-pro-remove {}
+</style>
