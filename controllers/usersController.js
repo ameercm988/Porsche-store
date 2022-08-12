@@ -7,6 +7,7 @@ const categoryHelper = require('../helpers/categoryHelper');
 const { use } = require('../routes/users');
 const { response } = require('../app');
 const { Db } = require('mongodb');
+const adminHelper = require('../helpers/adminHelper');
 
 
 module.exports = {
@@ -14,18 +15,19 @@ module.exports = {
 
         productHelper.getAllProducts().then((products) => {
             categoryHelper.getAllCategory().then(async (category) => {
-console.log(req.sessionID,'sessionid');
+                let couponData = await adminHelper.getCoupons()
                 if (req.session.isLoggedIn) {
                     let user = req.session.user
                     let userId = user._id
                     let cartCount = await usersHelper.getCartCount(userId)
                     let totalAmount = await usersHelper.getTotalAmount(userId)
                     let wishlistCount = await usersHelper.getWishlistCount(userId)
+                    
                     usersHelper.getCartDetails(userId).then((cartItems) => {
-                        res.render('users/users-index', { user, layout: 'users-layout', products, category, cartItems, cartCount, totalAmount, wishlistCount, Home: true })
+                        res.render('users/users-index', { user, layout: 'users-layout', products, category, cartItems, cartCount, totalAmount, wishlistCount, couponData, Home: true })
                     })
                 } else {
-                    res.render('users/users-index', { guest: true, layout: 'users-layout', products, category, Home: true })
+                    res.render('users/users-index', { guest: true, layout: 'users-layout', products, category, couponData, Home: true })
                 }
             })
         })
@@ -254,8 +256,6 @@ console.log(req.sessionID,'sessionid');
             let wishlistCount = await usersHelper.getWishlistCount(userId)
             let totalAmount = await usersHelper.getTotalAmount(userId)
 
-            req.session.total = totalAmount,
-
             res.render('users/shopping-cart', { layout: 'users-layout', user, cartCount, cartItems, totalAmount, wishlistCount })
 
         } catch (error) {
@@ -301,12 +301,15 @@ console.log(req.sessionID,'sessionid');
         let cartCount = await usersHelper.getCartCount(userId)
         let wishlistCount = await usersHelper.getWishlistCount(userId)
         let savedAddress = await usersHelper.getSavedAddress(userId)
+        
+        
         // console.log(savedAddress);
         // let address = await usersHelper.getAddress(userId)          
         res.render('users/checkout', { layout: 'users-layout', user, cartCount, totalAmount, savedAddress, wishlistCount })
     },
 
     postCheckout: async (req, res, next) => {
+        console.log('postcheckout');
         if (req.body.saveAddress == 'on') {
             // console.log('its onnnnnnnnnnnnnnnn');
             await usersHelper.addNewAddress(req.body, req.session.user._id)
@@ -314,15 +317,27 @@ console.log(req.sessionID,'sessionid');
 
         let products = await usersHelper.gerCartProList(req.body.userId)
         let totalAmount = await usersHelper.getTotalAmount(req.body.userId)
-        // if(req.body.Coupon_Code){    
-        //     await usersHelper.checkCoupon(totalAmount, req.body.Coupon_Code).then(response => res.json(response)).catch(error => res.json(error))
-        // }
-        usersHelper.placeOrder(req.body, products, totalAmount).then((orderId) => {
-            // console.log(orderId);
+        let discountData = null
+
+        if(req.body.Coupon_Code){    
+            await usersHelper.checkCoupon(req.body.Coupon_Code, totalAmount).then((response) => {
+                console.log(response);
+                 discountData = response
+            }).catch(() => discountData = null)
+                 
+        }
+
+        usersHelper.placeOrder(req.body, products, totalAmount, discountData).then((orderId) => {
+            console.log('after placeordr');
+            console.log(discountData);
             if (req.body.Pay_Method === 'COD') {
                 res.json({ codSuccess: true })
             } else {
-                usersHelper.generateRazorpay(orderId, totalAmount).then((response) => {
+                let netAmount = (discountData) ? discountData.amount : totalAmount
+                console.log(discountData.amount,"      discountData.amount");
+                console.log(totalAmount, "           totalAmount");
+                console.log(netAmount,  "               netAmount");
+                usersHelper.generateRazorpay(orderId, netAmount).then((response) => {
                     res.json(response)
                 })
             }
@@ -372,18 +387,22 @@ console.log(req.sessionID,'sessionid');
         })
     },
 
-    postCouponCheck : (req, res, next) => {
+    postCouponCheck : async(req, res, next) => {
+        let userId = req.session.user._id
+        let couponCode = req.body.coupon
+        let totalAmount = await usersHelper.getTotalAmount(userId)
         
-        let couponCode = req.body.code
-        let totalAmount = req.session.total
         console.log("coouponcode,amount");
         console.log(couponCode,totalAmount);
         usersHelper.checkCoupon(couponCode, totalAmount).then((response) => {
             res.json(response)
+            console.log(response);
             console.log('its true');
+            
         }).catch((response) => {
             res.json(response)
             console.log('its false');
+            
         })
     },
 

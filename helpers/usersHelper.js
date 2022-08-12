@@ -310,36 +310,42 @@ module.exports = {
         })
     },
 
-    placeOrder: (order, products, total) => {
+    placeOrder: (order, products, total, discountData) => {
+
+        // console.log(order, products, total + "<<<<<<<<<<<<<<<<<<<<<placeorder");
+        let orderData = {
+            Total_Amount: total,
+            discountData : discountData
+
+        }
+
+        let status = order.Pay_Method === 'COD' ? 'placed' : 'pending'
+        let orderObj = {
+
+            Name: order.First_Name + ' ' + order.Last_Name,
+
+            deliveryDetails: {
+                Company_Name: order.Company_Name,
+                Street_Address: order.Street_Address,
+                Extra_Details: order.Extra_Details,
+                Town_City: order.Town_City,
+                Country_State: order.Country_State,
+                Post_Code: order.Post_Code
+            },
+
+            Phone: {
+                Phone: order.Phone,
+                Alt_Phone: order.Alt_Phone,
+            },
+
+            orderData : orderData,
+            Pay_Method: order.Pay_Method,
+            UserId: objectId(order.userId),
+            Products: products,
+            status: status,
+            date: new Date().toLocaleString()
+        }
         return new Promise(async (resolve, reject) => {
-            // console.log(order, products, total + "<<<<<<<<<<<<<<<<<<<<<placeorder");
-            let status = order.Pay_Method === 'COD' ? 'placed' : 'pending'
-            let orderObj = {
-
-                Name: order.First_Name + ' ' + order.Last_Name,
-
-                deliveryDetails: {
-                    Company_Name: order.Company_Name,
-                    Street_Address: order.Street_Address,
-                    Extra_Details: order.Extra_Details,
-                    Town_City: order.Town_City,
-                    Country_State: order.Country_State,
-                    Post_Code: order.Post_Code
-                },
-
-                Phone: {
-                    Phone: order.Phone,
-                    Alt_Phone: order.Alt_Phone,
-                },
-
-                Pay_Method: order.Pay_Method,
-                UserId: objectId(order.userId),
-                Products: products
-                ,
-                Total_Amount: total,
-                status: status,
-                date: new Date()
-            }
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
                 db.get().collection(collection.CART_COLLECTION).deleteOne({ user: objectId(order.userId) })
                 resolve(response.insertedId)
@@ -655,14 +661,18 @@ module.exports = {
     },
 
     checkCoupon: (code, amount) => {
-        const coupon = code.toUpperCase()
+        const coupon = code.toString().toUpperCase();
+
+        console.log(coupon);
+
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.COUPON_COLLECTION).findOne({ Name: coupon }).toArray().then((response) => {
+            db.get().collection(collection.COUPON_COLLECTION).findOne({ Name: coupon }).then((response) => {
+                console.log(response);
                 console.log('from db');
                 if (response == null) {
                     // let response = {status : false}
                     console.log(response + "          null resp");
-                    reject({ status : false })
+                    reject({ status: false })
                 } else {
                     let offerPrice = parseFloat(amount * response.Offer)
                     // let discountPrice = amount - offerPrice
@@ -673,7 +683,8 @@ module.exports = {
                     // }
                     console.log("          Nonnull resp");
                     resolve(response = {
-                        status : true,
+                        couponCode : coupon, 
+                        status: true,
                         amount: newTotal,
                         discount: offerPrice
                     })

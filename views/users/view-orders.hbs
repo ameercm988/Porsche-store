@@ -81,7 +81,11 @@
                         <td>{{this.deliveryDetails.Street_Address}}</td>
                         <td>{{this.deliveryDetails.Post_Code}}</td>
                         <td>{{this.Phone.Phone}}</td>
-                        <td>$ {{this.Total_Amount}}</td>
+                        {{#if this.orderData.discountData}}
+                        <td>$ {{this.orderData.discountData.amount}}</td>
+                        {{else}}
+                        <td>$ {{this.orderData.Total_Amount}}</td>
+                        {{/if}}
                         <td>{{this.Pay_Method}}</td>
 
                         <td {{#when this.status 'eq' 'cancelled' }} style="color: rgb(255, 0, 0);" {{/when}}>

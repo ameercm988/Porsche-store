@@ -119,12 +119,15 @@
                         <div class="pcb-content">
                             <p>Enter your coupon code if you have one</p>
                             <div class="pcb-cuppon-input clearfix">
-                                <input type="text" placeholder="Coupon code" name="Coupon_Code" id="couponInput">
-                                {{!-- <label style="border: solid green;" for="">Apply coupon</label> --}}
                                 
-                                <button onclick="couponCheck('{{this.value}}')"
-                                    class="checkout-page-button hvr-bs">Apply</button>
+                                <input type="text" placeholder="Coupon code" name="Coupon_Code" id="couponInput" value="">
+                                <div>
                                     <span id="couponValid"></span>
+                                </div>
+                                
+                                <button onclick="couponCheck()"
+                                    class="checkout-page-button hvr-bs">Apply</button>
+                                    
                             </div>
 
 
@@ -202,11 +205,53 @@
 </form>
 
 
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+
+
+
 
 <script>
+    function couponCheck()  {
 
+        
+        let code = $('#couponInput').val()
+        console.log(code)
+        $.ajax({
+            url : '/check-coupon',
+            data : {
+                coupon : code,
+            },
+            method : 'post',
 
+            success : (response) => {
+                if(response.status){
+                    $('#couponValid').show()
+                    $('#couponValid').html('<i class="text-success fa-regular fa-circle-check"></i>  Valid Code')
+
+                    setTimeout(() => {
+                        $('#couponInput').prop('readonly', true)
+                        console.log('hi');
+                    }, 1000)
+
+                    $('#totaldiscount').html(response.discount)
+
+                    $('#totalPrice').html(response.amount)
+                } else {
+
+                    $('#couponValid').show()
+                    $('#couponValid').html('<i class="fa-solid text-danger fa-xmark"></i> Invalid Code')
+                    $("#discount").html(0)
+                    setTimeout(() => {
+                        $('#couponValid').hide()
+                    }, 3000)
+
+                }
+            }
+        })
+
+    }
+</script>
+
+<script>
 
     function savedAddressSelect(First_Name, Last_Name, Company_Name, Street_Address, Extra_Details, Town_City, Country_State, Post_Code, Phone, Alt_Phone) {
         document.getElementById('First_Name').value = First_Name
@@ -222,170 +267,6 @@
     }
 
 </script>
-<script>
-
-    function couponCheck(couponCode) {
-        console.log(couponCode)
-        $.ajax({
-            url: '/check-coupon',
-            data: {
-                code: couponCode
-            }
-            method: 'post',
-
-            success: (response) => {
-                swal('hola')
-                alert(response)
-                if (response.status) {
-
-                    $('#couponValid').show()
-                    $('#couponValid').html('<i class="text-success fa-regular fa-circle-check"></i>  Valid Code')
-
-                    setTimeout(() => {
-                        $('#couponInput').prop('readonly', true)
-                        console.log('hi');
-                    }, 1000)
-
-                    $('#totaldiscount').html(response.discount)
-
-                    $('#totalPrice').html(response.amount)
-
-
-                    //swal('Offer applied', 'success')
-                    //console.log("respoonse true from ajax")
-
-                    //totalAmount = response.amount
-                    //discount = response.discount
-                    //document.getElementById(totaldiscount).value = discount
-
-                    //location.reload()
-
-                } else {
-
-                    $('#couponValid').show()
-                    $('#couponValid').html('<i class="fa-solid text-danger fa-xmark"></i> Invalid Code')
-                    $("#discount").html(0)
-                    setTimeout(() => {
-                        $('#couponValid').hide()
-                    }, 3000)
-
-                    //swal('Offer Not Applicable', 'error')
-                    //console.log("respoonse false from ajax")
-                    //location.reload()
-                }
-            }
-        })
-    }
-</script>
-
-{{!--
-<script>
-
-    //input field validation
-
-    //$(document).ready(function () {
-
-    $.validator.addMethod("alpha", function (value, element) {
-        return this.optional(element) || value == value.match(/^[a-zA-Z\s]+$/);
-    });
-
-
-    $('#checkout-form').validate({
-
-        rules: {
-
-            First_Name: {
-                required: true,
-                alpha: true,
-                minlength: 3
-            },
-
-            Last_Name: {
-                required: true,
-                alpha: true
-            },
-
-            Company_Name: {
-                required: true,
-                minlength: 3
-            },
-
-            Street_Address: {
-                required: true,
-                minlength: 3
-            },
-
-            Extra_Details: {
-                required: true,
-                minlength: 3
-            },
-
-            Town_City: {
-                required: true,
-                alpha: true,
-                minlength: 3
-            },
-
-            Country_State: {
-                required: true,
-                alpha: true,
-                minlength: 3
-            },
-
-            Post_Code: {
-                required: true,
-                digits: true,
-                minlength: 6,
-                maxlength: 6
-            },
-
-            Phone: {
-                required: true,
-                digits: true,
-                minlength: 10,
-                maxlength: 10
-            },
-
-            Alt_Phone: {
-                required: true,
-                digits: true,
-                minlength: 10,
-                maxlength: 10
-            },
-            Pay_Method: {
-                required: true
-            }
-
-
-        },
-
-        messages: {
-
-            First_Name: {
-                alpha: "Name should be in alphabets"
-            },
-
-            Last_Name: {
-                alpha: "Name should be in alphabets"
-            },
-            Town_City: {
-                alpha: "This field should be in alphabets"
-            },
-
-            Country_State: {
-                alpha: "This field should be in alphabets"
-            },
-            Pay_Method: {
-                required: "Choose a payment method"
-            }
-
-        },
-
-
-    })
-    //})
-
-</script> --}}
 
 
 <style>
@@ -411,6 +292,7 @@
         margin: 0;
     }
 </style>
+
 
 <style>
     dt {
@@ -692,15 +574,15 @@
 
                 swal("Confirming your order!", {
                     buttons: false,
-                    timer: 3000,
+                    timer: 2000,
                 });
-                setTimeout(()=>{
+               
                     if (response.codSuccess) {
                     location.href = '/order-success'
                 } else {
                     razorpayPayment(response)
                 }
-                },2000)
+               
                 
             }
         })

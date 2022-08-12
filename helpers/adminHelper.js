@@ -140,6 +140,7 @@ module.exports = {
             Name: couponData.name.toUpperCase(),
             Offer: parseFloat(couponData.offer / 100),
             validity: new Date(new Date().getTime() + (oneDay * parseInt(couponData.validity)))
+            
         }
         return new Promise((resolve, reject) => {
 
@@ -148,7 +149,7 @@ module.exports = {
 
                     db.get().collection(collection.COUPON_COLLECTION).createIndex({ "Name": 1 }, { unique: true })
 
-                    db.get().collection(collection.COUPON_COLLECTION).createIndex({ "Validity": 1 }, { expireAfterSeconds: 0 })
+                    db.get().collection(collection.COUPON_COLLECTION).createIndex({ "validity": 1 }, { expireAfterSeconds: 0 })
 
                     db.get().collection(collection.COUPON_COLLECTION).insertOne(couponObj).then((response) => {
                         resolve(response)
