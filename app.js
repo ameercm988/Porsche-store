@@ -6,9 +6,12 @@ const logger = require('morgan');
 const hbs = require('express-handlebars')
 const db = require('./config/connections')
 const session = require('express-session')
-const nocache =require('nocache')
+const nocache = require('nocache')
 const fileUpload = require('express-fileupload')
 const handlebars = require('handlebars')
+const helper = require('./helpers/handlebarHelper')
+
+
 
 
 const usersRouter = require('./routes/users');
@@ -19,7 +22,14 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-app.engine('hbs',hbs.engine({extname:'hbs',layoutsDir:__dirname+'/views/layouts',usersDir:__dirname+'/views/users',adminDir:__dirname+'/views/admin',partialsDir:__dirname+'/views/partials/'}))
+app.engine('hbs', hbs.engine({
+  extname: 'hbs',
+  layoutsDir: __dirname + '/views/layouts',
+  usersDir: __dirname + '/views/users',
+  adminDir: __dirname + '/views/admin',
+  partialsDir: __dirname + '/views/partials/',
+  Helper : helper
+}))
 
 // Middleware
 
@@ -31,6 +41,7 @@ handlebars.registerHelper("when", function (operand_1, operator, operand_2, opti
     'or': function (l, r) { return l || r; },
     'and': function (l, r) { return l && r; },
     '%': function (l, r) { return (l % r) === 0; },
+    
   }
     , result = operators[operator](operand_1, operand_2);
 
@@ -44,14 +55,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
-app.use(session({secret:"xoxo", resave:false, saveUninitialized:true, cookie:{ maxAge:60000000}}))
+app.use(session({ secret: "xoxo", resave: false, saveUninitialized: true, cookie: { maxAge: 60000000 } }))
 app.use(nocache())
 
 // database connection
 
-db.connect((err)=>{
-  if(err)
-    console.log('Database not connected'+err);
+db.connect((err) => {
+  if (err)
+    console.log('Database not connected' + err);
   else
     console.log('Database connected successfully');
 })
@@ -61,13 +72,13 @@ app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

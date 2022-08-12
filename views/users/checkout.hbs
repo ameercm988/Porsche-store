@@ -60,34 +60,34 @@
 
                             <div class="billing-address-input clearfix">
                                 <label>FIRST NAME *</label>
-                                <input type="text" name="First_Name" id="First_Name">
+                                <input type="text" name="First_Name" id="First_Name" required>
                             </div>
                             <div class="billing-address-input clearfix">
                                 <label>LAST NAME *</label>
-                                <input type="text" name="Last_Name" id="Last_Name">
+                                <input type="text" name="Last_Name" id="Last_Name" required>
                             </div>
                             <div class="billing-address-input clearfix">
                                 <label>COMPANY / HOUSE NAME *</label>
-                                <input type="text" name="Company_Name" id="Company_Name">
+                                <input type="text" name="Company_Name" id="Company_Name" required>
                             </div>
                             <div class="billing-address-input clearfix">
                                 <label>ADDRESS *</label>
                                 <input type="text" placeholder="Street Address" name="Street_Address"
-                                    id="Street_Address">
+                                    id="Street_Address" required>
                                 <input type="text" placeholder="Fashin, suite, unite ect (optinal)" name="Extra_Details"
-                                    id="Extra_Details">
+                                    id="Extra_Details" required>
                             </div>
                             <div class="billing-address-input clearfix">
                                 <label>TOWN / CITY *</label>
-                                <input type="text" name="Town_City" id="Town_City">
+                                <input type="text" name="Town_City" id="Town_City" required>
                             </div>
                             <div class="billing-address-input clearfix">
                                 <label>COUNTRY / STATES</label>
-                                <input type="text" name="Country_State" id="Country_State">
+                                <input type="text" name="Country_State" id="Country_State" required>
                             </div>
                             <div class="billing-address-input clearfix">
                                 <label>POSTCODE / ZIP *</label>
-                                <input type="text" name="Post_Code" id="Post_Code">
+                                <input type="text" name="Post_Code" id="Post_Code" required>
                             </div>
                             {{!-- <div class="billing-address-input clearfix">
                                 <label>EMAIL ADDRESS *</label>
@@ -95,7 +95,7 @@
                             </div> --}}
                             <div class="billing-address-input clearfix" style="margin-bottom:0px">
                                 <label>PHONE *</label>
-                                <input type="text" name="Phone" id="Phone">
+                                <input type="text" name="Phone" id="Phone" required>
                             </div>
                             <div class="cbab-create-account">
                                 {{!-- <input onchange="useRegPnum1('{{ user.Pnum }}')" id="useRegPnum" type="checkbox">
@@ -118,18 +118,17 @@
                         <h5 class="checkout-box-title">COUPON CODE</h5>
                         <div class="pcb-content">
                             <p>Enter your coupon code if you have one</p>
-                            {{!-- <div class="pcb-cuppon-input clearfix">
-                                <input type="text" placeholder="Coupon code" name="Coupon_Code">
-                                <button class="checkout-page-button hvr-bs">Apply</button>
-                            </div> --}}
-
                             <div class="pcb-cuppon-input clearfix">
-                                <div id="errorDiv"></div>
-                                <input type="text" id="couponCode" placeholder="Coupon code" name="Coupon_Code">
-                                {{!-- <a onclick="checkCoupon('{{ctotal}}')"
-                                    class="checkout-page-button hvr-bs btn btn-primary">Apply</a> --}}
+                                <input type="text" placeholder="Coupon code" name="Coupon_Code" id="couponInput">
+                                {{!-- <label style="border: solid green;" for="">Apply coupon</label> --}}
+                                
+                                <button onclick="couponCheck('{{this.value}}')"
+                                    class="checkout-page-button hvr-bs">Apply</button>
+                                    <span id="couponValid"></span>
                             </div>
 
+
+        
                         </div>
                     </div>
                     <div class="your-order-box">
@@ -151,7 +150,8 @@
                                 <li class="clearfix">Shipping and Handling <span>Free Shipping</span></li>
                                 <li class="order-total clearfix">Order Total <span>$ <span
                                             id="totalPrice">{{totalAmount}}</span></span></li>
-                                <input type="hidden" name="totalfinalPrice" id="totalfinalPrice" value="{{totalAmount}}">
+                                <input type="hidden" name="totalfinalPrice" id="totalfinalPrice"
+                                    value="{{totalAmount}}">
                                 {{!-- <input type="hidden" name="usdToInr" id="usdToInr"> --}}
                             </ul>
 
@@ -190,7 +190,8 @@
 
                             <div class="create-account-checkout-method">
                                 <div class="place-order" style="text-align: left;">
-                                    <button class="checkout-page-button hvr-bs" type="submit" id="submit-btn">Place
+                                    <button class="checkout-page-button hvr-bs" onclick="" type="submit"
+                                        id="submit-btn">Place
                                         order</button>
                                 </div>
                             </div>
@@ -204,7 +205,10 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 
 <script>
-    function savedAddressSelect(First_Name, Last_Name, Company_Name, Street_Address, Extra_Details, Town_City, Country_State, Post_Code, Phone, Alt_Phone){
+
+
+
+    function savedAddressSelect(First_Name, Last_Name, Company_Name, Street_Address, Extra_Details, Town_City, Country_State, Post_Code, Phone, Alt_Phone) {
         document.getElementById('First_Name').value = First_Name
         document.getElementById('Last_Name').value = Last_Name
         document.getElementById('Company_Name').value = Company_Name
@@ -215,9 +219,66 @@
         document.getElementById('Post_Code').value = Post_Code
         document.getElementById('Phone').value = Phone
         document.getElementById('Alt_Phone').value = Alt_Phone
-   }
+    }
+
+</script>
+<script>
+
+    function couponCheck(couponCode) {
+        console.log(couponCode)
+        $.ajax({
+            url: '/check-coupon',
+            data: {
+                code: couponCode
+            }
+            method: 'post',
+
+            success: (response) => {
+                swal('hola')
+                alert(response)
+                if (response.status) {
+
+                    $('#couponValid').show()
+                    $('#couponValid').html('<i class="text-success fa-regular fa-circle-check"></i>  Valid Code')
+
+                    setTimeout(() => {
+                        $('#couponInput').prop('readonly', true)
+                        console.log('hi');
+                    }, 1000)
+
+                    $('#totaldiscount').html(response.discount)
+
+                    $('#totalPrice').html(response.amount)
+
+
+                    //swal('Offer applied', 'success')
+                    //console.log("respoonse true from ajax")
+
+                    //totalAmount = response.amount
+                    //discount = response.discount
+                    //document.getElementById(totaldiscount).value = discount
+
+                    //location.reload()
+
+                } else {
+
+                    $('#couponValid').show()
+                    $('#couponValid').html('<i class="fa-solid text-danger fa-xmark"></i> Invalid Code')
+                    $("#discount").html(0)
+                    setTimeout(() => {
+                        $('#couponValid').hide()
+                    }, 3000)
+
+                    //swal('Offer Not Applicable', 'error')
+                    //console.log("respoonse false from ajax")
+                    //location.reload()
+                }
+            }
+        })
+    }
 </script>
 
+{{!--
 <script>
 
     //input field validation
@@ -324,7 +385,7 @@
     })
     //})
 
-</script>
+</script> --}}
 
 
 <style>
@@ -612,6 +673,8 @@
     .place-order button {}
 </style>
 
+
+
 {{!-- razorpay link --}}
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -626,12 +689,19 @@
             method: 'post',
             data: $('#checkout-form').serialize(),
             success: (response) => {
-                alert(response)
-                if (response.codSuccess) {
+
+                swal("Confirming your order!", {
+                    buttons: false,
+                    timer: 3000,
+                });
+                setTimeout(()=>{
+                    if (response.codSuccess) {
                     location.href = '/order-success'
                 } else {
                     razorpayPayment(response)
                 }
+                },2000)
+                
             }
         })
     })
@@ -678,7 +748,7 @@
                 if (response.status) {
                     location.href = '/order-success'
                 } else {
-                    alert("payment failed")
+                    swal("payment failed", '', 'error')
                 }
             }
         })

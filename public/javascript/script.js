@@ -1,4 +1,4 @@
-
+    
 
 
 
@@ -29,7 +29,7 @@ function addToCart(proId){
                 // $("#cart-count").html(count)
                 // $("#cart-count").load(location.href+"#cart-count")
                 // $("#cart-count").load(location.href+"#cart-count")
-                $(" #count").load(location.href+" #count")
+                $("#count").load(location.href+" #count")
                               
             }
         }

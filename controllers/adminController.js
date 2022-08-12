@@ -192,31 +192,59 @@ module.exports = {
 
     },
 
-    getChangeStatusShipped : (req, res, next) => {
+    getChangeStatus : (req, res, next) => {
         let orderId = req.query.id
         let userId = req.query.userId
-        let status = 'shipped'
+        let status = req.query.status
         adminHelper.changeStatus(orderId, status).then((response) => {
             res.redirect('/admin/view-orders/' + userId)
         })
     },
 
-    getChangeStatusCancelled : (req, res, next) => {
-        let orderId = req.query.id
-        let userId = req.query.userId
-        let status = 'Cancelled'
-        adminHelper.changeStatus(orderId, status).then((response) => {
-            res.redirect('/admin/view-orders/' + userId)
-        })
-    },
+    // getChangeStatusCancelled : (req, res, next) => {
+    //     let orderId = req.query.id
+    //     let userId = req.query.userId
+    //     let status = 'Cancelled'
+    //     adminHelper.changeStatus(orderId, status).then((response) => {
+    //         res.redirect('/admin/view-orders/' + userId)
+    //     })
+    // },
 
-    getChangeStatusDelivered : (req, res, next) => {
+    // getChangeStatusDelivered : (req, res, next) => {
         
-        let orderId = req.query.id
-        let userId = req.query.userId
-        let status = 'Delivered'
-        adminHelper.changeStatus(orderId, status).then((response) => {
-            res.redirect('/admin/view-orders/' + userId)
+    //     let orderId = req.query.id
+    //     let userId = req.query.userId
+    //     let status = 'Delivered'
+    //     adminHelper.changeStatus(orderId, status).then((response) => {
+    //         res.redirect('/admin/view-orders/' + userId)
+    //     })
+    // },
+
+    getCoupons : (req, res, next) => {
+        adminHelper.getCoupons().then((coupons) => {
+            console.log(coupons);
+        res.render('admin/view-coupons', {layout : 'admin-layout', coupons})
+        })
+    },
+
+    getGenerateCoupon : (req, res, next) => {
+        
+        res.render('admin/generate-coupon', {layout : 'admin-layout'})
+   
+        
+    },
+
+    postGenerateCoupon : (req, res, next) => {
+        adminHelper.generateCoupon(req.body).then((response) => {
+            res.redirect('/admin/view-coupons')
+        })
+    },
+
+    getDeleteCoupon : (req, res, next) => {
+        let couponId = req.params.id
+        adminHelper.deleteCoupon(couponId).then((response) => {
+            // res.swal("coupon deleted")
+            res.redirect('/admin/view-coupons')
         })
     },
 

@@ -1,7 +1,7 @@
 
 // $(document).ready(function () {
 
-$('#table_id').DataTable();   //jquery data table
+//$('#table_id').DataTable();   //jquery data table
 
 
 $("#form").validate({
@@ -58,7 +58,18 @@ $("#form").validate({
     images: {
       required : true,
       minlength : 2
-    }
+    },
+    offer : {
+      required : true,
+      digits : true,
+      maxlength : 2
+    }, 
+    validity : {
+      required : true,
+      digits : true,
+      minlength : 1,
+      max  : 365
+    } 
   }, messages: {
 
     firstname: {
@@ -76,7 +87,10 @@ $("#form").validate({
     confirmpassword: {
       equalTo: "Passwords doesn't match"
     },
-    // images: {
+    validity : {
+      max : "max days allowed is 365"
+    }
+      // images: {
     //   minlength : "Minimum two images required"
     // }
   }

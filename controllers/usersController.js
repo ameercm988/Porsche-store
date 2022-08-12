@@ -14,7 +14,7 @@ module.exports = {
 
         productHelper.getAllProducts().then((products) => {
             categoryHelper.getAllCategory().then(async (category) => {
-
+console.log(req.sessionID,'sessionid');
                 if (req.session.isLoggedIn) {
                     let user = req.session.user
                     let userId = user._id
@@ -254,6 +254,8 @@ module.exports = {
             let wishlistCount = await usersHelper.getWishlistCount(userId)
             let totalAmount = await usersHelper.getTotalAmount(userId)
 
+            req.session.total = totalAmount,
+
             res.render('users/shopping-cart', { layout: 'users-layout', user, cartCount, cartItems, totalAmount, wishlistCount })
 
         } catch (error) {
@@ -278,6 +280,7 @@ module.exports = {
         // console.log(req.body);
         usersHelper.changeQuantity(req.body).then(async (response) => {
             response.totalAmount = await usersHelper.getTotalAmount(req.body.user)
+            // req.session.total = response.totalAmount
 
             res.json(response)
         })
@@ -298,7 +301,7 @@ module.exports = {
         let cartCount = await usersHelper.getCartCount(userId)
         let wishlistCount = await usersHelper.getWishlistCount(userId)
         let savedAddress = await usersHelper.getSavedAddress(userId)
-        console.log(savedAddress);
+        // console.log(savedAddress);
         // let address = await usersHelper.getAddress(userId)          
         res.render('users/checkout', { layout: 'users-layout', user, cartCount, totalAmount, savedAddress, wishlistCount })
     },
@@ -308,8 +311,12 @@ module.exports = {
             // console.log('its onnnnnnnnnnnnnnnn');
             await usersHelper.addNewAddress(req.body, req.session.user._id)
         }
+
         let products = await usersHelper.gerCartProList(req.body.userId)
         let totalAmount = await usersHelper.getTotalAmount(req.body.userId)
+        // if(req.body.Coupon_Code){    
+        //     await usersHelper.checkCoupon(totalAmount, req.body.Coupon_Code).then(response => res.json(response)).catch(error => res.json(error))
+        // }
         usersHelper.placeOrder(req.body, products, totalAmount).then((orderId) => {
             // console.log(orderId);
             if (req.body.Pay_Method === 'COD') {
@@ -338,6 +345,7 @@ module.exports = {
         let cartCount = await usersHelper.getCartCount(userId)
         let wishlistCount = await usersHelper.getWishlistCount(userId)
         let cartDetails = await usersHelper.getCartDetails(userId)
+        
         // console.log(orders);
         // console.log(">>>>>>>>>>orders");
         res.render('users/view-orders', { layout: 'users-layout', user, orders, cartCount, cartDetails, wishlistCount })
@@ -361,6 +369,21 @@ module.exports = {
         // console.log("cancel query");
         usersHelper.cancelOrder(req.query.id).then((response) => {
             res.redirect('/orders')
+        })
+    },
+
+    postCouponCheck : (req, res, next) => {
+        
+        let couponCode = req.body.code
+        let totalAmount = req.session.total
+        console.log("coouponcode,amount");
+        console.log(couponCode,totalAmount);
+        usersHelper.checkCoupon(couponCode, totalAmount).then((response) => {
+            res.json(response)
+            console.log('its true');
+        }).catch((response) => {
+            res.json(response)
+            console.log('its false');
         })
     },
 
@@ -403,9 +426,11 @@ module.exports = {
 
         let wishlistItems = await usersHelper.getwishlistItems(userId)
         let wishlistCount = await usersHelper.getWishlistCount(userId)
+        let cartItems = await usersHelper.getCartDetails(userId)
         let cartCount = await usersHelper.getCartCount(userId)
+        let totalAmount = await usersHelper.getTotalAmount(userId)
         console.log(wishlistItems, wishlistCount);console.log('wishlist');
-        res.render('users/wishlist', { layout : 'users-layout', user, wishlistItems, wishlistCount, cartCount})
+        res.render('users/wishlist', { layout : 'users-layout', user, wishlistItems, wishlistCount, cartItems, cartCount, totalAmount})
     },
 
     getAddToWishlist : (req, res, next) => {
@@ -415,6 +440,12 @@ module.exports = {
         usersHelper.addToWishlist(userId, proId).then((response) => {
             res.json({status : true})
             // res.redirect('/wishlist')
+        })
+    },
+
+    postRemoveWishlist : (req, res, next) => {
+        usersHelper.removeWishlist(req.body).then((response) => {
+            res.json(response)
         })
     },
 

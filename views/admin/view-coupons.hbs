@@ -1,0 +1,47 @@
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="container-fluid d-flex">
+                <a style="margin-left: auto;" href="/admin/generate-coupon"><button class="btn btn-success">GENERATE COUPON</button></a>
+            </div>
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Coupons</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered" style="color:  rgb(121, 120, 119);">
+                        <thead>
+                            <tr>
+                                <th scope="col">NO:</th>
+                                <th scope="col">Coupon</th>
+                                <th scope="col">Offer in %</th>
+                                <th scope="col">Validity</th>
+                                <th scope="col">Action</th>
+                                
+                            </tr>
+                        </thead>
+                        {{#each coupons}}
+                        <tbody>
+
+                            <tr>
+                                <th sope="row">{{@index}}</th>
+                                <td>{{this.Name}}</td>
+                                <td>{{this.Offer}}</td>
+                                <td>{{this.validity}}</td>
+                               
+                                <td>
+                                    <a href="/admin/delete-coupon/{{this._id}}">
+                                        <button class="text-white"
+                                            style="background-color: rgb(223, 18, 18);border-color: aliceblue;border-radius:5px;"
+                                            onclick="return confirm('Do you want to delete ?')">REMOVE
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                        {{/each}}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

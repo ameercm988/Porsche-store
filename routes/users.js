@@ -1,4 +1,5 @@
 const express = require('express');
+const adminController = require('../controllers/adminController');
 const router = express.Router();
 const usersController = require('../controllers/usersController');
 const { route } = require('./admin');
@@ -79,6 +80,9 @@ router.get('/order-products', verifyLogin, usersController.getOrderProducts)
 router.get('/cancel-order', verifyLogin, usersController.getCancelOrder)
 
 
+router.post('/check-coupon', verifyLogin, usersController.postCouponCheck)
+
+
 router.post('/verify-payment', usersController.postVerifyPayment)
 
 
@@ -89,6 +93,9 @@ router.get('/wishlist', verifyLogin, usersController.getWishlist)
 
 
 router.get('/addto-wishlist/:id', usersController.getAddToWishlist)
+
+
+router.post('/remove-wishlist-item', usersController.postRemoveWishlist)
 
 
 // router.get('/user-address', verifyLogin, usersController.getUserAddress)
