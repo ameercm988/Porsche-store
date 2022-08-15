@@ -315,7 +315,7 @@ module.exports = {
         // console.log(order, products, total + "<<<<<<<<<<<<<<<<<<<<<placeorder");
         let orderData = {
             Total_Amount: total,
-            discountData : discountData
+            discountData: discountData
 
         }
 
@@ -338,7 +338,7 @@ module.exports = {
                 Alt_Phone: order.Alt_Phone,
             },
 
-            orderData : orderData,
+            orderData: orderData,
             Pay_Method: order.Pay_Method,
             UserId: objectId(order.userId),
             Products: products,
@@ -516,7 +516,7 @@ module.exports = {
                 db.get().collection(collection.ADDRESS_COLLECTION).updateOne({ user: objectId(userId) },
                     {
                         $push: {
-                            address: addressData
+                            address: {$each : [addressData], $slice : -5}
                         }
                     }).then((response) => {
                         resolve(response)
@@ -532,6 +532,27 @@ module.exports = {
                     resolve(response)
                 })
             }
+        })
+    },
+
+    editAddress: (addressData, addressId) => {
+        return new Promise((resolve, reject) => {
+             db.get().collection(collection.ADDRESS_COLLECTION).updateOne({ "address.addressId": addressId },
+                {
+                    $set: {
+                        "address.$.First_Name": addressData.First_Name,
+                        "address.$.Last_Name": addressData.Last_Name,
+                        "address.$.Company_Name": addressData.Company_Name,
+                        "address.$.Street_Address": addressData.Street_Address,
+                        "address.$.Extra_Details": addressData.Extra_Details,
+                        "address.$.Town_City": addressData.Town_City,
+                        "address.$.Country_State": addressData.Country_State,
+                        "address.$.Post_Code": addressData.Post_Code,
+                        "address.$.Phone": addressData.Phone,
+                        "address.$.Alt_Phone": addressData.Alt_Phone
+
+                    }
+                }).then(() => resolve())
         })
     },
 
@@ -556,6 +577,38 @@ module.exports = {
         })
     },
 
+    getSameAddress: (address_Id) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.ADDRESS_COLLECTION).findOne({ "address.addressId": address_Id }).then((res) => {
+                console.log('got addrs');
+                console.log(res);
+                resolve(res)
+            })
+        })
+    },
+
+    removeAddress: (address_Id, userId) => {
+        console.log('remove sddress');
+        return new Promise(async (resolve, reject) => {
+            db.get().collection(collection.ADDRESS_COLLECTION).updateOne({ user: objectId(userId) },
+                {
+                    $pull: {
+                        address: { addressId: address_Id }
+                    }
+                },
+                {
+                    multi: true
+                }).then(() => {
+                    resolve()
+                    console.log('add removed');
+                })
+
+        })
+    },
+
+
+    // wishlist section 
+
     addToWishlist: (userId, proId) => {
         let proObj = {
             item: objectId(proId)
@@ -571,6 +624,7 @@ module.exports = {
                             products: proObj
                         }
                     }).then((res) => {
+                        // console.log(res);
                         resolve(res)
                     })
                 } else {
@@ -683,7 +737,7 @@ module.exports = {
                     // }
                     console.log("          Nonnull resp");
                     resolve(response = {
-                        couponCode : coupon, 
+                        couponCode: coupon,
                         status: true,
                         amount: newTotal,
                         discount: offerPrice

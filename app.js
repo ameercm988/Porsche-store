@@ -28,7 +28,7 @@ app.engine('hbs', hbs.engine({
   usersDir: __dirname + '/views/users',
   adminDir: __dirname + '/views/admin',
   partialsDir: __dirname + '/views/partials/',
-  Helper : helper
+  helpers : helper
 }))
 
 // Middleware

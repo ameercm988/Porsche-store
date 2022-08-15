@@ -3,6 +3,7 @@
 
 
 function addToWishlist(proId){
+    console.log('hiiii',proId);
     $.ajax({
         url : '/addto-wishlist/'+proId,
         method : 'get',

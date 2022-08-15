@@ -170,17 +170,37 @@
 		</div>
 	</section>
 
-	{{!-- <div class="container coupData" style="background-color: #00ad5f; height: 450px;">
-		<center>
+	{{!-- countdown section --}}
 
-			{{#each couponData}}
+	{{#if couponData}}
 
-			<p id="demo"></p>
+	<div class="container mt-5"
+		style="background-image: url(https://image.shutterstock.com/image-vector/characters-lose-money-investment-financial-260nw-2002971803.jpg); background-repeat: no-repeat;">
+		
+		<p
+			style="text-align: left; font-size: large; font-weight:500; font-style: italic;text-decoration:underline #4272d7; color: rgb(116, 114, 114);">
+			OFFER EXPIRES IN...</p>
 
-			{{/each}}
+		{{#each couponData}}
+
+		<center class="coupData" style="text-align: center; padding: 100px;">
+
+			<p id="demo" style="font-style: oblique; margin-left: 40%; color: rgb(116, 114, 114);">{{this.valDays}}</p>
 
 		</center>
-	</div> --}}
+		
+		<p
+			style="text-align: end; font-size: large; font-weight:500; font-style: italic; text-decoration:underline #4272d7; color: rgb(116, 114, 114);">
+			Choose Code <strong>{{this.Name}}</strong> to
+			Avail Offer </p>
+
+		{{/each}}
+
+	</div>
+
+	{{/if}}
+
+	{{!-- countdown ends --}}
 
 	<!-- Banner -->
 	<div class="sec-banner bg0 p-t-80 p-b-50">
@@ -234,9 +254,11 @@
 						All Products
 					</button>
 					{{#each category}}
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter="*">
+					<a href="/shop-{{this.category}}">
+						<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter="*">
 						{{this.category}}
 					</button>
+					</a>
 					{{/each}}
 
 				</div>
@@ -495,18 +517,13 @@
 							<div id="wishItem" class="block2-txt-child2 flex-r p-t-3">
 
 								{{#if user}}
-								<button onclick="addToWishlist('{{this._id}}')" type="button">
-									{{!-- <button onclick="addWishlist('{{this._id}}')"
-										onclick="location.href=/addto-wishlist/{{this._id}}" type="button"></button>
-									--}}
-
-									<a href="" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+								
+								
+									<a href="" onclick="addToWishlist('{{this._id}}')" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
 										<img class="icon-heart1 dis-block trans-04"
 											src="users/images/icons/icon-heart-01.png" alt="ICON">
-										{{!-- <img class="icon-heart2 dis-block trans-04 ab-t-l"
-											src="users/images/icons/icon-heart-02.png" alt="ICON"> --}}
 									</a>
-								</button>
+								
 
 								{{else}}
 								<a href="/login" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
@@ -545,62 +562,54 @@
 </body>
 
 
-{{!--
-<script>
-	function addWishlist(proId) {
-		$.ajax({
-			url: '/addto-wishlist/' + proId,
-			method: 'get',
-			success: (response) => {
-				if (response.status) {
-					// let count = $('#cart-count').html()
-					// count = parseInt(count) + 1
-					location.reload()
-					//$(" #wishItem,").load(location.href+" #wishItem")
-
-				}
-			}
-		})
-	}
-</script> --}}
 
 {{!-- countdown-timer --}}
 
-{{!-- <style>
+<style>
 	.coupData p {
 		text-align: center;
 		font-size: 60px;
 		margin-top: 0px;
 	}
-</style> --}}
 
-			{{!-- <script>
-				// Set the date we're counting down to
-				var countDownDate = {{this.validity}}
+	@media (max-width : 999px) {
+		.coupData p {
+			font-size: x-large;
+		}
+	}
+</style>
 
-				// Update the count down every 1 second
-				var x = setInterval(function () {
+<script>
+	// Set the date we're counting down to
+	let countDownDate = (document.getElementById("demo").innerHTML * (1000 * 60 * 60 * 24)) + new Date().getTime()
 
-					// Get today's date and time
-					var now = new Date().getTime();
 
-					// Find the distance between now and the count down date
-					var distance = countDownDate - now;
+	// Update the count down every 1 second
+	let x = setInterval(function () {
 
-					// Time calculations for days, hours, minutes and seconds
-					var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-					var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-					var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-					var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+		// Get today's date and time
+		var now = new Date().getTime()
 
-					// Output the result in an element with id="demo"
-					document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-						+ minutes + "m " + seconds + "s ";
 
-					// If the count down is over, write some text 
-					if (distance < 0) {
-						clearInterval(x);
-						document.getElementById("demo").innerHTML = "EXPIRED";
-					}
-				}, 1000);
-			</script> --}}
+		// Find the distance between now and the count down date
+		var distance = countDownDate - now;
+
+		// Time calculations for days, hours, minutes and seconds
+		var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+		var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+		// Output the result in an element with id="demo"
+		document.getElementById("demo").innerHTML = days + "D " + hours + "H "
+			+ minutes + "M " + seconds + "S ";
+
+		// If the count down is over, write some text 
+		if (distance < 0) {
+			clearInterval(x);
+			document.getElementById("demo").innerHTML = "NO OFFERS AVAILABLE FOR NOW";
+		}
+	}, 1000);
+</script>
+
+{{!-- countdown-ends --}}

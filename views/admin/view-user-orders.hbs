@@ -24,7 +24,7 @@
                         <tbody>
                             {{#each orders}}
                             <tr class="tr">
-                                <td scope="row">{{@index}}</td>
+                                <td scope="row">{{count @index}}</td>
                                 {{!-- <td>{{this.date}}</td> --}}
                                 <td>{{this.deliveryDetails.Street_Address}}</td>
                                 <td>{{this.deliveryDetails.Post_Code}}</td>

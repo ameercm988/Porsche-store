@@ -98,7 +98,16 @@ router.get('/addto-wishlist/:id', usersController.getAddToWishlist)
 router.post('/remove-wishlist-item', usersController.postRemoveWishlist)
 
 
-// router.get('/user-address', verifyLogin, usersController.getUserAddress)
+router.get('/profileAddress', verifyLogin, usersController.getUserAddress)
+
+
+router.get('/add-edit-address', verifyLogin, usersController.getAddEditAddress)
+
+
+router.post('/add-edit-address', usersController.postAddEditAddress)
+
+
+router.get('/remove-address/:id', verifyLogin, usersController.getRemoveAddress)
 
 
 router.get('/logout', usersController.getLogout)

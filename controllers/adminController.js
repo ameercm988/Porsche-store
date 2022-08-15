@@ -7,7 +7,7 @@ const { response } = require('../app')
 
 module.exports = {
 
-    // admin section
+    // admin section >>>>>>>>>>>>>>>>
 
     getLogin: (req, res) => {
         if (req.session.isAdminLoggedIn) {
@@ -37,7 +37,7 @@ module.exports = {
         res.render('admin/admin-index', { layout: 'admin-layout' })
     },
 
-    // product section
+    // product section >>>>>>>>>>>>>>>>>
 
     getViewProducts: (req, res, next) => {
         productHelper.getAllProducts().then((products) => {
@@ -55,7 +55,9 @@ module.exports = {
     postAddProducts: (req, res, next) => {
         const file = req.files.images
         if (file.length >= 3) {
+
             //If image didn't display while hosting remove map function
+
             let productImages = file.map(images => { return [images.name] });
             productHelper.addProduct(req.body, productImages).then((id) => {
                 for (let i = 0; i < file.length; i++) {
@@ -83,7 +85,9 @@ module.exports = {
     postEditProducts: (req, res, next) => {
         const file = req.files.images
         if (file.length >= 3) {
+
             //  If image didn't display while hosting remove map function
+
             let newImages = file.map(images => { return [images.name] });
             let proId = req.params.id
             productHelper.updateProducts(proId, req.body, newImages).then((id) => {
@@ -107,25 +111,24 @@ module.exports = {
         })
     },
 
-    // category section 
+    // category section >>>>>>>>>>>>>>>>>
 
     getViewCategory: (req, res, next) => {
         categoryHelper.getAllCategory().then((category) => {
-            res.render('admin/view-category', { layout: 'admin-layout', category})
+            res.render('admin/view-category', { layout: 'admin-layout', category })
             req.session.catError = false
         })
     },
 
     getAddCategory: (req, res, next) => {
-        res.render('admin/add-category', { layout: 'admin-layout',  categoryError: req.session.catError  })
+        res.render('admin/add-category', { layout: 'admin-layout', categoryError: req.session.catError })
     },
 
     postAddCategory: (req, res, next) => {
-        // category = req.body.category.toUpperCase()
         categoryHelper.addCategory(req.body).then((id) => {
-                let catImg = req.files.categoryimage
-                catImg.mv('./public/categoryImages/' + id + "CI.jpg")
-                res.redirect('/admin/view-category')
+            let catImg = req.files.categoryimage
+            catImg.mv('./public/categoryImages/' + id + "CI.jpg")
+            res.redirect('/admin/view-category')
         }).catch((err) => {
             req.session.catError = err
             res.redirect('/admin/add-category')
@@ -153,7 +156,7 @@ module.exports = {
         })
     },
 
-    // user section
+    // user section >>>>>>>>>>>>>>>>>>>>>>.
 
     getViewUsers: (req, res, next) => {
         adminHelper.viewUsers().then((users) => {
@@ -168,31 +171,19 @@ module.exports = {
         })
     },
 
-    // getUnBlockUser: (req, res, next) => {
-    //     let userId = req.params.id
-    //     adminHelper.unBlockUser(userId).then((response) => {
-    //         res.redirect('/admin/view-users')
-    //     })
-    // },
-
     getViewOrders: async (req, res, next) => {
-        // console.log('params from adminside');
-        // console.log(req.params.id);
         let orders = await adminHelper.getUserOrders(req.params.id)
-        // console.log(orders);
-        // console.log(">>>>>>>>>>orders");
-        res.render('admin/view-user-orders', { layout: 'admin-layout', orders})
+        res.render('admin/view-user-orders', { layout: 'admin-layout', orders })
 
     },
 
-    getOrderProducts : async(req, res, next) => {
+    getOrderProducts: async (req, res, next) => {
         let orderProducts = await adminHelper.getOrderProducts(req.query.id)
-
-        res.render('admin/view-order-products', {layout : 'admin-layout', orderProducts})
+        res.render('admin/view-order-products', { layout: 'admin-layout', orderProducts })
 
     },
 
-    getChangeStatus : (req, res, next) => {
+    getChangeStatus: (req, res, next) => {
         let orderId = req.query.id
         let userId = req.query.userId
         let status = req.query.status
@@ -201,52 +192,36 @@ module.exports = {
         })
     },
 
-    // getChangeStatusCancelled : (req, res, next) => {
-    //     let orderId = req.query.id
-    //     let userId = req.query.userId
-    //     let status = 'Cancelled'
-    //     adminHelper.changeStatus(orderId, status).then((response) => {
-    //         res.redirect('/admin/view-orders/' + userId)
-    //     })
-    // },
+    // coupon section >>>>>>>>>>>>>>>
 
-    // getChangeStatusDelivered : (req, res, next) => {
-        
-    //     let orderId = req.query.id
-    //     let userId = req.query.userId
-    //     let status = 'Delivered'
-    //     adminHelper.changeStatus(orderId, status).then((response) => {
-    //         res.redirect('/admin/view-orders/' + userId)
-    //     })
-    // },
-
-    getCoupons : (req, res, next) => {
+    getCoupons: (req, res, next) => {
         adminHelper.getCoupons().then((coupons) => {
             console.log(coupons);
-        res.render('admin/view-coupons', {layout : 'admin-layout', coupons})
+            res.render('admin/view-coupons', { layout: 'admin-layout', coupons })
         })
     },
 
-    getGenerateCoupon : (req, res, next) => {
-        
-        res.render('admin/generate-coupon', {layout : 'admin-layout'})
-   
-        
+    getGenerateCoupon: (req, res, next) => {
+
+        res.render('admin/generate-coupon', { layout: 'admin-layout' })
+
+
     },
 
-    postGenerateCoupon : (req, res, next) => {
+    postGenerateCoupon: (req, res, next) => {
         adminHelper.generateCoupon(req.body).then((response) => {
             res.redirect('/admin/view-coupons')
         })
     },
 
-    getDeleteCoupon : (req, res, next) => {
+    getDeleteCoupon: (req, res, next) => {
         let couponId = req.params.id
         adminHelper.deleteCoupon(couponId).then((response) => {
-            // res.swal("coupon deleted")
             res.redirect('/admin/view-coupons')
         })
     },
+
+    // logout >>>>>>>>>>
 
     getLogout: (req, res) => {
         req.session.isAdminLoggedIn = null
