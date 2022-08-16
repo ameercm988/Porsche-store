@@ -34,7 +34,7 @@ module.exports = {
     getAllMenProducts : () => {
 
         return new Promise(async (resolve, reject) => {
-            let menProducts = await db.get().collection(collection.PRODUCT_COLLECTIONS).find({ category: "Men" }).toArray()
+            let menProducts = await db.get().collection(collection.PRODUCT_COLLECTIONS).find({ category: "MEN" }).toArray()
             resolve(menProducts)
         })
     },
@@ -42,7 +42,7 @@ module.exports = {
     getAllWomenProducts : () => {
 
         return new Promise(async (resolve, reject) => {
-            let womenProducts = await db.get().collection(collection.PRODUCT_COLLECTIONS).find({ category: "Women" }).toArray()
+            let womenProducts = await db.get().collection(collection.PRODUCT_COLLECTIONS).find({ category: "WOMEN" }).toArray()
             resolve(womenProducts)
         })
     },
