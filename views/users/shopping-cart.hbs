@@ -1,235 +1,199 @@
+<!-- breadcrumb -->
 
+<div class="container mt-5">
+	<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+		<a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
+			Home
+			<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+		</a>
 
-	<!-- breadcrumb -->
-
-	<div class="container mt-5">
-		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-			<a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
-				Home
-				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-			</a>
-
-			<span class="stext-109 cl4">
-				Shoping Cart
-			</span>
-		</div>
+		<span class="stext-109 cl4">
+			Shoping Cart
+		</span>
 	</div>
+</div>
 
 
-	<!-- Shoping Cart -->
+<!-- Shoping Cart -->
 
-	<form class="bg0 p-t-75 p-b-85">
-		<div class="container"  id="quant-change">
-			{{#if cartItems}}
-			<div class="row">
-				<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
-					<div class="m-l-25 m-r--38 m-lr-0-xl">
-						<div class="wrap-table-shopping-cart">
-							<table class="table-shopping-cart">
-								<tr class="table_head">
-									<th class="column-1">Product</th>
-									<th class="column-2"></th>
-									<th class="column-3">Price</th>
-									<th class="column-4">Quantity</th>
-									<th class="column-5">Total</th>
-								</tr>
-								{{#each cartItems}}
-								<tr class="table_row">
-									{{!-- {{#each this.product}} --}}
-									<td class="column-1">
-										<div class="how-itemcart1">
-											<img src="/productImages/{{this.product._id}}0.jpg" alt="IMG">
-										</div>
-									</td>
-									<td class="column-2">{{this.product.name}}</td>
-
-									<td class="column-3">$ {{this.product.price}}</td>
-									{{!-- {{/each}} --}}
-									<td class="column-4">
-										{{!--
-									<td>
-										<button class="cart-item-count mr-3">-</button>{{this.quantity}}<button
-											class="cart-item-count ml-3">+</button>
-
-									</td> --}}
-
-									<div class="wrap-num-product flex-w m-l-auto m-r-0">
-										{{!-- {{#if {{this.quantity > 0}}}} --}}
-										<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m" {{#when
-											this.quantity 'eq' '1' }} style="pointer-events: none;" {{/when}}
-											onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">
-											<i class="fs-16 zmdi zmdi-minus"></i>
-										</div>
-										{{!-- {{/if}} --}}
-										<input class="mtext-104 cl3 txt-center num-product" type="number"
-											id="{{this.product._id}}" name="num-product1" value="{{this.quantity}}">
-
-										<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
-											onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)">
-											<i class="fs-16 zmdi zmdi-plus"></i>
-										</div>
+<form class="bg0 p-t-75 p-b-85">
+	<div class="container" id="quant-change">
+		{{#if cartItems}}
+		<div class="row">
+			<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+				<div class="m-l-25 m-r--38 m-lr-0-xl">
+					<div class="wrap-table-shopping-cart">
+						<table class="table-shopping-cart">
+							<tr class="table_head">
+								<th class="column-1">Product</th>
+								<th class="column-2"></th>
+								<th class="column-3">Price</th>
+								<th class="column-4">Quantity</th>
+								<th class="column-5">Total</th>
+							</tr>
+							{{#each cartItems}}
+							<tr class="table_row">
+								{{!-- {{#each this.product}} --}}
+								<td class="column-1">
+									<div class="how-itemcart1">
+										<img src="/productImages/{{this.product._id}}0.jpg" alt="IMG">
 									</div>
-									</td>
+								</td>
+								<td class="column-2">{{this.product.name}}</td>
 
-									<td class="column-5">$ {{this.productPrice}} </td>
-									<td>
-										<a href="" class="btn btn-danger mr-3"
-											onclick="removeItem('{{this._id}}','{{this.product._id}}')">REMOVE
-										</a>
-									</td>
+								<td class="column-3">$ {{this.product.price}}</td>
+								{{!-- {{/each}} --}}
+								<td class="column-4">
+									{{!--
+								<td>
+									<button class="cart-item-count mr-3">-</button>{{this.quantity}}<button
+										class="cart-item-count ml-3">+</button>
 
-								</tr>
-								{{/each}}
-							</table>
-						</div>
+								</td> --}}
 
-						<div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-							<div class="flex-w flex-m m-r-20 m-tb-5">
-								<input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text"
-									name="coupon" placeholder="Coupon Code">
+								<div class="wrap-num-product flex-w m-l-auto m-r-0">
+									{{!-- {{#if {{this.quantity > 0}}}} --}}
+									<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m" {{#when
+										this.quantity 'eq' '1' }} style="pointer-events: none;" {{/when}}
+										onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">
+										<i class="fs-16 zmdi zmdi-minus"></i>
+									</div>
+									{{!-- {{/if}} --}}
+									<input class="mtext-104 cl3 txt-center num-product" type="number"
+										id="{{this.product._id}}" name="num-product1" value="{{this.quantity}}">
 
-								<div
-									class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
-									Apply coupon
+									<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
+										onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)">
+										<i class="fs-16 zmdi zmdi-plus"></i>
+									</div>
 								</div>
-							</div>
+								</td>
 
-							
+								<td class="column-5">$ {{this.productPrice}} </td>
+								<td>
+									<a href="" class="btn btn-danger mr-3"
+										onclick="removeItem('{{this._id}}','{{this.product._id}}')">REMOVE
+									</a>
+								</td>
 
-
-							{{!-- <div
-							
-								class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-								<a href="/cart" style="color: black ; text-decoration: none;">Update Cart</a>
-								
-							</div> --}}
-						</div>
+							</tr>
+							{{/each}}
+						</table>
 					</div>
-				</div>
 
-				<div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
-					<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
-						<h4 class="mtext-109 cl2 p-b-30">
-							Cart Totals
-						</h4>
+					<div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
 
-						<div class="flex-w flex-t bor12 p-b-13">
-							<div class="size-208">
-								<span class="stext-110 cl2">
-									Subtotal:
-								</span>
-							</div>
-
-							<div class="size-209">
-								<span class="mtext-110 cl2" id="total">
-									$ {{totalAmount}}
-								</span>
-							</div>
+						<div>
+							{{#if couponCode}}
+							<p style="font-weight: 500;">use coupon code <strong
+									style="font-style: italic; color: rgb(18, 79, 220);">{{couponCode}}</strong> on
+								checkout</p>
+							{{/if}}
 						</div>
-
-						<div class="flex-w flex-t bor12 p-t-15 p-b-30">
-							<img src="data:image/png;base64,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" alt="" style="width: 350px;">
-							{{!-- <div class="size-208 w-full-ssm">
-								<span class="stext-110 cl2">
-									Shipping:
-								</span>
-							</div>
-
-							<div class="size-209 p-r-18 p-r-0-sm w-full-ssm">
-								<p class="stext-111 cl6 p-t-2">
-									There are no shipping methods available. Please double check your address, or
-									contact us
-									if you need any help.
-								</p>
-
-								<div class="p-t-15">
-									<span class="stext-112 cl8">
-										Calculate Shipping
-									</span>
-
-									<div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-										<select class="js-select2" name="time">
-											<option>Select a country...</option>
-											<option>USA</option>
-											<option>UK</option>
-										</select>
-										<div class="dropDownSelect2"></div>
-									</div>
-
-									<div class="bor8 bg0 m-b-12">
-										<input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="state"
-											placeholder="State /  country">
-									</div>
-
-									<div class="bor8 bg0 m-b-22">
-										<input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="postcode"
-											placeholder="Postcode / Zip">
-									</div>
-
-									<div class="flex-w">
-										<div
-											class="flex-c-m stext-101 cl2 size-115 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer">
-											Update Totals
-										</div>
-									</div>
-
-								</div>
-							</div> --}}
-						</div>
-
-						<div class="flex-w flex-t p-t-27 p-b-33">
-							<div class="size-208">
-								<span class="mtext-101 cl2">
-									Total:
-								</span>
-							</div>
-
-							<div class="size-209 p-t-1">
-								<span id="total" class="mtext-110 cl2">
-									$ {{totalAmount}}
-								</span>
-							</div>
-						</div>
-						<a class="btn-primary" href="/checkout"><button type="button" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-							Proceed to Checkout
-						</button></a>
-						
 					</div>
 				</div>
 			</div>
-			{{else}}
-			<center>
-				<h1 style="color: red;">Sorry your cart is empty</h1>
-				<img src="https://alphapharmaexhibitions.com/images/cartempty1.png" alt="" style="width:300px"><br>
-				<a class="btn btn-succes" href="/shop" style="margin-top: 17px; color: green; border: solid green;">SHOP
-					NOW</a>
-			</center>
-			{{/if}}
+
+			<div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+				<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
+					<h4 class="mtext-109 cl2 p-b-30">
+						Cart Totals
+					</h4>
+
+					<div class="flex-w flex-t bor12 p-b-13">
+						<div class="size-208">
+							<span class="stext-110 cl2">
+								Subtotal:
+							</span>
+						</div>
+
+						<div class="size-209">
+							<span class="mtext-110 cl2" id="total">
+								$ {{totalAmount}}
+							</span>
+						</div>
+					</div>
+
+					<div class="flex-w flex-t bor12 p-t-15 p-b-30">
+
+						<div class="size-208 w-full-ssm">
+							<span class="stext-110 cl2">
+								Discount:
+							</span>
+						</div>
+
+						<div class="size-209 p-r-18 p-r-0-sm w-full-ssm">
+							<p class="stext-111 cl6 p-t-2">
+								U haven't applied any offers till now, Proceed to checkout for further actions
+							</p>
+						</div>
+						<div class="size-208 w-full-ssm">
+							<span class="stext-110 cl2">
+								Delivery charges:
+							</span>
+						</div>
+						<div class="size-209 p-r-18 p-r-0-sm w-full-ssm">
+							<p class="stext-111 cl6 p-t-2 text-success" style="font-size: larger;">
+								FREE
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="flex-w flex-t p-t-27 p-b-33 ">
+					<div class="size-208">
+						<span class="mtext-101 cl2 ml-5 pl-5">
+							Total:
+						</span>
+					</div>
+
+					<div class="size-209 p-t-1">
+						<span id="total" class="mtext-110 cl2 ml-5 pl-5">
+							$ {{totalAmount}}
+						</span>
+					</div>
+				</div>
+				<a class="btn-primary" href="/checkout"><button type="button"
+						class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer ">
+						Proceed to Checkout
+					</button></a>
+
+			</div>
 		</div>
-	</form>
+	</div>
+	{{else}}
+	<center>
+		<h1 style="color: red;">Sorry your cart is empty</h1>
+		<img src="https://alphapharmaexhibitions.com/images/cartempty1.png" alt="" style="width:300px"><br>
+		<a class="btn btn-succes" href="/shop" style="margin-top: 17px; color: green; border: solid green;">SHOP
+			NOW</a>
+	</center>
+	{{/if}}
+	</div>
+</form>
 
 
 <script>
 	function changeQuantity(cartId, proId, userId, count) {
 		let quantity = parseInt(document.getElementById(proId).innerHTML)
-	
+
 		$.ajax({
 			url: "/change-product-quantity",
 			data: {
 				cart: cartId,
-				product: proId, 
-				user : userId,
-				count: count,  
+				product: proId,
+				user: userId,
+				count: count,
 				quantity: quantity
 			},
 			method: 'post',
 			success: (response) => {
-				
+
 				document.getElementById(proId).innerHTML = count + quantity
 				//document.getElementById(total).innerHTML = response.totalAmount
 				//$("#quant-change").load(location.href + "#quant-change")
 				location.reload()
-				
+
 			}
 		})
 	}
@@ -245,7 +209,7 @@
 			success: (response) => {
 				alert('product removed from cart')
 				location.reload()
-				
+
 			}
 		})
 	}

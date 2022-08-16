@@ -33,8 +33,17 @@ module.exports = {
         })
     },
 
-    getHome: (req, res, next) => {
-        res.render('admin/admin-index', { layout: 'admin-layout' })
+    getHome: async (req, res, next) => {
+        let orders = await adminHelper.getrecentOrders()
+        // orders.date = orders[0].date.split("",2)
+        // console.log(orders.date);
+        if (orders.length > 5) {
+            recentOrders = orders.slice(0, 5)
+            res.render('admin/admin-index', { layout: 'admin-layout', recentOrders })
+        }else{
+            recentOrders = orders
+            res.render('admin/admin-index', { layout: 'admin-layout', recentOrders }) 
+        }
     },
 
     // product section >>>>>>>>>>>>>>>>>
@@ -178,8 +187,8 @@ module.exports = {
     },
 
     getOrderProducts: async (req, res, next) => {
-        let orderProducts = await adminHelper.getOrderProducts(req.query.id)
-        res.render('admin/view-order-products', { layout: 'admin-layout', orderProducts })
+        let products = await adminHelper.getOrderProducts(req.query.id)
+        res.render('admin/view-order-products', { layout: 'admin-layout', products })
 
     },
 

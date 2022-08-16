@@ -318,6 +318,7 @@ module.exports = {
             discountData: discountData
 
         }
+        let invoice = parseInt(Math.random() * 9999) 
 
         let status = order.Pay_Method === 'COD' ? 'placed' : 'pending'
         let orderObj = {
@@ -343,6 +344,7 @@ module.exports = {
             UserId: objectId(order.userId),
             Products: products,
             status: status,
+            invoiceNumber : invoice,
             date: new Date().toLocaleString()
         }
         return new Promise(async (resolve, reject) => {
@@ -395,7 +397,15 @@ module.exports = {
                 {
                     $project: {
                         item: '$Products.item',
-                        quantity: '$Products.quantity'
+                        quantity: '$Products.quantity',
+                        name : '$Name',
+                        date : '$date',
+                        status : '$status',
+                        amount : '$orderData.Total_Amount',
+                        discount : '$orderData.discountData',
+                        invoice : '$invoiceNumber' 
+                        
+
                     }
 
                 },
@@ -412,15 +422,19 @@ module.exports = {
                     $project: {
                         item: 1,
                         quantity: 1,
-                        product: { $arrayElemAt: ['$product', 0] }
+                        name : 1,
+                        product: { $arrayElemAt: ['$product', 0] },
+                        date : 1,
+                        status : 1,
+                        amount : 1,
+                        discount : 1,
+                        invoice : 1
+
                     }
                 }
-
+ 
             ]).toArray()
-            console.log(orderItems);
             resolve(orderItems)
-
-
         })
     },
 

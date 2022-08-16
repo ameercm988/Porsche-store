@@ -38,10 +38,10 @@ router.post('/otp', usersController.postOtp)
 router.get('/shop', usersController.getShop)
 
 
-router.get('/shop-men', usersController.getShopMen)
+router.get('/shop-MEN', usersController.getShopMen)
 
 
-router.get('/shop-women', usersController.getShopWomen)
+router.get('/shop-WOMEN', usersController.getShopWomen)
 
 
 // router.get('/modal-detail/:id', usersController.getModalDetail)

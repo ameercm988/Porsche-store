@@ -31,9 +31,9 @@ module.exports = {
 
     viewUsers: () => {
 
-        return new Promise((resolve, reject) => {
-            let users = db.get().collection(collection.USER_COLLECTIONS).find().toArray()
-            resolve(users)
+        return new Promise( async (resolve, reject) => {
+            let users = await db.get().collection(collection.USER_COLLECTIONS).find().toArray()
+            resolve(users.reverse())
         })
     },
 
@@ -53,19 +53,56 @@ module.exports = {
             })
         })
     },
+    
+    getrecentOrders : () => {
+        return new Promise( async (resolve, reject) => {
+            let orders = await db.get().collection(collection.ORDER_COLLECTION).find().toArray()
+            resolve(orders.reverse())
+        })
+    },
 
     getUserOrders: (userId) => {
 
         return new Promise(async (resolve, reject) => {
             let orders = await db.get().collection(collection.ORDER_COLLECTION).find({ UserId: objectId(userId) }).toArray()
-            resolve(orders)
+            resolve(orders.reverse())
         })
     },
 
-    getOrderProducts: async (orderId) => {
+    getOrderProducts: (orderId) => {
 
         return new Promise(async (resolve, reject) => {
             let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                // {
+                //     $match: { _id: objectId(orderId) }
+                // },
+                // {
+                //     $unwind: '$Products'
+                // },
+                // {
+                //     $project: {
+                //         item: '$Products.item',
+                //         quantity: '$Products.quantity'
+                //     }
+
+                // },
+                // {
+                //     $lookup: {
+                //         from: collection.PRODUCT_COLLECTIONS,
+                //         localField: 'item',
+                //         foreignField: '_id',
+                //         as: 'product'
+                //     }
+
+                // },
+                // {
+                //     $project: {
+                //         item: 1,
+                //         quantity: 1,
+                //         product: { $arrayElemAt: ['$product', 0] }
+                //     }
+                // }
+
                 {
                     $match: { _id: objectId(orderId) }
                 },
@@ -75,7 +112,15 @@ module.exports = {
                 {
                     $project: {
                         item: '$Products.item',
-                        quantity: '$Products.quantity'
+                        quantity: '$Products.quantity',
+                        name : '$Name',
+                        date : '$date',
+                        status : '$status',
+                        amount : '$orderData.Total_Amount',
+                        discount : '$orderData.discountData',
+                        invoice : '$invoiceNumber' 
+                        
+
                     }
 
                 },
@@ -92,7 +137,14 @@ module.exports = {
                     $project: {
                         item: 1,
                         quantity: 1,
-                        product: { $arrayElemAt: ['$product', 0] }
+                        name : 1,
+                        product: { $arrayElemAt: ['$product', 0] },
+                        date : 1,
+                        status : 1,
+                        amount : 1,
+                        discount : 1,
+                        invoice : 1
+
                     }
                 }
 

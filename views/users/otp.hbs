@@ -4,7 +4,8 @@
             <div class="card p-2 text-center">
                 <form action="/otp" method="post">
                 <h6>Please enter the one time password <br> to verify your account</h6>
-                <div> <span>A code has been sent to</span> <small>*******9897</small> </div>
+                {{!-- <div> <span>A code has been sent to</span> <small>*******9897</small> </div> --}}
+                <div> <span>A code has been sent to</span> <small>******{{number}}</small> </div>
                 {{#if otpError}}
                     <p class="text-danger">{{otpError}}</p>
                     {{/if}}

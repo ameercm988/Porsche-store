@@ -109,7 +109,8 @@ module.exports = {
         if (req.session.isLoggedIn) {
             res.redirect('/')
         } else {
-            res.render('users/otp', { layout: 'users-layout', otpError: req.session.otpError })
+            number = req.session.body.mobilenumber.slice(6)
+            res.render('users/otp', { layout: 'users-layout', otpError: req.session.otpError, number })
             req.session.otpError = false
         }
     },
@@ -238,13 +239,15 @@ module.exports = {
             let cartCount = await usersHelper.getCartCount(userId)
             let wishlistCount = await usersHelper.getWishlistCount(userId)
             let totalAmount = await usersHelper.getTotalAmount(userId)
+            let couponData = await adminHelper.getCoupons()
+            couponCode = couponData[0].Name
 
-            res.render('users/shopping-cart', { layout: 'users-layout', user, cartCount, cartItems, totalAmount, wishlistCount })
+            res.render('users/shopping-cart', { layout: 'users-layout', user, cartCount, cartItems, totalAmount, wishlistCount, couponCode })
 
         } catch (error) {
 
             console.log(error);
-            res.status(500).json({error:error.message})                         // handling catch error
+            res.status(500).json({ error: error.message })                         // handling catch error
         }
     },
 
@@ -276,12 +279,13 @@ module.exports = {
 
         let user = req.session.user
         let userId = user._id
+        let cartItems = await usersHelper.getCartDetails(userId)
         let totalAmount = await usersHelper.getTotalAmount(userId)
         let cartCount = await usersHelper.getCartCount(userId)
         let wishlistCount = await usersHelper.getWishlistCount(userId)
-        let savedAddress = await usersHelper.getSavedAddress(userId)  
+        let savedAddress = await usersHelper.getSavedAddress(userId)
 
-        res.render('users/checkout', { layout: 'users-layout', user, cartCount, totalAmount, savedAddress, wishlistCount })
+        res.render('users/checkout', { layout: 'users-layout', user, cartCount, totalAmount, savedAddress, wishlistCount, cartItems })
     },
 
     postCheckout: async (req, res, next) => {
@@ -329,9 +333,9 @@ module.exports = {
         let orders = await usersHelper.getViewOrders(userId)
         let cartCount = await usersHelper.getCartCount(userId)
         let wishlistCount = await usersHelper.getWishlistCount(userId)
-        let cartDetails = await usersHelper.getCartDetails(userId)
+        let cartItems = await usersHelper.getCartDetails(userId)
 
-        res.render('users/view-orders', { layout: 'users-layout', user, orders, cartCount, cartDetails, wishlistCount })
+        res.render('users/view-orders', { layout: 'users-layout', user, orders, cartCount, cartItems, wishlistCount })
 
     },
 
@@ -339,9 +343,18 @@ module.exports = {
     getOrderProducts: async (req, res, next) => {
 
         let user = req.session.user
+        let userId = user._id
+        let cartCount = await usersHelper.getCartCount(userId)
+        let cartItems = await usersHelper.getCartDetails(userId)
+        let wishlistCount = await usersHelper.getWishlistCount(userId)
         let products = await usersHelper.orderProducts(req.query.id)
-  
-        res.render('users/order-products', { layout: 'users-layout', user, products })
+        let name = products[0].name
+        let total = products[0].amount
+        let discount = products[0].discount.discount
+        let netAmount = products[0].discount.amount
+        let invoice =  products[0].invoice
+
+        res.render('users/order-products', { layout: 'users-layout', user, products, cartCount, cartItems, wishlistCount, total, name, discount, netAmount, invoice })
     },
 
     getCancelOrder: (req, res, next) => {
@@ -381,14 +394,14 @@ module.exports = {
 
         try {
             let cartCount = await usersHelper.getCartCount(userId)
-            let cartDetails = await usersHelper.getCartDetails(userId)
+            let cartItems = await usersHelper.getCartDetails(userId)
             let wishlistCount = await usersHelper.getWishlistCount(userId)
             let orders = await usersHelper.getViewOrders(userId)
             let orderCount = await usersHelper.getOrderCount(userId)
 
-            res.render('users/profile', { layout: 'users-layout', user, cartCount, cartDetails, orders, orderCount, wishlistCount })
+            res.render('users/profile', { layout: 'users-layout', user, cartCount, cartItems, orders, orderCount, wishlistCount })
         } catch (error) {
-            res.status(500).json({error : error.message})
+            res.status(500).json({ error: error.message })
         }
     },
 
@@ -424,21 +437,28 @@ module.exports = {
 
         let user = req.session.user
         let userId = user._id
+        let cartItems = await usersHelper.getCartDetails(userId)
         let cartCount = await usersHelper.getCartCount(userId)
         let wishlistCount = await usersHelper.getWishlistCount(userId)
         let savedAddress = await usersHelper.getSavedAddress(userId)
-        res.render('users/addressData', { layout: 'users-layout', user, cartCount, wishlistCount, savedAddress })
+        res.render('users/addressData', { layout: 'users-layout', user, cartCount, wishlistCount, savedAddress, cartItems })
     },
 
     getAddEditAddress: async (req, res, next) => {
-
+        
+        let user = req.session.user
+        let userId = req.session.user._id
+        let cartCount = await usersHelper.getCartCount(userId)
+        let wishlistCount = await usersHelper.getWishlistCount(userId)
+        let cartItems = await usersHelper.getCartDetails(userId)
+        console.log('cartItems.............',cartItems);
         if (req.query.id) {
             let addressId = req.query.id
             let addressData = await usersHelper.getSameAddress(addressId)
             addressData = addressData.address[0]
-            res.render('users/addEditAddress', { layout: 'users-layout', addressData })
+            res.render('users/addEditAddress', { layout: 'users-layout', user, addressData, cartCount, wishlistCount, cartItems })
         } else {
-            res.render('users/addEditAddress', { layout: 'users-layout' })
+            res.render('users/addEditAddress', { layout: 'users-layout', user, cartCount, wishlistCount, cartItems })
         }
 
     },
@@ -457,7 +477,7 @@ module.exports = {
     },
 
     getRemoveAddress: (req, res, next) => {
-        
+
         addressId = req.params.id
         usersHelper.removeAddress(addressId, req.session.user._id).then(() => {
             res.redirect('/profileAddress')

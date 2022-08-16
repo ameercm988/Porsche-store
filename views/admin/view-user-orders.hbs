@@ -29,7 +29,7 @@
                                 <td>{{this.deliveryDetails.Street_Address}}</td>
                                 <td>{{this.deliveryDetails.Post_Code}}</td>
                                 <td>{{this.Phone.Phone}}</td>
-                                <td>$ {{this.Total_Amount}}</td>
+                                <td>$ {{this.orderData.Total_Amount}}</td>
                                 <td>{{this.Pay_Method}}</td>
 
                              
@@ -43,9 +43,11 @@
                                         <option value="" >{{this.status}}</option>
                                          
                                         
+                                        
+                                        <option value="/admin/status/?id={{this._id}}&userId={{this.UserId}}&status=Packed">Packed</option>
                                         <option value="/admin/status/?id={{this._id}}&userId={{this.UserId}}&status=shipped">Shipped</option>
-                                        <option value="/admin/status/?id={{this._id}}&userId={{this.UserId}}&status=Cancelled">cancelled</option>
                                         <option value="/admin/status/?id={{this._id}}&userId={{this.UserId}}&status=Delivered">Delivered</option>
+                                        <option value="/admin/status/?id={{this._id}}&userId={{this.UserId}}&status=Cancelled">cancelled</option>
                                     </select>
                                     
                                 </td>
