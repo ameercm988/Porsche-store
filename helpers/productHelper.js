@@ -34,15 +34,16 @@ module.exports = {
     getAllMenProducts : () => {
 
         return new Promise(async (resolve, reject) => {
-            let menProducts = await db.get().collection(collection.PRODUCT_COLLECTIONS).find({ category: "MEN" }).toArray()
+            let menProducts = await db.get().collection(collection.PRODUCT_COLLECTIONS).find({ category: "MEN" , deletedItem : false }).toArray()
             resolve(menProducts)
+            console.log(menProducts);
         })
     },
 
     getAllWomenProducts : () => {
 
         return new Promise(async (resolve, reject) => {
-            let womenProducts = await db.get().collection(collection.PRODUCT_COLLECTIONS).find({ category: "WOMEN" }).toArray()
+            let womenProducts = await db.get().collection(collection.PRODUCT_COLLECTIONS).find({ category: "WOMEN" , deletedItem : false }).toArray()
             resolve(womenProducts)
         })
     },

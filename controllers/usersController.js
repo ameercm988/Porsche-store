@@ -221,8 +221,9 @@ module.exports = {
                     res.render('users/product-detail', { guest: true, layout: 'users-layout', product, allProducts })
                 }
             })
-        }).catch((res) => {
-            res.status(500).json({error : res.message})
+        }).catch((error) => {
+            // res.status(500).json({error : error.message})
+            res.redirect('/')
         })
     },
 
