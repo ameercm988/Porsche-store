@@ -86,7 +86,7 @@
 
 <div class="container mt-5 pt-5">
     <div class="row">
-        <div class="col-lg-3  my-lg-0 my-md-1">
+        <div class="col-lg-3 col-md-6  my-lg-0 my-md-1 mb-4">
             <div id="sidebar" class="bg-purple">
                 <div class="h4 text-dark">Account</div>
                 <ul>
@@ -109,7 +109,7 @@
                         </a>
                     </li>
                     <li class="active">
-                        <a href="/user-address" class="text-decoration-none d-flex align-items-start">
+                        <a href="/profileAddress" class="text-decoration-none d-flex align-items-start">
                             <div class="far fa-address-book pt-2 me-3"></div>
                             <div class="d-flex flex-column">
                                 <div class="link">User data</div>
@@ -117,42 +117,24 @@
                             </div>
                         </a>
                     </li>
-                    {{!-- <li>
-                        <a href="#" class="text-decoration-none d-flex align-items-start">
-                            <div class="far fa-user pt-2 me-3"></div>
-                            <div class="d-flex flex-column">
-                                <div class="link">My Profile</div>
-                                <div class="link-desc">Change your profile details & password</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-decoration-none d-flex align-items-start">
-                            <div class="fas fa-headset pt-2 me-3"></div>
-                            <div class="d-flex flex-column">
-                                <div class="link">Help & Support</div>
-                                <div class="link-desc">Contact Us for help and support</div>
-                            </div>
-                        </a>
-                    </li> --}}
                 </ul>
             </div>
         </div>
 
-        <div class="col-xl-9 col-md-12 ">
+        
 
 
-                <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
                     <div class="billing-address">
 
-                        <h5 class="checkout-box-title">ADD/EDIT-ADDRESS</h5>
+                        <h5 class="checkout-box-title ">ADD/EDIT-ADDRESS</h5>
                         
                         <form action="/add-edit-address" id="form" method="post">
 
                         {{#if addressData}}
                         <div class="checkout-billing-adress-box vanakutty d-flex bor10">
 
-                            <div>
+                            <div class=" col-sm-6">
                                 <div class="billing-address-input clearfix">
                                     <label>FIRST NAME *</label>
                                     <input type="text" name="First_Name" id="First_Name" value="{{addressData.First_Name}}" required>
@@ -172,8 +154,7 @@
                                     <input type="text" placeholder="Fashin, suite, unite ect (optinal)"
                                         name="Extra_Details" id="Extra_Details"  value="{{addressData.Extra_Details}}" required>
                                 </div>
-                            </div>
-                            <div class="p-l-25">
+                            
                                 <div class="billing-address-input clearfix">
                                     <label>TOWN / CITY *</label>
                                     <input type="text" name="Town_City" id="Town_City"  value="{{addressData.Town_City}}" required>
@@ -207,9 +188,9 @@
                             </div>
                         </div>
                         {{else}}
-                            <div class="checkout-billing-adress-box vanakutty d-flex bor10">
+                            <div class="checkout-billing-adress-box vanakutty d-flex bor10 ">
 
-                            <div>
+                            <div class="col-sm-6">
                                 <div class="billing-address-input clearfix">
                                     <label>FIRST NAME *</label>
                                     <input type="text" name="First_Name" id="First_Name" required>
@@ -229,8 +210,7 @@
                                     <input type="text" placeholder="Fashin, suite, unite ect (optinal)"
                                         name="Extra_Details" id="Extra_Details" required>
                                 </div>
-                            </div>
-                            <div class="p-l-25">
+                           
                                 <div class="billing-address-input clearfix">
                                     <label>TOWN / CITY *</label>
                                     <input type="text" name="Town_City" id="Town_City" required>
@@ -265,7 +245,7 @@
                     </div>
                 </div>
 
-        </div>
+        
 
     </div>
 

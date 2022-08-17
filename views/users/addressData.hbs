@@ -86,7 +86,7 @@
 
 <div class="container mt-5 pt-5">
     <div class="row">
-        <div class="col-lg-3  my-lg-0 my-md-1">
+        <div class="col-lg-3  col-md-6 my-lg-0 my-md-1">
             <div id="sidebar" class="bg-purple">
                 <div class="h4 text-dark">Account</div>
                 <ul>
@@ -139,17 +139,17 @@
             </div>
         </div>
 
-        <div class="col-xl-9 col-md-12 ">
+        <div class="col-xl-9 col-md-12 col-lg-9 col-sm-12">
 
             <div class="align-items">
 
-                <a class="btn btn-primary" href="/add-edit-address"><i class="fa fa-plus">  Add new</i></a>
+                <a class="btn btn-primary mt-3" href="/add-edit-address"><i class="fa fa-plus">  Add new</i></a>
                 
             </div>
-            <div class="row checkout-billing-adress-box mt-5">
+            <div class="row checkout-billing-adress-box mt-3">
 
                             {{#each savedAddress.address}}
-                            <div class="col-md-3 ml-3 mt-3" style="border:solid #847f7f;">
+                            <div class="col-md-6  mt-3" style="border:solid #847f7f;">
                                 <dl class="text-left">
                                     <dt>{{this.First_Name}} {{this.Last_Name}}</dt>
                                     <dd>"{{this.Company_Name}}"</dd>

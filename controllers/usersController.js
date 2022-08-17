@@ -448,21 +448,25 @@ module.exports = {
     },
 
     getAddEditAddress: async (req, res, next) => {
-        
-        let user = req.session.user
-        let userId = req.session.user._id
-        let cartCount = await usersHelper.getCartCount(userId)
-        let wishlistCount = await usersHelper.getWishlistCount(userId)
-        let cartItems = await usersHelper.getCartDetails(userId)
-        console.log('cartItems.............',cartItems);
-        if (req.query.id) {
-            let addressId = req.query.id
-            let addressData = await usersHelper.getSameAddress(addressId)
-            addressData = addressData.address[0]
-            res.render('users/addEditAddress', { layout: 'users-layout', user, addressData, cartCount, wishlistCount, cartItems })
-        } else {
-            res.render('users/addEditAddress', { layout: 'users-layout', user, cartCount, wishlistCount, cartItems })
+        try {
+            let user = req.session.user
+            let userId = req.session.user._id
+            let cartCount = await usersHelper.getCartCount(userId)
+            let wishlistCount = await usersHelper.getWishlistCount(userId)
+            let cartItems = await usersHelper.getCartDetails(userId)
+            console.log('cartItems.............',cartItems);
+            if (req.query.id) {
+                let addressId = req.query.id
+                let addressData = await usersHelper.getSameAddress(addressId)
+                addressData = addressData.address[0]
+                res.render('users/addEditAddress', { layout: 'users-layout', user, addressData, cartCount, wishlistCount, cartItems })
+            } else {
+                res.render('users/addEditAddress', { layout: 'users-layout', user, cartCount, wishlistCount, cartItems })
+            } 
+        } catch (error) {
+            res.redirect('/')
         }
+        
 
     },
 
