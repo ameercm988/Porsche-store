@@ -34,16 +34,22 @@ module.exports = {
     },
 
     getHome: async (req, res, next) => {
+
         let orders = await adminHelper.getrecentOrders()
+        let totalRevenue = await adminHelper.getRevenue()
+        let products = await productHelper.getAllProducts()
+        let activeUsers = await adminHelper.getActiveUsers()
+        let orderStatusObj = await adminHelper.getOrderStatus()
+        let payMethod = await adminHelper.getPayMethod()
+
+        totalProducts = products.length
         // orders.date = orders[0].date.split("",2)
-        // console.log(orders.date);
-        if (orders.length > 5) {
-            recentOrders = orders.slice(0, 5)
-            res.render('admin/admin-index', { layout: 'admin-layout', recentOrders })
-        }else{
-            recentOrders = orders
-            res.render('admin/admin-index', { layout: 'admin-layout', recentOrders }) 
-        }
+        // console.log(orders);
+        let totalOrders = orders.length
+        recentOrders = totalOrders > 5 ? orders.slice( 0, 5 ) : orders
+
+        res.render('admin/admin-index', { layout: 'admin-layout', recentOrders, totalOrders, totalRevenue, totalProducts, activeUsers, orderStatusObj, payMethod })
+
     },
 
     // product section >>>>>>>>>>>>>>>>>

@@ -177,7 +177,7 @@ module.exports = {
             }
 
         } catch (error) {
-
+            res.redirect('/error-page')
         }
 
     },
@@ -198,7 +198,7 @@ module.exports = {
             }
 
         } catch (error) {
-
+            res.redirect('/error-page')
         }
 
     },
@@ -222,8 +222,7 @@ module.exports = {
                 }
             })
         }).catch((error) => {
-            // res.status(500).json({error : error.message})
-            res.redirect('/')
+            res.redirect('/error-page')
         })
     },
 
@@ -249,8 +248,7 @@ module.exports = {
 
         } catch (error) {
 
-            console.log(error);
-            res.status(500).json({ error: error.message })                         // handling catch error
+            res.redirect('/error-page')                       // handling catch error
         }
     },
 
@@ -331,22 +329,28 @@ module.exports = {
 
     getOrders: async (req, res, next) => {
 
-        let user = req.session.user
-        let userId = user._id
-        let orders = await usersHelper.getViewOrders(userId)
-        let cartCount = await usersHelper.getCartCount(userId)
-        let wishlistCount = await usersHelper.getWishlistCount(userId)
-        let cartItems = await usersHelper.getCartDetails(userId)
-
-        res.render('users/view-orders', { layout: 'users-layout', user, orders, cartCount, cartItems, wishlistCount })
+        try {
+            let user = req.session.user
+            let userId = user._id
+            let orders = await usersHelper.getViewOrders(userId)
+            let cartCount = await usersHelper.getCartCount(userId)
+            let wishlistCount = await usersHelper.getWishlistCount(userId)
+            let cartItems = await usersHelper.getCartDetails(userId)
+    
+            res.render('users/view-orders', { layout: 'users-layout', user, orders, cartCount, cartItems, wishlistCount }) 
+        } catch (error) {
+            res.redirect('/error-page')
+        }
+        
 
     },
-
 
     getOrderProducts: async (req, res, next) => {
 
         let user = req.session.user
         let userId = user._id
+        try {
+        
         let cartCount = await usersHelper.getCartCount(userId)
         let cartItems = await usersHelper.getCartDetails(userId)
         let wishlistCount = await usersHelper.getWishlistCount(userId)
@@ -358,6 +362,11 @@ module.exports = {
         let invoice =  products[0].invoice
 
         res.render('users/order-products', { layout: 'users-layout', user, products, cartCount, cartItems, wishlistCount, total, name, discount, netAmount, invoice })
+        
+        } catch (err) {
+            res.redirect('/error-page')
+        }
+        
     },
 
     getCancelOrder: (req, res, next) => {
@@ -404,7 +413,7 @@ module.exports = {
 
             res.render('users/profile', { layout: 'users-layout', user, cartCount, cartItems, orders, orderCount, wishlistCount })
         } catch (error) {
-            res.status(500).json({ error: error.message })
+            res.redirect('/error-page')
         }
     },
 
@@ -464,7 +473,7 @@ module.exports = {
                 res.render('users/addEditAddress', { layout: 'users-layout', user, cartCount, wishlistCount, cartItems })
             } 
         } catch (error) {
-            res.redirect('/')
+            res.redirect('/error-page')
         }
         
 
@@ -485,11 +494,15 @@ module.exports = {
 
     getRemoveAddress: (req, res, next) => {
 
-        addressId = req.params.id
+            addressId = req.params.id
         usersHelper.removeAddress(addressId, req.session.user._id).then(() => {
             res.redirect('/profileAddress')
         })
+       
+    },
 
+    getErrorPage : (req, res, next) => {
+        res.render('users/errorPage') 
     },
 
     getLogout: (req, res) => {

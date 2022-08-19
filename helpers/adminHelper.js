@@ -31,7 +31,7 @@ module.exports = {
 
     viewUsers: () => {
 
-        return new Promise( async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             let users = await db.get().collection(collection.USER_COLLECTIONS).find().toArray()
             resolve(users.reverse())
         })
@@ -53,11 +53,89 @@ module.exports = {
             })
         })
     },
-    
-    getrecentOrders : () => {
-        return new Promise( async (resolve, reject) => {
+
+    getrecentOrders: () => {
+        return new Promise(async (resolve, reject) => {
             let orders = await db.get().collection(collection.ORDER_COLLECTION).find().toArray()
             resolve(orders.reverse())
+        })
+    },
+
+    getRevenue: () => {
+        return new Promise(async (resolve, reject) => {
+            let deliveredRevenue = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+
+                {
+                    $match: { "status": "Delivered" }
+                },
+
+                {
+                    $group: {
+                        _id : null,
+                        total: { $sum: '$orderData.Total_Amount' }
+                    }
+                }
+
+            ]).toArray()
+
+            deliveredRevenue = deliveredRevenue[0]?deliveredRevenue[0].total:0
+
+            let discountRevenue = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match : { "status" : "Delivered" }
+                },
+                
+                {
+                    $group : {
+                        _id : null,
+                        total : { $sum : "$orderData.discountData.discount"}
+                    }
+                }           
+            ]).toArray()
+            discountRevenue = discountRevenue[0]?discountRevenue[0].total:0
+
+            let totalRevenue = deliveredRevenue - discountRevenue
+
+            resolve(totalRevenue)
+        })
+    },
+
+    getActiveUsers : () => {
+        return new Promise(async(resolve, reject) => {
+            let users = await db.get().collection(collection.USER_COLLECTIONS).count({block : false})
+            resolve(users)
+        })
+    },
+
+    getOrderStatus : () => {
+        
+        return new Promise( async (resolve, reject) => {
+            let delivered = await db.get().collection(collection.ORDER_COLLECTION).count({status : "Delivered"})
+            let packed = await db.get().collection(collection.ORDER_COLLECTION).count({status : "Packed"})
+            let shipped = await db.get().collection(collection.ORDER_COLLECTION).count({status : "shipped"})
+            let cancelled = await db.get().collection(collection.ORDER_COLLECTION).count({status : "Cancelled"})
+
+            statusData = {
+                delivered : delivered,
+                packed : packed,
+                shipped : shipped,
+                cancelled : cancelled,
+            }
+            resolve(statusData)
+        })
+    },
+
+    getPayMethod : () => {
+        return new Promise(async(resolve, reject) =>  {
+            let cod = await db.get().collection(collection.ORDER_COLLECTION).count({Pay_Method : "COD"})
+            let razorPay = await db.get().collection(collection.ORDER_COLLECTION).count({Pay_Method : "Razorpay"})
+
+            let payData = {
+                cod : cod,
+                razorPay : razorPay
+            }
+            
+            resolve(payData)
         })
     },
 
@@ -113,13 +191,13 @@ module.exports = {
                     $project: {
                         item: '$Products.item',
                         quantity: '$Products.quantity',
-                        name : '$Name',
-                        date : '$date',
-                        status : '$status',
-                        amount : '$orderData.Total_Amount',
-                        discount : '$orderData.discountData',
-                        invoice : '$invoiceNumber' 
-                        
+                        name: '$Name',
+                        date: '$date',
+                        status: '$status',
+                        amount: '$orderData.Total_Amount',
+                        discount: '$orderData.discountData',
+                        invoice: '$invoiceNumber'
+
 
                     }
 
@@ -137,13 +215,13 @@ module.exports = {
                     $project: {
                         item: 1,
                         quantity: 1,
-                        name : 1,
+                        name: 1,
                         product: { $arrayElemAt: ['$product', 0] },
-                        date : 1,
-                        status : 1,
-                        amount : 1,
-                        discount : 1,
-                        invoice : 1
+                        date: 1,
+                        status: 1,
+                        amount: 1,
+                        discount: 1,
+                        invoice: 1
 
                     }
                 }
@@ -182,8 +260,8 @@ module.exports = {
             Name: couponData.name.toUpperCase(),
             Offer: parseFloat(couponData.offer / 100),
             validity: new Date(new Date().getTime() + (oneDay * parseInt(couponData.validity))).toLocaleString(),
-            valDays : couponData.validity
-            
+            valDays: couponData.validity
+
         }
         return new Promise((resolve, reject) => {
 
@@ -207,7 +285,7 @@ module.exports = {
     },
 
     deleteCoupon: (couponId) => {
-        
+
         return new Promise((resolve, reject) => {
             db.get().collection(collection.COUPON_COLLECTION).deleteOne({ _id: objectId(couponId) }).then((response) => {
                 resolve()

@@ -110,6 +110,9 @@ router.post('/add-edit-address', usersController.postAddEditAddress)
 router.get('/remove-address/:id', verifyLogin, usersController.getRemoveAddress)
 
 
+router.get('/error-page', usersController.getErrorPage)
+
+
 router.get('/logout', usersController.getLogout)
 
 

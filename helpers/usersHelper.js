@@ -312,7 +312,7 @@ module.exports = {
 
     placeOrder: (order, products, total, discountData) => {
 
-        // console.log(order, products, total + "<<<<<<<<<<<<<<<<<<<<<placeorder");
+        
         let orderData = {
             Total_Amount: total,
             discountData: discountData
@@ -744,7 +744,7 @@ module.exports = {
                 } else {
                     let offerPrice = parseFloat(amount * response.Offer)
                     // let discountPrice = amount - offerPrice
-                    let newTotal = parseInt(amount - offerPrice)
+                    let newTotal = parseFloat(amount - offerPrice)
                     // response = {
                     //     amount: newTotal,
                     //     discount: discountPrice
