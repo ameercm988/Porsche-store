@@ -24,10 +24,10 @@ module.exports = {
         if (req.session.isLoggedIn) {
             res.redirect('/')
         } else {
-            res.render('users/users-login', { login: true, layout: 'users-layout', userError: req.session.userError, loginError: req.session.loginError, dataBaseError: req.session.dataBaseError, blockError: req.session.blockError })
-            req.session.userError = false
+            res.render('users/users-login', { login: true, layout: 'users-layout',  loginError: req.session.loginError,  blockError: req.session.blockError })
+            // req.session.userError = false
             req.session.loginError = false
-            req.session.dataBaseError = false
+            // req.session.dataBaseError = false
         }
     },
 
@@ -36,7 +36,7 @@ module.exports = {
             if (data.isUserValid) {
                 if (data.blockStatus) {
                     req.session.isLoggedIn = false
-                    req.session.blockError = data.err
+                    req.session.loginError = data.err
                     res.redirect('/login')
                 } else {
                     req.session.isLoggedIn = true
@@ -50,10 +50,10 @@ module.exports = {
             }
         }).catch((data) => {
             if (data.isUserValid = false) {
-                req.session.dataBaseError = "Error with database"
+                req.session.loginError = "Error with database"
                 res.redirect('/login')
             } else {
-                req.session.userError = data.err
+                req.session.loginError = data.err
                 res.redirect('/login')
             }
         })
@@ -64,8 +64,8 @@ module.exports = {
             res.redirect('/')
         } else {
             res.render('users/users-signup', { layout: 'users-layout', emailError: req.session.emailError, signup: true, twillioError: req.session.twilioError })
-            req.session.emailError = false
-            req.session.twilioError = false
+            req.session.signupError = false
+            // req.session.twilioError = false
         }
     },
 
@@ -73,13 +73,13 @@ module.exports = {
         req.session.body = req.body
         middleWare.verifySignup(req.body).then((err) => {
             if (err) {
-                req.session.emailError = err
+                req.session.signupError = err
                 res.redirect('/signup');
             } else {
                 twilioHelpers.dosms(req.session.body).then(() => {
                     res.redirect('/otp')
                 }).catch(() => {
-                    req.session.twilioError = "twilio server id down"
+                    req.session.signupError = "twilio server id down"
                     res.redirect('/signup')
                 })
             }
