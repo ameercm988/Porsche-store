@@ -7,9 +7,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             let err = 'Email or mobile already exists'
             db.get().collection(collection.USER_COLLECTIONS).find({$or : [{email : userData.email}, {mobilenumber : userData.mobilenumber}]}).toArray().then((user)=>{
-                console.log(user);
                 if (user.length) {
-                    console.log(err);
                     resolve(err)
                 }else{
                     resolve()

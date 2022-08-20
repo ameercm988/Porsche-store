@@ -12,7 +12,7 @@ const verifyLogin = ((req,res,next) => {
     }
 })
 
-// adminSection
+//>>>>>>>>>>>>>> adminSection
 
 router.get('/login', adminController.getLogin)
 
@@ -20,7 +20,7 @@ router.post('/login', adminController.postLogin)
 
 router.get('/',verifyLogin, adminController.getHome)
 
-// productSection
+//>>>>>>>>>>>>>> productSection
 
 router.get('/view-products', verifyLogin, adminController.getViewProducts)
 
@@ -36,7 +36,7 @@ router.post('/edit-products/:id', adminController.postEditProducts)
 
 router.get('/delete-products', adminController.getDeleteProducts)
 
-// categorySection
+//>>>>>>>>>>>>>> categorySection
 
 router.get('/view-category', verifyLogin, adminController.getViewCategory)
 
@@ -52,15 +52,36 @@ router.post('/edit-category/:id', adminController.postEditCategory)
 
 router.get('/delete-category', adminController.getDeleteCategory)      
 
-// userSection
+//>>>>>>>>>>>>>> userSection
 
 router.get('/view-users', verifyLogin, adminController.getViewUsers)
 
 router.get('/block-user/:id', verifyLogin, adminController.getBlockUser)
 
-router.get('/unblock-user/:id', verifyLogin, adminController.getUnBlockUser)
+// router.get('/unblock-user/:id', verifyLogin, adminController.getUnBlockUser)
 
-// admin logout
+router.get('/view-orders/:id', verifyLogin, adminController.getViewOrders)
+
+router.get('/view-order-products', verifyLogin, adminController.getOrderProducts)
+
+router.get('/status', verifyLogin, adminController.getChangeStatus)
+
+// router.get('/status-cancelled', verifyLogin, adminController.getChangeStatusCancelled)
+
+// router.get('/status-delivered', verifyLogin, adminController.getChangeStatusDelivered)
+
+//>>>>>>>>>>>>>> coupon section
+
+router.get('/view-coupons', verifyLogin, adminController.getCoupons)
+
+router.get('/generate-coupon', verifyLogin, adminController.getGenerateCoupon)
+
+router.post('/generate-coupon', adminController.postGenerateCoupon)
+
+router.get('/delete-coupon/:id', adminController.getDeleteCoupon)
+
+
+//>>>>>>>>>>>>>> admin logout
 
 router.get('/logout', adminController.getLogout)
 

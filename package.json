@@ -9,16 +9,21 @@
     "bcrypt": "^5.0.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^16.0.1",
     "express": "~4.16.1",
     "express-fileupload": "^1.4.0",
     "express-handlebars": "^6.0.6",
     "express-session": "^1.17.3",
+    "handlebars": "^4.7.7",
     "hbs": "^4.2.0",
     "http-errors": "~1.6.3",
     "mongodb": "^4.7.0",
     "morgan": "~1.9.1",
     "nocache": "^3.0.4",
     "nodemon": "^2.0.19",
-    "twilio": "^3.79.0"
+    "razorpay": "^2.8.3",
+    "sweetalert": "^2.1.2",
+    "twilio": "^3.79.0",
+    "uuidv4": "^6.2.13"
   }
 }

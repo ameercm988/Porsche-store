@@ -1,0 +1,314 @@
+<!-- Cart -->
+<div class="wrap-header-cart js-panel-cart">
+    <div class="s-full js-hide-cart"></div>
+
+
+    <div class="header-cart flex-col-l p-l-65 p-r-25">
+        <div class="header-cart-title flex-w flex-sb-m p-b-8">
+            <span class="mtext-103 cl2">
+                Your Cart
+            </span>
+
+            <div class="fs-35 lh-10 cl2 p-lr-5 pointer hov-cl1 trans-04 js-hide-cart">
+                <i class="zmdi zmdi-close"></i>
+            </div>
+        </div>
+        {{#if user}}
+        {{#if cartItems}}
+        <div class="header-cart-content flex-w js-pscroll">
+            {{#each cartItems}}
+            <ul class="header-cart-wrapitem w-full">
+
+                <li class="header-cart-item flex-w flex-t m-b-12">
+                    <div class="header-cart-item-img">
+                        <img src="/productImages/{{this.product._id}}0.jpg" alt="IMG">
+                    </div>
+
+                    <div class="header-cart-item-txt p-t-8">
+                        <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
+                            {{this.product.name}}
+                        </a>
+
+                        <span class="header-cart-item-info">
+                            ${{this.product.price}} x {{this.quantity}}
+                        </span>
+                    </div>
+                </li>
+
+
+            </ul>
+            {{/each}}
+            <div class="w-full">
+                <div class="header-cart-total w-full p-tb-40">
+                    Total: ${{totalAmount}}
+                </div>
+
+                <div class="header-cart-buttons flex-w w-full">
+                    <a href="/cart"
+                        class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
+                        View Cart
+                    </a>
+
+                    <a href="/checkout"
+                        class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
+                        Check Out
+                    </a>
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <center>
+            <h3 style="color: red;">Sorry your cart is empty</h3>
+            <img src="https://alphapharmaexhibitions.com/images/cartempty1.png" alt="" style="width:250px"><br>
+            <a class="btn btn-succes" href="/shop" style="margin-top: 17px; color: green; border: solid green;">SHOP
+                NOW</a>
+        </center>
+        {{/if}}
+        {{else}}
+        <div class="container align-items-center">
+            <div>
+                <img src="https://i.pinimg.com/originals/68/90/6f/68906ff38a09a42fd26cafdec2247462.jpg" alt=""
+                    style="width: 250px; ;height: auto ;">
+            </div>
+            <div>
+                <P class="ml-5">Press login to continue</P>
+                <a href="/login"><button class="btn btn-success" style="margin-left:5em ;">LOGIN</button></a>
+
+            </div>
+        </div>
+
+        {{/if}}
+    </div>
+</div>
+
+<section class="mt-5 pt-5" style="margin-top:18px">
+
+    <!-- wishlist-table-area-start -->
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="wishlist-table-head">
+                    <h4>Your wishlist</h4>
+                </div>
+            </div>
+        </div>
+
+
+        <center>
+            {{#if wishlistItems}}
+            {{#each wishlistItems}}
+            <div class="col-md-6 card mb-3 wishCard">
+                <div class="row no-gutters">
+                    <div class="col-xs-12 col-md-4">
+                        <img src="/productImages/{{this.product._id}}0.jpg" class="card-img" alt="...">
+                    </div>
+                    <div class="col-xs-12 col-sm-9 col-md-6">
+
+                        <div class="card-body">
+                            <h5 class="card-title mt-3">{{this.product.name}}</h5>
+                            <p class="">{{this.product.category}}</p><br>
+                            <p class="card-text" style="color: rgb(97, 90, 90);"><strong>Price : $
+                                    {{this.product.price}}</strong>
+                            </p>
+                            <div id="items" class="">
+
+                                <a onclick="addItemToCart('{{this.product._id}}')"
+                                    class="btn btn-success text-light">Add to cart</a>
+
+                                <a onclick="removeWishItem('{{this._id}}','{{this.product._id}}')"
+                                    class="btn btn-danger text-light m-2">Remove</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+            {{else}}
+            <center>
+                {{!-- <h1 style="color: red;">Save your favourites here</h1> --}}
+                <img src="https://2.bp.blogspot.com/-QfSOClZc8r0/XNr6srFlzjI/AAAAAAAAGlA/lzs505eFFiEdyAytzKkMabdUTihKywcqwCLcBGAs/s1600/EXAM360%2B-%2BNo%2BWishlist.png"
+                    alt="" style="width:300px"><br>
+                <a class="btn btn-succes" href="/shop" style="margin-top: 17px; color: green; border: solid green;">SHOP
+                    NOW</a>
+            </center>
+            {{/if}}
+
+
+
+        </center>
+
+    </div>
+    <!-- wishlist-table-area-end -->
+</section>
+
+<script>
+    function removeWishItem(wishlistId, proId) {
+        $.ajax({
+            url: '/remove-wishlist-item',
+            data: {
+                wishlist: wishlistId,
+                product: proId
+            },
+            method: 'post',
+            success: (response) => {
+                alert('Product removed from wishlist')
+                location.reload()
+                //$(" #items ").load(location.href+" #items ")
+            }
+        })
+    }
+
+    function addItemToCart(proId) {
+        $.ajax({
+            url: '/addto-cart/' + proId,
+            method: 'get',
+            success: (response) => {
+                if (response.status) {
+                    // let count = $('#cart-count').html()
+                    // // count = parseInt(count) + 1
+                    // $("#cart-count").html(count)
+                    // $("#cart-count").load(location.href+"#cart-count")
+                    // $("#cart-count").load(location.href+"#cart-count")
+                    //$(" #count").load(location.href+" #count")
+                    location.reload()
+
+                }
+            }
+        })
+    }
+
+</script>
+
+
+
+
+<style>
+    .wishCard {
+        width: 49%;
+        border: 1px solid #00000012;
+        margin-top: 15px;
+        padding-right: 1px;
+        margin-left: 10px;
+        padding: 35px;
+        border-radius: 10px;
+        box-shadow: 10px 10px 183px -58px rgba(0, 0, 0, 0.25);
+        -webkit-box-shadow: 10px 10px 183px -58px rgba(0, 0, 0, 0.25);
+        -moz-box-shadow: 10px 10px 183px -58px rgba(0, 0, 0, 0.25);
+    }
+
+    .page-title {
+        background-color: white;
+    }
+
+    .wishlist-table-area {
+        padding: 60px 0;
+    }
+
+    .wishlist-table-head {
+        margin-bottom: 22px;
+    }
+
+    .wishlist-table-head h4 {
+        color: #555555;
+        font-size: 18px;
+        letter-spacing: 0;
+        position: relative;
+        text-transform: uppercase;
+    }
+
+    .wishlist-table-head h4::after {
+        background: #ed1d7f none repeat scroll 0 0;
+        bottom: -22px;
+        content: "";
+        height: 3px;
+        left: 0;
+        position: absolute;
+        width: 30px;
+        z-index: 2;
+    }
+
+    .wishlist-table.shopping-cart-table {
+        border: 0 none;
+    }
+
+    .wishlist-table.shopping-cart-table thead tr {
+        color: #555555;
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 0;
+    }
+
+    .wishlist-table.shopping-cart-table thead tr th {
+        border-bottom: 1px solid #ebebeb;
+        width: 15%;
+    }
+
+    .wishlist-table.shopping-cart-table thead tr th,
+    .wishlist-table.shopping-cart-table table td {
+        font-weight: 300;
+        padding: 15px 10px;
+        text-align: left;
+    }
+
+    .wishlist_product_name>a {
+        color: #555555;
+    }
+
+    .wishlist-desc {
+        color: #5d5d5d;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: 20px;
+    }
+
+    .wishlist_price .product_price {
+        color: #555555;
+        font-size: 18px;
+        letter-spacing: 0;
+    }
+
+    .wishlist_availability>span {
+        color: #555555;
+        font-size: 14px;
+        letter-spacing: 0;
+        text-transform: uppercase;
+    }
+
+    .wishlist_add_cart>button {
+        background: #f2f2f2 none repeat scroll 0 0;
+        border: 0 none;
+    }
+
+    .wishlist_add_cart>button:hover {
+        background: #ed1d7f none repeat scroll 0 0;
+        color: #fff;
+    }
+
+    .wishlist-table tbody tr {
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .wishlist-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-img-title {}
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-pro-name {}
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-pro-desc {
+        width: 32%;
+    }
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-pro-price {
+        width: 10%;
+    }
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-pro-availabillity {}
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-pro-add-to {}
+
+    .wishlist-table.shopping-cart-table thead tr th.wishlist-pro-remove {}
+</style>

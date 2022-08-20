@@ -13,6 +13,7 @@
                             <tr>
                                 <th scope="col">NO:</th>
                                 <th scope="col">Category</th>
+                                <th scope="col">Image</th>
                                 <th scope="col">Action</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -21,20 +22,20 @@
                         <tbody>
 
                             <tr>
-                                <th scope="row">{{@index}}</th>
+                                <th scope="row">{{count @index}}</th>
                                 <td>{{this.category}}</td>
-                                <td><img src="/productImages/{{this._id}}CI.jpg" alt=""  style="height: 30px; width: 50px;"></td>
+                                <td><img src="/categoryImages/{{this._id}}CI.jpg" alt=""  style="height: 30px; width: 50px;"></td>
                                 <td>
                                     <a href="/admin/edit-category/{{this._id}}">
                                         <button class="text-white"
-                                            style="background-color: rgb(42, 42, 246);border-color: aliceblue; border-radius:5px;">EDIT
+                                            style="background-color: rgb(22, 17, 17);border-color: rgb(29, 13, 212);border-radius:5px; width: 90px;border-width: 4px">EDIT
                                         </button>
                                     </a>
                                 </td>
                                 <td>
                                     <a href="/admin/delete-category/?id={{this._id}}">
                                         <button class="text-white"
-                                            style="background-color: rgb(223, 18, 18);border-color: aliceblue;border-radius:5px;"
+                                            style="background-color: rgb(22, 17, 17);border-color: rgb(196, 24, 24);border-radius:5px; width: 90px;border-width: 4px"
                                             onclick="return confirm('Do you want to delete {{this.category}}?')">DELETE
                                         </button>
                                     </a>

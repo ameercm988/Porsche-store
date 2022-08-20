@@ -1,0 +1,71 @@
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h5 class="mb-4">Order List</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="orderTable" style="text-align: center;">
+                        {{!-- <h3>My Orders</h3> --}}
+                        <thead>
+                            <tr class="tr align-items-center">
+                                <th scope="col">NO:</th>
+                                {{!-- <th scope="col">Date</th> --}}
+                                <th scope="col">Address</th>
+                                <th scope="col">Pincode</th>
+                                <th scope="col">Mobile</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Payment</th>
+                                <th scope="col">status</th>
+                                <th scope="col">Product info</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each orders}}
+                            <tr class="tr">
+                                <td scope="row">{{count @index}}</td>
+                                {{!-- <td>{{this.date}}</td> --}}
+                                <td>{{this.deliveryDetails.Street_Address}}</td>
+                                <td>{{this.deliveryDetails.Post_Code}}</td>
+                                <td>{{this.Phone.Phone}}</td>
+                                <td>$ {{this.orderData.Total_Amount}}</td>
+                                <td>{{this.Pay_Method}}</td>
+
+                             
+
+
+                                <td >
+                                    <select name="form" id="" onchange="location = this.value" >
+
+                                        {{!-- onchange is used to pass id from select tag --}}
+                                        
+                                        <option value="" >{{this.status}}</option>
+                                         
+                                        
+                                        
+                                        <option value="/admin/status/?id={{this._id}}&userId={{this.UserId}}&status=Packed">Packed</option>
+                                        <option value="/admin/status/?id={{this._id}}&userId={{this.UserId}}&status=shipped">Shipped</option>
+                                        <option value="/admin/status/?id={{this._id}}&userId={{this.UserId}}&status=Delivered">Delivered</option>
+                                        <option value="/admin/status/?id={{this._id}}&userId={{this.UserId}}&status=Cancelled">cancelled</option>
+                                    </select>
+                                    
+                                </td>
+
+                                <td><a href="/admin/view-order-products/?id={{this._id}}"><button class="text-white"
+                                            style="background-color: rgb(22, 17, 17);border-color: rgb(12, 217, 59);border-radius:5px; border-width: 4px;">Product Details</button></a>
+                                </td>
+
+                            </tr>
+                            {{/each}}
+
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

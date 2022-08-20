@@ -1,0 +1,49 @@
+
+
+<section class="h-100 gradient-custom">
+    
+  <div class="container py-5 h-100" >
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-10 col-xl-8">
+        <h4>Ordered Items</h4>
+        <div class="card" style="border-radius: 10px; background-color:#191C24 ;">
+
+			{{#each products}}
+            <div class="card shadow-0  mb-4">
+              <div class="card-body" style="background-color: #191C24;">
+                <div class="row">
+                  <div class="col-md-2">
+                    <img src="/productImages/{{this.product._id}}0.jpg"
+                      class="img-fluid" alt="Phone">
+                  </div>
+                  <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                    <p class="text-muted mb-0">{{this.product.name}}</p>
+                  </div>
+                  <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                    <p class="text-muted mb-0 small">{{this.product.category}}</p>
+                  </div>
+                  <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                    <p class="text-muted mb-0 small">Qty: {{this.quantity}}</p>
+                  </div>
+                  <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                    <p class="text-muted mb-0 small">$ {{this.product.price}}</p>
+                  </div>
+                </div>
+                <hr class="mb-4" style="background-color: #ffffff; opacity: 1;">
+                <div class="row d-flex align-items-center">
+                  <div class="col-md-10">
+                    <div class="d-flex justify-content-around mb-1">
+                      <p class="text-muted mt-1 mb-0 small ms-xl-5">Ordered on {{this.date}}</p>
+                      <p class="text-muted mt-1 mb-0 small ms-xl-5">Item has been {{this.status}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+           {{/each}}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

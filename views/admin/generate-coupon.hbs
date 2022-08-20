@@ -1,0 +1,33 @@
+<body>
+    <div class="content">
+
+        <div class="row " style="background-color: #191C24; padding-right: 30%;">
+            <div>
+                <h3 class="text-primary" style="background-color: #191C24; margin: 0; padding-left: 2%;">Add coupon
+                </h3>
+            </div>
+
+            <form action="/admin/generate-coupon" method="post"  id="form"
+                style="background-color: #191C24; margin-left: auto; margin-right: auto;">
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Coupon label</label>
+                    <input name="name" type="text" class="form-control" id="name" aria-describedby=""
+                        placeholder="Enter coupon name" style="background-color: aliceblue;">
+                
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Offer</label>
+                    <input name="offer" type="number" class="form-control" id="offer"
+                        placeholder="Enter offer % " style="background-color: aliceblue;">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Validity</label>
+                    <input name="validity" type="text" class="form-control" id="validity"
+                        placeholder="Coupon expiry in days" style="background-color: aliceblue;">
+                </div>
+                <button type="submit" class="btn btn-primary" value="uploadImages">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
