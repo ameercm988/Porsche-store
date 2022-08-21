@@ -10,6 +10,7 @@ const nocache = require('nocache')
 const fileUpload = require('express-fileupload')
 const handlebars = require('handlebars')
 const helper = require('./helpers/handlebarHelper')
+require('dotenv').config()
 
 
 
