@@ -19,6 +19,12 @@ const adminRouter = require('./routes/admin');
 
 const app = express();
 
+const PORT = process.env.PORT
+
+if (!PORT) {
+  throw new Error("PORT variable not verified")
+}
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -34,7 +40,7 @@ app.engine('hbs', hbs.engine({
 // Middleware
 
 handlebars.registerHelper("when", function (operand_1, operator, operand_2, options) {
-  var operators = {
+  const operators = {
     'eq': function (l, r) { return l == r; },
     'noteq': function (l, r) { return l != r; },
     'gt': function (l, r) { return Number(l) > Number(r); },
