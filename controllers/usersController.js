@@ -292,33 +292,39 @@ module.exports = {
 
     postCheckout: async (req, res, next) => {
 
-        if (req.body.saveAddress == 'on') {
-            await usersHelper.addNewAddress(req.body, req.session.user._id)
-        }
-
-        let products = await usersHelper.gerCartProList(req.body.userId)
-        let totalAmount = await usersHelper.getTotalAmount(req.body.userId)
-        let discountData = null
-
-        if (req.body.Coupon_Code) {
-            await usersHelper.checkCoupon(req.body.Coupon_Code, totalAmount).then((response) => {
-                discountData = response
-            }).catch(() => discountData = null)
-
-        }
-
-        usersHelper.placeOrder(req.body, products, totalAmount, discountData).then((orderId) => {
-
-            if (req.body.Pay_Method === 'COD') {
-                res.json({ codSuccess: true })
-            } else {
-                let netAmount = (discountData) ? discountData.amount : totalAmount
-                usersHelper.generateRazorpay(orderId, netAmount).then((response) => {
-                    res.json(response)
-                })
+        try {
+            if (req.body.saveAddress == 'on') {
+                await usersHelper.addNewAddress(req.body, req.session.user._id)
             }
+    
+            let products = await usersHelper.gerCartProList(req.body.userId)
+            let totalAmount = await usersHelper.getTotalAmount(req.body.userId)
+            let discountData = null
+    
+            if (req.body.Coupon_Code) {
+                await usersHelper.checkCoupon(req.body.Coupon_Code, totalAmount).then((response) => {
+                    discountData = response
+                }).catch(() => discountData = null)
+    
+            }
+    
+            usersHelper.placeOrder(req.body, products, totalAmount, discountData).then((orderId) => {
+    
+                if (req.body.Pay_Method === 'COD') {
+                    res.json({ codSuccess: true })
+                } else {
+                    let netAmount = (discountData) ? discountData.amount : totalAmount
+                    usersHelper.generateRazorpay(orderId, netAmount).then((response) => {
+                        res.json(response)
+                    })
+                }
+    
+            })
+        } catch (error) {
+            res.redirect('/error-page') 
+        }
 
-        })
+        
     },
 
     getOrderSucces: (req, res, next) => {

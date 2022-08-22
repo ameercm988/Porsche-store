@@ -742,9 +742,9 @@ module.exports = {
                     console.log(response + "          null resp");
                     reject({ status: false })
                 } else {
-                    let offerPrice = parseFloat(amount * response.Offer)
+                    let offerPrice = parseInt(amount * response.Offer)
                     // let discountPrice = amount - offerPrice
-                    let newTotal = parseFloat(amount - offerPrice)
+                    let newTotal = parseInt(amount - offerPrice)
                     // response = {
                     //     amount: newTotal,
                     //     discount: discountPrice
@@ -757,6 +757,8 @@ module.exports = {
                         discount: offerPrice
                     })
                 }
+            }).catch((error) => {
+                reject(error)
             })
         })
     }
