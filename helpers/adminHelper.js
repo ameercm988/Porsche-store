@@ -147,89 +147,92 @@ module.exports = {
         })
     },
 
-    getOrderProducts: (orderId) => {
+    // getOrderProducts: (orderId) => {
 
-        return new Promise(async (resolve, reject) => {
-            let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-                // {
-                //     $match: { _id: objectId(orderId) }
-                // },
-                // {
-                //     $unwind: '$Products'
-                // },
-                // {
-                //     $project: {
-                //         item: '$Products.item',
-                //         quantity: '$Products.quantity'
-                //     }
+    //     return new Promise(async (resolve, reject) => {
+    //         let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+    //             // {
+    //             //     $match: { _id: objectId(orderId) }
+    //             // },
+    //             // {
+    //             //     $unwind: '$Products'
+    //             // },
+    //             // {
+    //             //     $project: {
+    //             //         item: '$Products.item',
+    //             //         quantity: '$Products.quantity'
+    //             //     }
 
-                // },
-                // {
-                //     $lookup: {
-                //         from: collection.PRODUCT_COLLECTIONS,
-                //         localField: 'item',
-                //         foreignField: '_id',
-                //         as: 'product'
-                //     }
+    //             // },
+    //             // {
+    //             //     $lookup: {
+    //             //         from: collection.PRODUCT_COLLECTIONS,
+    //             //         localField: 'item',
+    //             //         foreignField: '_id',
+    //             //         as: 'product'
+    //             //     }
 
-                // },
-                // {
-                //     $project: {
-                //         item: 1,
-                //         quantity: 1,
-                //         product: { $arrayElemAt: ['$product', 0] }
-                //     }
-                // }
-
-                {
-                    $match: { _id: objectId(orderId) }
-                },
-                {
-                    $unwind: '$Products'
-                },
-                {
-                    $project: {
-                        item: '$Products.item',
-                        quantity: '$Products.quantity',
-                        name: '$Name',
-                        date: '$date',
-                        status: '$status',
-                        amount: '$orderData.Total_Amount',
-                        discount: '$orderData.discountData',
-                        invoice: '$invoiceNumber'
+    //             // },
+    //             // {
+    //             //     $project: {
+    //             //         item: 1,
+    //             //         quantity: 1,
+    //             //         product: { $arrayElemAt: ['$product', 0] }
+    //             //     }
+    //             // }
 
 
-                    }
+    
 
-                },
-                {
-                    $lookup: {
-                        from: collection.PRODUCT_COLLECTIONS,
-                        localField: 'item',
-                        foreignField: '_id',
-                        as: 'product'
-                    }
+    //             {
+    //                 $match: { _id: objectId(orderId) }
+    //             },
+    //             {
+    //                 $unwind: '$Products'
+    //             },
+    //             {
+    //                 $project: {
+    //                     item: '$Products.item',
+    //                     quantity: '$Products.quantity',
+    //                     name: '$Name',
+    //                     date: '$date',
+    //                     status: '$status',
+    //                     amount: '$orderData.Total_Amount',
+    //                     discount: '$orderData.discountData',
+    //                     invoice: '$invoiceNumber'
 
-                },
-                {
-                    $project: {
-                        item: 1,
-                        quantity: 1,
-                        name: 1,
-                        product: { $arrayElemAt: ['$product', 0] },
-                        date: 1,
-                        status: 1,
-                        amount: 1,
-                        discount: 1,
-                        invoice: 1
 
-                    }
-                }
+    //                 }
 
-            ]).toArray()
-            resolve(orderItems)
-        })
-    },
+    //             },
+    //             {
+    //                 $lookup: {
+    //                     from: collection.PRODUCT_COLLECTIONS,
+    //                     localField: 'item',
+    //                     foreignField: '_id',
+    //                     as: 'product'
+    //                 }
+
+    //             },
+    //             {
+    //                 $project: {
+    //                     item: 1,
+    //                     quantity: 1,
+    //                     name: 1,
+    //                     product: { $arrayElemAt: ['$product', 0] },
+    //                     date: 1,
+    //                     status: 1,
+    //                     amount: 1,
+    //                     discount: 1,
+    //                     invoice: 1
+
+    //                 }
+    //             }
+
+    //         ]).toArray()
+    //         resolve(orderItems)
+    //     })
+    // },
 
     changeStatus: (orderId, newStatus) => {
 

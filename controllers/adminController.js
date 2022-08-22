@@ -2,6 +2,7 @@
 const adminHelper = require('../helpers/adminHelper')
 const productHelper = require('../helpers/productHelper')
 const categoryHelper = require('../helpers/categoryHelper')
+const usersHelper = require('../helpers/usersHelper');
 const { response } = require('../app')
 
 
@@ -193,8 +194,13 @@ module.exports = {
     },
 
     getOrderProducts: async (req, res, next) => {
-        let products = await adminHelper.getOrderProducts(req.query.id)
-        res.render('admin/view-order-products', { layout: 'admin-layout', products })
+        let products = await usersHelper.orderProducts(req.query.id)
+        let name = products[0].name
+        let total = products[0].amount
+        let discount = products[0].discount.discount
+        let netAmount = products[0].discount.amount
+        let invoice =  products[0].invoice
+        res.render('admin/view-order-products', { layout: 'admin-layout', products, total, name, discount, netAmount, invoice })
 
     },
 
