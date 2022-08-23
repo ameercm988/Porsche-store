@@ -77,6 +77,10 @@ db.connect((err) => {
 app.use('/', usersRouter);
 app.use('/admin', adminRouter);
 
+// To check port 
+
+app.use('/port', (req,res)=>res.send(`server on PORT ${PORT}`))
+
 // catch 404 and forward to error handler
 
 app.use(function (req, res, next) {
