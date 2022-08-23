@@ -116,4 +116,7 @@ router.get('/error-page', usersController.getErrorPage)
 router.get('/logout', usersController.getLogout)
 
 
+router.get('/port', usersController.getPort)
+
+
 module.exports = router;

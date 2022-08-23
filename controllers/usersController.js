@@ -516,5 +516,9 @@ module.exports = {
         req.session.isLoggedIn = null
         req.session.user = false
         res.redirect('/')
+    },
+
+    getPort : (req, res) => {
+        res.send(`server on PORT ${PORT}`)
     }
 }
