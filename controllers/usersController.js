@@ -8,6 +8,15 @@ const { use } = require('../routes/users');
 const { response } = require('../app');
 const { Db } = require('mongodb');
 const adminHelper = require('../helpers/adminHelper');
+require('dotenv').config()
+
+
+
+const PORT = process.env.PORT
+
+if (!PORT) {
+  throw new Error("PORT variable not verified")
+}
 
 
 module.exports = {

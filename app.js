@@ -20,11 +20,6 @@ const adminRouter = require('./routes/admin');
 
 const app = express();
 
-const PORT = process.env.PORT
-
-if (!PORT) {
-  throw new Error("PORT variable not verified")
-}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
