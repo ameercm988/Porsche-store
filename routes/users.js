@@ -3,6 +3,15 @@ const adminController = require('../controllers/adminController');
 const router = express.Router();
 const usersController = require('../controllers/usersController');
 const { route } = require('./admin');
+require('dotenv').config()
+
+
+const PORT = process.env.PORT
+
+if (!PORT) {
+  throw new Error("PORT variable not verified")
+}
+
 
 
 const verifyLogin = ((req,res,next) => {
